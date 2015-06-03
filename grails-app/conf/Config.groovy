@@ -156,3 +156,45 @@ grails {
     }
 }
 remove this line */
+
+// Pour les soucis de pagination avec Bootstrap
+grails.plugins.twitterbootstrap.fixtaglib = true
+
+grails.cache.config = {
+    defaultCache {
+        maxElementsInMemory 10000
+        eternal false
+        timeToIdleSeconds 86400
+        timeToLiveSeconds 86400
+        overflowToDisk false
+        maxElementsOnDisk 0
+        diskPersistent false
+        diskExpiryThreadIntervalSeconds 120
+        memoryStoreEvictionPolicy 'LRU'
+    }
+
+    cache {
+        name 'alertecoin'
+        eternal false
+        overflowToDisk true
+        maxElementsInMemory 10000
+        maxElementsOnDisk 10000000
+    }
+
+    domain {
+        name 'com.pfabier.alertecoin.Role'
+        eternal false
+        overflowToDisk false
+        path "${System.getProperty("user.home")}/.ehcache"
+    }
+
+    diskStore {
+        path "${System.getProperty("user.home")}/.ehcache"
+    }
+}
+
+beans {
+    cacheManager {
+        shared = true
+    }
+}

@@ -1,6 +1,7 @@
 grails.project.class.dir = 'target/classes'
 grails.project.test.class.dir = 'target/test-classes'
 grails.project.test.reports.dir = 'target/test-reports'
+grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.fork = [
         test   : false, // [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon: true], // configure settings for the test-app JVM
@@ -33,24 +34,30 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.27'
 
         runtime 'org.jsoup:jsoup:1.7.2'
-        runtime 'org.postgresql:postgresql:9.2-1003-jdbc4'
+        runtime 'org.postgresql:postgresql:9.4-1201-jdbc41'
+
+        // Cache entities
+        compile 'net.sf.ehcache:ehcache:2.8.5'
     }
 
     plugins {
-        build(':release:3.0.1', ':rest-client-builder:1.0.3') {
-            export = false
-        }
+        // Conteneur Tomcat
+        build ':tomcat:8.0.14.1'
+
         // Resources
         compile ":asset-pipeline:1.9.9"
 
+        build(':release:3.0.1', ':rest-client-builder:1.0.3') {
+            export = false
+        }
+
         // Bootstrap
-        runtime ':twitter-bootstrap:3.3.0'
+        compile ":twitter-bootstrap:3.3.4"
         runtime ":jquery:1.11.1"
         compile ":jquery-ui:1.10.4"
 
         // Others
         runtime ':hibernate4:4.3.5.2'
-        build ':tomcat:8.0.14.1'
 
         // Gestion utilisateurs
         compile ":spring-security-core:2.0-RC4"
@@ -61,6 +68,9 @@ grails.project.dependency.resolution = {
 
         // Gestion des taches recurrentes
         compile ":quartz:1.0.2"
+
+        // Statistiques et monitoring
+        compile ":grails-melody:1.55.0"
     }
 }
 
