@@ -72,7 +72,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 grails.plugin.springsecurity.ui.register.postRegisterUrl = '/'
 grails.plugin.springsecurity.ui.register.emailFrom = 'noreply@alertecoin.com'
 grails.plugin.springsecurity.ui.register.emailSubject = 'AlerteCoin - Valider votre email'
-grails.plugin.springsecurity.ui.register.defaultRoleNames = ['USER']
+grails.plugin.springsecurity.ui.register.defaultRoleNames = ['ROLE_USER']
 grails.plugin.springsecurity.ui.password.validationRegex = '^.*(?=.*[a-zA-Z\\d]).*$' // Au moins quelques caractères
 grails.plugin.springsecurity.ui.password.minLength = 4
 grails.plugin.springsecurity.ui.password.maxLength = 64
@@ -98,7 +98,7 @@ Merci de ne pas répondre à ce message automatique.
 '''
                     emailFrom = 'AlerteCoin <noreply@alertecoin.com>'
                     emailSubject = 'AlerteCoin - Création de compte'
-                    defaultRoleNames = ['USER']
+                    defaultRoleNames = ['ROLE_USER']
                     postRegisterUrl = null // use defaultTargetUrl if not set
                 }
 

@@ -1,8 +1,8 @@
 package com.pfabier.alertecoin
 
-import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.annotation.Secured
 
-@Secured("hasRole('ADMIN')")
+@Secured("hasRole('ROLE_ADMIN')")
 class UserController extends grails.plugin.springsecurity.ui.UserController {
 
     def index() {

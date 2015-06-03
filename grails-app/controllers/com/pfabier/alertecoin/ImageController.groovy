@@ -1,6 +1,6 @@
 package com.pfabier.alertecoin
 
-import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.annotation.Secured
 
 @Secured(['permitAll'])
 class ImageController {

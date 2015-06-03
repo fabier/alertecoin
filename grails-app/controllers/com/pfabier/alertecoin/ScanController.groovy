@@ -1,12 +1,12 @@
 package com.pfabier.alertecoin
 
 import grails.plugin.mail.MailService
-import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.annotation.Secured
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 
-@Secured("permitAll")
+@Secured(['permitAll'])
 class ScanController {
 
     MailService mailService

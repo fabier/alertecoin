@@ -2,12 +2,12 @@ package com.pfabier.alertecoin
 
 import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.annotation.Secured
 
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 
-@Secured("hasRole('USER')")
+@Secured("hasRole('ROLE_USER')")
 class AlertController {
 
     SpringSecurityService springSecurityService

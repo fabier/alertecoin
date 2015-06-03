@@ -1,11 +1,11 @@
 package com.pfabier.alertecoin
 
 import grails.plugin.springsecurity.SpringSecurityUtils
-import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.annotation.Secured
 import grails.plugin.springsecurity.authentication.dao.NullSaltSource
 import grails.plugin.springsecurity.ui.RegistrationCode
 
-@Secured("permitAll")
+@Secured(['permitAll'])
 class RegisterController extends grails.plugin.springsecurity.ui.RegisterController {
 
     // override default value from base class

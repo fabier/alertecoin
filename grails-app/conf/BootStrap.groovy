@@ -27,18 +27,18 @@ class BootStrap {
         log.info "Exiting Bootstrap"
     }
 
-    def bootstrapAll(){
+    def bootstrapAll() {
         // Check whether the test data already exists.
         if (Role.count() == 0) {
             log.info "Creating Roles"
 
-            Role admin = new Role(authority: "ADMIN")
+            Role admin = new Role(authority: "ROLE_ADMIN")
             admin.save()
-            log.info "Created Role : ADMIN"
+            log.info "Created Role : ROLE_ADMIN"
 
-            Role user = new Role(authority: "USER")
+            Role user = new Role(authority: "ROLE_USER")
             user.save()
-            log.info "Created Role : USER"
+            log.info "Created Role : ROLE_USER"
 
             log.info "Roles created !"
         }

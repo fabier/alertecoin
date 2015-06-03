@@ -3,7 +3,7 @@ package com.pfabier.alertecoin
 import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
-import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.access.annotation.Secured
 
 @Secured(['permitAll'])
 class CommonController {
