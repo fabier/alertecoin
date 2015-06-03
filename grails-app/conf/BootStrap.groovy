@@ -29,7 +29,7 @@ class BootStrap {
 
     def bootstrapAll(){
         // Check whether the test data already exists.
-        if (!Role.count()) {
+        if (Role.count() == 0) {
             log.info "Creating Roles"
 
             Role admin = new Role(authority: "ADMIN")
@@ -43,7 +43,7 @@ class BootStrap {
             log.info "Roles created !"
         }
 
-        if (!User.count()) {
+        if (User.count() == 0) {
             log.info "Creating Users"
 
             User admin = new User(username: "pierre.fabier@gmail.com", email: "pierre.fabier@gmail.com", password: "JTXt9v6eH2Ir0vS", enabled: true, accountExpired: false, accountLocked: false)
@@ -60,14 +60,6 @@ class BootStrap {
             log.info "Created User : ADMIN"
 
             log.info "Users created !"
-        }
-
-        if (!Alert.count()) {
-            log.info "Creating Classified Searches"
-
-            User admin = User.findByUsername("admin")
-
-            log.info "Classified Searches created !"
         }
     }
 
