@@ -2,7 +2,7 @@ dataSource {
     pooled = true
     dbCreate = "update"
     driverClassName = "org.postgresql.Driver"
-    url = "jdbc:postgresql://localhost:5432/trackr"
+    url = "jdbc:postgresql://localhost:5432/alertecoin"
     dialect = org.hibernate.dialect.PostgreSQLDialect
     username = "dev"
     password = "dev"
