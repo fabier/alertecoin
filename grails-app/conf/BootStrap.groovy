@@ -57,7 +57,7 @@ class BootStrap {
                 admin.addToAlerts(it)
             }
             admin.save()
-            log.info "Created User : ADMIN"
+            log.info "Created User : admin"
 
             log.info "Users created !"
         }

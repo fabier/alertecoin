@@ -86,12 +86,10 @@
 
 <footer>
     <div class="container">
-        <sec:ifAllGranted roles="ADMIN">
+        <sec:ifAllGranted roles="ROLE_ADMIN">
             <div class="pull-left">
             </div>
-        </sec:ifAllGranted>
-
-        <sec:ifAllGranted roles="ADMIN">
+            
             <div class="pull-right">
                 <g:link controller="admin" action="index" class="btn btn-info">
                     Admin
