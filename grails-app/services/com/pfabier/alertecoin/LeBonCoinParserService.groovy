@@ -36,49 +36,54 @@ class LeBonCoinParserService {
             classified.name = title
 
             Element dateDiv = element.select("div.date").first()
-            String dateDayText = dateDiv.child(0).text()
-            String dateTimeText = dateDiv.child(1).text()
-            Calendar calendar = new GregorianCalendar()
-            calendar.set(Calendar.SECOND, 0)
-            calendar.set(Calendar.MILLISECOND, 0)
-            if ("aujourd'hui".equalsIgnoreCase(dateDayText)) {
-                // Pas de changement de date, c'est aujourd'hui !
-            } else if ("hier".equalsIgnoreCase(dateDayText)) {
-                // On positionne à la date d'hier
-                calendar.add(Calendar.DAY_OF_YEAR, -1)
-            } else {
-                String[] dateDayTextArray = dateDayText.split("\\s")
-
-                // Jour du mois
-                int dayOfMonth = Integer.parseInt(dateDayTextArray[0])
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                // Mois
-                String monthText = dateDayTextArray[1].toLowerCase()
-                int currentMonth = calendar.get(Calendar.MONTH)
-                int classifiedMonth = 0
-                for (int month = 0; month < months.length; month++) {
-                    String monthStart = months[month]
-                    if (monthText.startsWith(monthStart)) {
-                        classifiedMonth = month
-                        break
-                    }
-                }
-                int deltaMonth = (currentMonth - classifiedMonth + 12) % 12
-                calendar.add(Calendar.MONTH, -deltaMonth)
-            }
-            try {
-                Date date = new SimpleDateFormat("hh:mm", Locale.FRENCH).parse(dateTimeText)
-                Calendar tempCalendar = Calendar.getInstance()
-                tempCalendar.setTime(date)
-                calendar.set(Calendar.HOUR_OF_DAY, tempCalendar.get(Calendar.HOUR_OF_DAY))
-                calendar.set(Calendar.MINUTE, tempCalendar.get(Calendar.MINUTE))
+            if (dateDiv != null) {
+                String dateDayText = dateDiv.child(0).text()
+                String dateTimeText = dateDiv.child(1).text()
+                Calendar calendar = new GregorianCalendar()
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
-                classified.date = calendar.getTime()
-            } catch (ParseException pe) {
-                // On n'a pas réussi à parser, tant pis l'horaire a un format inconnu
-                log.warn "Format horaire inconnu : ${dateTimeText}"
+                if ("aujourd'hui".equalsIgnoreCase(dateDayText)) {
+                    // Pas de changement de date, c'est aujourd'hui !
+                } else if ("hier".equalsIgnoreCase(dateDayText)) {
+                    // On positionne à la date d'hier
+                    calendar.add(Calendar.DAY_OF_YEAR, -1)
+                } else {
+                    String[] dateDayTextArray = dateDayText.split("\\s")
+
+                    // Jour du mois
+                    int dayOfMonth = Integer.parseInt(dateDayTextArray[0])
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                    // Mois
+                    String monthText = dateDayTextArray[1].toLowerCase()
+                    int currentMonth = calendar.get(Calendar.MONTH)
+                    int classifiedMonth = 0
+                    for (int month = 0; month < months.length; month++) {
+                        String monthStart = months[month]
+                        if (monthText.startsWith(monthStart)) {
+                            classifiedMonth = month
+                            break
+                        }
+                    }
+                    int deltaMonth = (currentMonth - classifiedMonth + 12) % 12
+                    calendar.add(Calendar.MONTH, -deltaMonth)
+                }
+                try {
+                    Date date = new SimpleDateFormat("hh:mm", Locale.FRENCH).parse(dateTimeText)
+                    Calendar tempCalendar = Calendar.getInstance()
+                    tempCalendar.setTime(date)
+                    calendar.set(Calendar.HOUR_OF_DAY, tempCalendar.get(Calendar.HOUR_OF_DAY))
+                    calendar.set(Calendar.MINUTE, tempCalendar.get(Calendar.MINUTE))
+                    calendar.set(Calendar.SECOND, 0)
+                    calendar.set(Calendar.MILLISECOND, 0)
+                    classified.date = calendar.getTime()
+                } catch (ParseException pe) {
+                    // On n'a pas réussi à parser, tant pis l'horaire a un format inconnu
+                    log.warn "Format horaire inconnu : ${dateTimeText}"
+                }
+            } else {
+                // On n'a pas réussi trouver la balise div qui a l'information de l'horaire...
+                log.warn "Impossible d'extraire un horaire pour une annonce : ${href}"
             }
 
             Element imageImg = element.select("div.image img").first()
