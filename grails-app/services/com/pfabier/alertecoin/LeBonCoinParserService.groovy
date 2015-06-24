@@ -28,15 +28,17 @@ class LeBonCoinParserService {
 
             String href = element.attr("href")
             href = checkDecodeURL(href)
-            classified.url = href
-
-            classified.externalId = getExternalIdFromHref(href)
-
-            String title = element.attr("title")
-            classified.name = title
-
             Element dateDiv = element.select("div.date").first()
-            if (dateDiv != null) {
+            Element imageImg = element.select("div.image img").first()
+            Element detailDiv = element.select("div.detail").first()
+
+            if (dateDiv != null && detailDiv != null) {
+                classified.url = href
+                classified.externalId = getExternalIdFromHref(href)
+
+                String title = element.attr("title")
+                classified.name = title
+
                 String dateDayText = dateDiv.child(0).text()
                 String dateTimeText = dateDiv.child(1).text()
                 Calendar calendar = new GregorianCalendar()
@@ -81,37 +83,35 @@ class LeBonCoinParserService {
                     // On n'a pas réussi à parser, tant pis l'horaire a un format inconnu
                     log.warn "Format horaire inconnu : ${dateTimeText}"
                 }
-            } else {
-                // On n'a pas réussi trouver la balise div qui a l'information de l'horaire...
-                log.warn "Impossible d'extraire un horaire pour une annonce : ${href}"
-            }
 
-            Element imageImg = element.select("div.image img").first()
-            if (imageImg) {
-                String imageUrl = imageImg.attr("src")
-                Image image = new Image()
-                image.url = imageUrl
-                image.data = getBytes(imageUrl)
-                image.save()
-                classified.addToImages(image)
-            }
-
-            Element detailDiv = element.select("div.detail").first()
-            String priceText = detailDiv.select("div.price").first()?.text()?.trim()
-            if (priceText) {
-                def priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "")
-                def pricesTextCleaned = priceTextCleaned.split("-")
-                try {
-                    if (pricesTextCleaned.length > 0) {
-                        classified.price = Integer.parseInt(pricesTextCleaned[0])
-                    }
-                } catch (NumberFormatException nfe) {
-                    // le parse est incorrect
-                    log.error "Erreur lors du parse du prix : ${priceText.encodeAsHTML()}"
+                if (imageImg) {
+                    String imageUrl = imageImg.attr("src")
+                    Image image = new Image()
+                    image.url = imageUrl
+                    image.data = getBytes(imageUrl)
+                    image.save()
+                    classified.addToImages(image)
                 }
-            }
 
-            classifieds.add(classified)
+                String priceText = detailDiv.select("div.price").first()?.text()?.trim()
+                if (priceText) {
+                    def priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "")
+                    def pricesTextCleaned = priceTextCleaned.split("-")
+                    try {
+                        if (pricesTextCleaned.length > 0) {
+                            classified.price = Integer.parseInt(pricesTextCleaned[0])
+                        }
+                    } catch (NumberFormatException nfe) {
+                        // le parse est incorrect
+                        log.error "Erreur lors du parse du prix : ${priceText.encodeAsHTML()}"
+                    }
+                }
+
+                classifieds.add(classified)
+            } else {
+                // Il ne doit pas s'agir d'une annonce, mais d'un autre type de div...
+                log.warn "Impossible de récupérer des informations d'annonce pour le lien : ${href}"
+            }
         }
 
         if (!classifieds.isEmpty()) {
@@ -171,4 +171,5 @@ class LeBonCoinParserService {
 
         return externalId
     }
+
 }
