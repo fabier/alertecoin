@@ -26,7 +26,7 @@ class AlertController {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
         if (alert == null || !alert.user.equals(user)) {
-            response.status = 404
+            response.sendError(404)
         } else {
             def classifieds = alert.classifieds.sort { a, b ->
                 -a.date.compareTo(b.date)
@@ -102,7 +102,7 @@ class AlertController {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
         if (alert == null || !alert.user.equals(user)) {
-            response.status = 404
+            response.sendError(404)
         } else {
             Alert.withTransaction {
                 user.removeFromAlerts(alert)
@@ -119,7 +119,7 @@ class AlertController {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
         if (alert == null || !alert.user.equals(user)) {
-            response.status = 404
+            response.sendError(404)
         } else {
             alertService.fillWithNewClassifiedsAndSendEmailIfNewFound(alert)
             redirect action: "show", id: id
@@ -130,7 +130,7 @@ class AlertController {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
         if (alert == null || !alert.user.equals(user)) {
-            response.status = 404
+            response.sendError(404)
         } else {
             def classifieds = alert.classifieds?.reverse()
             render view: "/email/email", model: [alert: alert, classifieds: classifieds, user: user]
@@ -141,7 +141,7 @@ class AlertController {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
         if (alert == null || !alert.user.equals(user)) {
-            response.status = 404
+            response.sendError(404)
         } else {
             render view: "edit", model: [alert: alert]
         }
@@ -151,7 +151,7 @@ class AlertController {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
         if (alert == null || !alert.user.equals(user)) {
-            response.status = 404
+            response.sendError(404)
         } else {
             render view: "confirmDelete", model: [alert: alert]
         }

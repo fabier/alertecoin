@@ -74,7 +74,7 @@ class ScanController {
                 render text: "scan : Locked, retry later..."
             }
         } else {
-            response.status = 404
+            response.sendError(404)
         }
     }
 }
