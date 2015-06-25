@@ -73,11 +73,12 @@ class BootStrap {
                 // On ne fait rien, on garde l'alerte
             } else {
                 // On supprime l'alerte et toutes les annonces associées
-                it.classifieds.each {
+                List<Classified> classifieds = alert.classifieds.toList()
+                classifieds.each {
                     alert.removeFromClassifieds(it)
                     it.delete()
                 }
-                it.delete()
+                alert.delete()
             }
         }
     }

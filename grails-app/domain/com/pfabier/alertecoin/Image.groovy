@@ -1,6 +1,6 @@
 package com.pfabier.alertecoin
 
-class Image {
+class Image extends BaseDomain {
 
     /**
      * Le contenu de l'image

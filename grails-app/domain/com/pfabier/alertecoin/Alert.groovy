@@ -1,11 +1,6 @@
 package com.pfabier.alertecoin
 
-class Alert {
-
-    /**
-     * Nom de la recherche
-     */
-    String name
+class Alert extends BaseEntity {
 
     /**
      * URL correspondant à la recherche
@@ -42,10 +37,6 @@ class Alert {
      */
     List<Classified> classifieds
 
-    Date dateCreated
-
-    Date lastUpdated
-
     static hasMany = [classifieds: Classified]
 
     static belongsTo = [user: User]
@@ -54,14 +45,13 @@ class Alert {
 
     static constraints = {
         name nullable: true
+        description nullable: true
         url nullable: true
         state nullable: true
         lastCheckedDate nullable: true
         mostRecentClassifiedDate nullable: true
         nextCheckDate nullable: true
         checkIntervalInMinutes nullable: true
-        lastUpdated nullable: true
-        dateCreated nullable: true
     }
 
     static mapping = {
