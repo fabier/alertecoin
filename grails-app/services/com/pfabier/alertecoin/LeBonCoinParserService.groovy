@@ -22,7 +22,7 @@ class LeBonCoinParserService {
 
         List<Classified> classifieds = new ArrayList<>()
 
-        def elements = document.select("div.list-lbc a")
+        def elements = document.select("div.list-lbc > a")
         for (Element element : elements.iterator()) {
             Classified classified = new Classified()
 
