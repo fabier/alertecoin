@@ -32,7 +32,7 @@
     --%>
 
     <g:layoutHead/>
-
+    <ga:trackPageview />
 </head>
 
 <body>

@@ -200,3 +200,10 @@ beans {
         shared = true
     }
 }
+
+
+// Google Analytics
+// AlerteCoin UA-64610210-1
+google.analytics.webPropertyID = "UA-64610210-1"
+
+

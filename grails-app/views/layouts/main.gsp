@@ -12,6 +12,7 @@
     <asset:javascript src="application.js"/>
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
+    <ga:trackPageview/>
 </head>
 
 <body>
@@ -89,7 +90,7 @@
         <sec:ifAllGranted roles="ROLE_ADMIN">
             <div class="pull-left">
             </div>
-            
+
             <div class="pull-right">
                 <g:link controller="admin" action="index" class="btn btn-info">
                     Admin
