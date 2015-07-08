@@ -12,7 +12,7 @@ import java.util.regex.Pattern
 class LeBonCoinParserService {
 
     private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F";
-    private static final String[] months = ["j", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
+    private static final String[] months = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
 
     def getClassifieds(Document document) {
         return getClassifieds(document, null)
