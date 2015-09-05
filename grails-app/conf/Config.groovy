@@ -106,9 +106,9 @@ Merci de ne pas répondre à ce message automatique.
                     emailBody = '''\
 Hi $user.username,<br/>
 <br/>
-Vous, ou quelqu'un se faisant passer pour vous, venez de faire une demande de mise à zéro de votre mot de passe sur <a href="http://www.alertecoin.com">AlerteCoin</a>.<br/>
+Vous ou quelqu'un se faisant passer pour vous vient de faire une demande de mise à zéro de votre mot de passe sur <a href="http://www.alertecoin.com">AlerteCoin</a>.<br/>
 <br/>
-SI vous n'avez pas fait cette demande, alors ignorez ce message et supprimez le, aucun changement de sera appliqué à votre compte.<br/>
+Si vous n'avez pas fait cette demande, alors ignorez ce message et supprimez le, aucun changement de sera appliqué à votre compte.<br/>
 <br/>
 Si vous êtes bien celui qui a fait la demande, alors <a href="$url">cliquez ici</a> pour remettre à zéro votre mot de passe.
 <br/>
