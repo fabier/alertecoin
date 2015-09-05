@@ -45,7 +45,8 @@ grails.project.dependency.resolution = {
         build ':tomcat:8.0.14.1'
 
         // Resources
-        compile ":asset-pipeline:1.9.9"
+        compile ":asset-pipeline:2.1.5"
+        compile ":less-asset-pipeline:2.0.8"
 
         build(':release:3.0.1', ':rest-client-builder:1.0.3') {
             export = false
