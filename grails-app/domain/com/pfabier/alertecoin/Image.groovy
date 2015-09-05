@@ -12,10 +12,6 @@ class Image extends BaseDomain {
      */
     String url
 
-    Date dateCreated
-
-    Date lastUpdated
-
     static constraints = {
         data nullable: true
         url nullable: true

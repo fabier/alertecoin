@@ -1,12 +1,8 @@
 package com.pfabier.alertecoin
 
-class Role {
+class Role extends BaseDomain {
 
     String authority
-
-    Date dateCreated
-
-    Date lastUpdated
 
     static mapping = {
         cache true

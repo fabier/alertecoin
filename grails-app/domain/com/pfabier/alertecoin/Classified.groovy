@@ -22,7 +22,17 @@ class Classified extends BaseEntity {
      */
     Date date
 
-    static hasMany = [images: Image]
+    /**
+     * Liste d'images pour cette annonce
+     */
+    List<Image> images
+
+    /**
+     * Liste de données additionnelles pour cette annonce
+     */
+    List<ClassifiedExtra> classifiedExtras
+
+    static hasMany = [images: Image, classifiedExtras: ClassifiedExtra]
 
     static constraints = {
         name nullable: true
