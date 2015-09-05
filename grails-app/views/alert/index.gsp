@@ -39,31 +39,27 @@
                     <table class="table table-condensed table-alerts">
                         <thead>
                         <tr>
-                            <th class="title">Titre</th>
-                            <th class="date" title="Date de dernière vérification">Date</th>
+                            <th class="col-md-12">Titre</th>
                         </tr>
                         </thead>
                         <tbody>
                         <g:each in="${alerts}" var="alert">
-                            <tr>
-                                <td class="title">
-                                    <g:link controller="alert" action="show" id="${alert.id}">
-                                        <div class="block">
-                                            ${alert.name}
-                                            <br/>
-                                            <small class="text-muted">
-                                                ${alert.url}
-                                            </small>
-                                        </div>
-                                    </g:link>
-                                </td>
-                                <td class="date">
-                                    <g:link controller="alert" action="show" id="${alert.id}">
-                                        <small>
+                            <tr class="clickable-row"
+                                data-href="${raw(createLink(controller: "alert", action: "show", id: alert.id))}">
+                                <td>
+                                    <div class="xlarge">
+                                        ${alert.name}
+                                    </div>
+
+                                    <div class="url">
+                                        <div class="xsmall text-muted">
+                                            Dernière vérification :
                                             <g:formatDate date="${alert.lastCheckedDate}"
-                                                          format="yyyy-MM-dd HH:mm"/>
-                                        </small>
-                                    </g:link>
+                                                          format="dd MMMM yyyy - HH:mm"/>
+                                            <br/>
+                                            ${alert.url}
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </g:each>

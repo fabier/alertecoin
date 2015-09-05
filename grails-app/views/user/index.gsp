@@ -18,9 +18,9 @@
         <table class="table table-condensed table-users">
             <thead>
             <tr>
-                <th class="id">Id</th>
-                <th class="name">Nom</th>
-                <th class="email">Email</th>
+                <th class="col-md-2">Id</th>
+                <th class="col-md-4">Nom</th>
+                <th class="col-md-6">Email</th>
             </tr>
             </thead>
             <tbody>

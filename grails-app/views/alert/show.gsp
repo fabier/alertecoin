@@ -22,7 +22,7 @@
                             <strong>Alerte : ${alert.name}</strong>
                         </h3>
                         <g:link url="${alert.url}" target="_blank">
-                            <small class="text-white">
+                            <small class="text-white url">
                                 ${alert.url}
                             </small>
                         </g:link>
@@ -33,6 +33,13 @@
                                 title="Refresh">
                             <span class="glyphicon glyphicon-repeat"></span>
                         </g:link>
+
+                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                            <g:link action="email" id="${alert.id}" class="btn btn-info"
+                                    title="Email" target="_blank">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                            </g:link>
+                        </sec:ifAllGranted>
 
                         <g:link action="edit" id="${alert.id}" class="btn btn-success"
                                 title="Editer">
@@ -52,48 +59,38 @@
                 <table class="table table-condensed table-classifieds">
                     <thead>
                     <tr>
-                        <th class="image">Image</th>
-                        <th class="title">Titre</th>
-                        <th class="price">Prix</th>
-                        <th class="date">Date</th>
+                        <th class="col-md-2">Image</th>
+                        <th class="col-md-10">Titre</th>
                     </tr>
                     </thead>
                     <tbody>
                     <g:each in="${classifieds}" var="classified">
-                        <tr>
+                        <tr class="clickable-row"
+                            data-href="${raw(createLink(url: classified.url, target: "_blank"))}">
                             <td class="text-center">
-                                <g:link url="${classified.url}" target="_blank">
-                                    <g:if test="${classified.images}">
-                                        <img src="${classified.images.first().url}" class="image-pola"/>
-                                    </g:if>
-                                    <g:else>
-                                        <img src="holder.js/120x90/text:Pas de visuel" class="image-pola"/>
-                                    </g:else>
-                                </g:link>
+                                <g:if test="${classified.images}">
+                                    <img src="${classified.images.first().url}" class="image-pola"/>
+                                </g:if>
+                                <g:else>
+                                    <img src="holder.js/120x90/text:Pas de visuel" class="image-pola"/>
+                                </g:else>
                             </td>
                             <td>
-                                <g:link url="${classified.url}" target="_blank">
+                                <p class="large">
+                                    <span class="text-muted xxsmall pull-right">
+                                        <g:formatDate date="${classified.date}" format="HH:mm - dd MMMM yyyy"/>
+                                        <br/>
+                                        <g:if test="${classified.price}">
+                                            ${classified.price} €
+                                        </g:if>
+                                    </span>
                                     ${classified.name}
-                                    <g:if test="${classified.description}">
-                                        <p class="text-muted">
+                                    <span class="text-muted xsmall">
+                                        <g:if test="${classified.description}">
                                             <small>${classified.description}</small>
-                                        </p>
-                                    </g:if>
-                                </g:link>
-                            </td>
-                            <td>
-                                <g:link url="${classified.url}" target="_blank">
-                                    ${classified.price} €
-                                </g:link>
-                            </td>
-                            <td>
-                                <g:link url="${classified.url}" target="_blank">
-                                    <g:formatDate date="${classified.date}" format="HH:mm"/>
-                                    <br/>
-                                    <small>
-                                        <g:formatDate date="${classified.date}" format="dd MMM yyyy"/>
-                                    </small>
-                                </g:link>
+                                        </g:if>
+                                    </span>
+                                </p>
                             </td>
                         </tr>
                     </g:each>
