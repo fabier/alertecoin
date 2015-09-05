@@ -9,8 +9,8 @@
     <link rel="icon" href="../../favicon.ico">
     <title>AlerteCoin - <g:layoutTitle default="Accueil"/></title>
     %{--<r:require module="application"/>--}%
-    <asset:javascript src="application.js"/>
-    <asset:stylesheet href="application.css"/>
+    <asset:stylesheet src="application"/>
+    <asset:javascript src="application"/>
     <g:layoutHead/>
     <ga:trackPageview/>
 </head>
