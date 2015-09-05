@@ -1,7 +1,9 @@
 package com.pfabier.alertecoin
 
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 import java.text.DateFormat
 import java.text.ParseException
@@ -11,11 +13,19 @@ import java.util.regex.Pattern
 
 class LeBonCoinParserService {
 
-    private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F";
+    private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F"
     private static final String[] months = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
 
-    def getClassifieds(Document document) {
-        return getClassifieds(document, null)
+    ImageService imageService
+
+    def getClassifieds(String url) {
+        getClassifieds(url, null)
+    }
+
+    def getClassifieds(String url, Date afterDate) {
+        log.info "getClassifieds : ${url}"
+        def document = Jsoup.parse(new URL(url), 10000)
+        return getClassifieds(document, afterDate)
     }
 
     def getClassifieds(Document document, Date afterDate) {
@@ -27,7 +37,6 @@ class LeBonCoinParserService {
             Classified classified = new Classified()
 
             String href = element.attr("href")
-            href = checkDecodeURL(href)
             Element dateDiv = element.select("div.date").first()
             Element imageImg = element.select("div.image img").first()
             Element detailDiv = element.select("div.detail").first()
@@ -86,11 +95,10 @@ class LeBonCoinParserService {
 
                 if (imageImg) {
                     String imageUrl = imageImg.attr("src")
-                    Image image = new Image()
-                    image.url = imageUrl
-                    image.data = getBytes(imageUrl)
-                    image.save()
-                    classified.addToImages(image)
+                    Image image = imageService.getImageByURL(imageUrl)
+                    if (image != null) {
+                        classified.addToImages(image)
+                    }
                 }
 
                 String priceText = detailDiv.select("div.price").first()?.text()?.trim()
@@ -128,31 +136,18 @@ class LeBonCoinParserService {
             } else {
                 log.info "...Retaining all classifieds (no afterDate specified)."
             }
+
+            // On va chercher les informations supplémentaires pour les annonces qui remonteront dans le mail.
+            if (!classifieds.isEmpty()) {
+                classifieds.each {
+                    getAndFillExtraInfoForClassified(it)
+                }
+            }
         } else {
             log.warn "Impossible to get classifieds from leboncoin !"
         }
 
         return classifieds
-    }
-
-    def checkDecodeURL(String url) {
-        def indexOfHttpSlashSlash = url.indexOf(PROXY_HTTP_INDICATOR)
-        if (indexOfHttpSlashSlash >= 0) {
-            // Url encodée derrière un proxy
-            url = url.substring(indexOfHttpSlashSlash)
-            def cutAtIndex = url.indexOf("&")
-            if (cutAtIndex >= 0) {
-                url = url.substring(0, cutAtIndex)
-            }
-            log.info "final url : " + url
-            return url
-        } else {
-            return url
-        }
-    }
-
-    def getBytes(String url) {
-        return new URL(url).getBytes()
     }
 
     def getExternalIdFromHref(String href) {
@@ -172,4 +167,61 @@ class LeBonCoinParserService {
         return externalId
     }
 
+    def getAndFillExtraInfoForClassified(Classified classified) {
+        log.info "getExtraInfo : ${classified.url}"
+
+        def document = Jsoup.parse(new URL(classified.url), 10000)
+
+        Elements lbcImages = document.select("div.lbcImages > meta[itemprop=image]")
+        for (Element lbcImage : lbcImages) {
+            String imageUrl = lbcImage.attr("content")
+            Image image = imageService.getImageByURL(imageUrl)
+            if (image != null && !classified.images.contains(image)) {
+                classified.addToImages(image)
+            }
+        }
+
+        Map<String, String> itemProps = getAllItemProps(document)
+        for (Map.Entry<String, String> entrySet : itemProps.entrySet()) {
+            String keyName = entrySet.getKey()
+            String value = entrySet.getValue()
+            Key key = Key.findOrSaveByName(keyName)
+            classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
+        }
+
+        Elements lbcParams = document.select(".lbcParams tr")
+        for (Element lbcParam : lbcParams) {
+            Elements children = lbcParam.children()
+            if (children.size() == 2) {
+                Element firstChild = children.get(0)
+                Element secondChild = children.get(1)
+                if (firstChild.nodeName().equals("th") && secondChild.nodeName().equals("td")) {
+                    String keyName = firstChild.text()
+                    String value = secondChild.text()
+                    Key key = Key.findOrSaveByName(keyName)
+                    classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
+                }
+            }
+        }
+    }
+
+    def static String getItemProp(Document document, String itemProp) {
+        String itemPropValue = null
+        Elements elements = document.select("[itemprop=" + itemProp + "]")
+        if (elements.size() >= 1) {
+            itemPropValue = elements.get(0).text()
+        }
+        return itemPropValue
+    }
+
+    def static Map<String, String> getAllItemProps(Document document) {
+        Map<String, String> itempProps = new HashMap<>()
+        Elements elements = document.select("[itemprop]")
+        for (Element element : elements) {
+            String itemPropKey = element.attr("itemprop")
+            String itemPropValue = element.text()
+            itempProps.put(itemPropKey, itemPropValue)
+        }
+        return itempProps
+    }
 }

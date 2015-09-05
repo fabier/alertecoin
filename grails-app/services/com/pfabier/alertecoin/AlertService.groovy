@@ -2,6 +2,7 @@ package com.pfabier.alertecoin
 
 import grails.gsp.PageRenderer
 import grails.plugin.mail.MailService
+import grails.util.Environment
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
@@ -28,8 +29,7 @@ class AlertService {
     }
 
     def fillWithCurrentClassifiedsOnPage(Alert alert) {
-        Document doc = Jsoup.connect(alert.url).get();
-        List<Classified> classifieds = leBonCoinParserService.getClassifieds(doc)
+        List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url)
         if (!classifieds?.isEmpty()) {
             // On supprime les anciennes annonces
             alert.classifieds?.toList()?.each {
@@ -40,12 +40,12 @@ class AlertService {
                 -a.date.compareTo(b.date)
             }
             classifieds.each {
-                it.save(failOnError: true)
+                it.save()
                 alert.addToClassifieds(it)
             }
             alert.lastCheckedDate = new Date() // Vérifié pour la dernière fois maintenant
             alert.mostRecentClassifiedDate = classifieds.first().date // Date de dernière annonce déposée
-            alert.save(failOnError: true)
+            alert.save()
         }
     }
 
@@ -61,8 +61,7 @@ class AlertService {
             log.info "nextCheckDate = ${alert.nextCheckDate.format("HH:mm")}"
             alert.save()
 
-            Document doc = Jsoup.connect(alert.url).get();
-            List<Classified> classifieds = leBonCoinParserService.getClassifieds(doc, alert.mostRecentClassifiedDate)
+            List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
 
             if (classifieds && !classifieds.isEmpty()) {
                 log.info "Found ${classifieds.size() ?: 0} classifieds for alert : [${alert.id}] ${alert.name}"
@@ -99,8 +98,7 @@ class AlertService {
     }
 
     def scanForNewClassifieds(Alert alert) {
-        Document doc = Jsoup.connect(alert.url).get();
-        return leBonCoinParserService.getClassifieds(doc, alert.mostRecentClassifiedDate)
+        return leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
     }
 
     def sendEmailWithNewClassified(Alert alert, List<Classified> classifieds) {
@@ -108,15 +106,18 @@ class AlertService {
 
         String body = groovyPageRenderer.render(view: "/email/email", model: [alert: alert, classifieds: classifieds, user: user])
 
-        mailService.sendMail {
-            async true
-            to user.email
-            subject "AlerteCoin - ${alert.name}"
-            html body
-            from "AlerteCoin <${grailsApplication.config.grails.mail.username}>"
+        if (Environment.current != Environment.DEVELOPMENT) {
+            mailService.sendMail {
+                async true
+                to user.email
+                subject "AlerteCoin - ${alert.name}"
+                html body
+                from "AlerteCoin <${grailsApplication.config.grails.mail.username}>"
+            }
+            log.info "Email sent to ${user.displayName ?: user.email}, containing ${classifieds.size()} new classifieds."
+        } else {
+            log.info "Email NOT sent to ${user.displayName ?: user.email}, BECAUSE IN DEVELOPMENT MODE (${classifieds.size()} new classifieds)."
         }
-
-        log.info "Email sent to ${user.displayName ?: user.email}, containing ${classifieds.size()} new classifieds."
     }
 
     def clearClassifieds(Alert alert) {
