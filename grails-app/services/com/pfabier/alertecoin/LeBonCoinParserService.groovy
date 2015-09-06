@@ -118,6 +118,10 @@ class LeBonCoinParserService {
 
                     // On a des modifications à enregistrer
                     classified.save()
+
+                    // On va chercher les informations supplémentaires pour cette annonce
+                    getAndFillExtraInfoForClassified(classified)
+                    classified.save()
                 } else {
                     // L'annonce a déjà été scannée, aucun intérêt de rescanner la même annonce...
                 }
@@ -146,14 +150,6 @@ class LeBonCoinParserService {
                 log.info "...Retaining ${classifieds.size()} classifieds after date : ${DateFormat.getDateTimeInstance().format(afterDate)}."
             } else {
                 log.info "...Retaining all classifieds (no afterDate specified)."
-            }
-
-            // On va chercher les informations supplémentaires pour les annonces qui remonteront dans le mail.
-            if (!classifieds.isEmpty()) {
-                classifieds.each {
-                    getAndFillExtraInfoForClassified(it)
-                    it.save()
-                }
             }
         } else {
             log.warn "Impossible to get classifieds from leboncoin !"
