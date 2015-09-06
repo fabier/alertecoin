@@ -65,7 +65,7 @@
                                          class="image-pola"/>
                                 </g:if>
                                 <g:else>
-                                    <img src="holder.js/120x90/text:Pas de visuel" class="image-pola"/>
+                                    <img src="holder.js/160x120/text:Pas de visuel" class="image-pola"/>
                                 </g:else>
                             </div>
 
@@ -88,7 +88,8 @@
                                     <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
                                 </div>
 
-                                <div class="text-muted xsmall">
+                                <div class="text-muted xsmall"
+                                     style="display:inline-block; height:72px;overflow: hidden;">
                                     ${raw(classified.description)}
                                 </div>
                             </div>
