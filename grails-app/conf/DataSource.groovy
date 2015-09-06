@@ -3,7 +3,7 @@ dataSource {
     dbCreate = "update"
     driverClassName = "org.postgresql.Driver"
     url = "jdbc:postgresql://localhost:5432/alertecoin"
-    dialect = org.hibernate.dialect.PostgreSQLDialect
+    dialect = org.hibernate.dialect.PostgreSQL9Dialect
     username = "dev"
     password = "dev"
 }
