@@ -86,10 +86,22 @@
                                     </span>
                                     ${classified.name}
                                     <span class="text-muted xsmall">
-                                        <g:if test="${classified.description}">
-                                            <small>${classified.description}</small>
+                                        <g:set var="description" value="${classified.classifiedExtras.find {
+                                            it.key.name == "description"
+                                        }}"/>
+                                        <g:if test="description">
+                                            <br/>
+                                            <small>${description.value}</small>
+                                            <br/>
                                         </g:if>
                                     </span>
+
+                                    <g:each in="${classified.classifiedExtras}" var="classifiedExtra">
+                                        <br/>
+                                        <span class="xxsmall">
+                                            ${classifiedExtra.key.name} ${classifiedExtra.value}
+                                        </span>
+                                    </g:each>
                                 </p>
                             </td>
                         </tr>
