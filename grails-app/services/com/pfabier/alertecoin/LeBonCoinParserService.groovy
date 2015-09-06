@@ -178,7 +178,6 @@ class LeBonCoinParserService {
             String keyName = entrySet.getKey()
             String value = entrySet.getValue()
             if (keyName != null && StringUtils.isNotBlank(value)) {
-                log.info("${keyName}=${value}")
                 Key key = Key.findOrSaveByName(keyName)
                 classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
                 classified.save()
@@ -195,7 +194,6 @@ class LeBonCoinParserService {
                     String keyName = firstChild.text()
                     String value = secondChild.text()
                     if (keyName != null && StringUtils.isNotBlank(value)) {
-                        log.info("${keyName}=${value}")
                         Key key = Key.findOrSaveByName(keyName)
                         classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
                         classified.save()
@@ -203,6 +201,9 @@ class LeBonCoinParserService {
                 }
             }
         }
+
+
+        classified.description = document.select(".content")?.first()?.html()
     }
 
     def static String getItemProp(Document document, String itemProp) {
