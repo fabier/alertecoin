@@ -21,16 +21,22 @@ footer {
   box-shadow: 0 -1px 4px #ccc;
 }
 
-tr.clickable-row {
+li.clickable-row, tr.clickable-row {
   cursor: pointer;
 }
 
-tr.clickable-row:not(.btn):hover {
+.ul-no-decoration {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li.clickable-row:not(.btn):hover, tr.clickable-row:not(.btn):hover {
   background-color: #428bca;
   color: #ffffff;
 }
 
-tr.clickable-row:hover .text-muted {
+li.clickable-row:hover .text-muted, tr.clickable-row:hover .text-muted {
   background-color: #428bca;
   color: #eee;
 }
@@ -217,4 +223,20 @@ table .url {
   color: #FFF;
   background-color: #aaa;
   border-color: #999;
+}
+
+.marginbottom20 {
+  margin-bottom: 20px;
+}
+
+.padding10 {
+  padding: 10px;
+}
+
+.paddingtopbottom10 {
+  padding: 10px 0px;
+}
+
+.bottombordergrey {
+  border-bottom: #eee 1px solid;
 }
