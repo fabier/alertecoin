@@ -25,7 +25,7 @@ tr.clickable-row {
   cursor: pointer;
 }
 
-tr.clickable-row:hover {
+tr.clickable-row:not(.btn):hover {
   background-color: #428bca;
   color: #ffffff;
 }
@@ -59,23 +59,12 @@ tr.clickable-row:hover .text-muted {
 
 .table-classifiedsearches td a {
   display: inline-block;
-  /*height: 60px;*/
-  /*max-height: 60px;*/
   width: 100%;
 }
 
 .table-users td a {
   display: inline-block;
   width: 100%;
-}
-
-.table-classifieds tr:hover td,
-.table-alerts tr:hover td,
-.table-users tr:hover td {
-  background-color: #428bca;
-  color: #ffffff;
-  text-decoration: none;
-  cursor: hand;
 }
 
 .table-alerts {
@@ -97,15 +86,6 @@ table .url {
 
 table .url {
   overflow: visible;
-}
-
-.table-classifieds tr:hover td a,
-.table-alerts tr:hover td a,
-.table-users tr:hover td a {
-  background-color: #428bca;
-  color: #ffffff;
-  text-decoration: none;
-  cursor: hand;
 }
 
 .table-classifieds img {
@@ -231,4 +211,10 @@ table .url {
 
 .xxlarge {
   font-size: 180%;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+  color: #FFF;
+  background-color: #aaa;
+  border-color: #999;
 }
