@@ -11,6 +11,4 @@ class CommonTagLib {
     def getYear = { attrs, body ->
         out << formatDate(date: new Date(), format: "yyyy")
     }
-
-
 }
