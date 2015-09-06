@@ -7,6 +7,11 @@
 
 $(function () {
     $(".clickable-row").click(function () {
-        window.document.location = $(this).data("href");
+        var href = $(this).data("href");
+        if (href !== undefined) {
+            window.document.location = $(this).data("href");
+        } else {
+            window.open($(this).data("href-blank"), '_blank');
+        }
     });
 });
