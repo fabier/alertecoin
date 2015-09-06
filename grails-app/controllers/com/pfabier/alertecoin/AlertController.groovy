@@ -132,7 +132,9 @@ class AlertController {
         if (alert == null || !alert.user.equals(user)) {
             response.sendError(404)
         } else {
-            def classifieds = alert.classifieds?.reverse()
+            def classifieds = alert.classifieds.sort { a, b ->
+                -a.date.compareTo(b.date)
+            }
             render view: "/email/email", model: [alert: alert, classifieds: classifieds, user: user]
         }
     }

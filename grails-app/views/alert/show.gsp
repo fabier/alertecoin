@@ -74,10 +74,11 @@
                                     <span class="xlarge">
                                         ${classified.name}
                                     </span>
-                                    &nbsp;
-                                    <span class="large label label-warning pull-right">
-                                        ${classified.price} €
-                                    </span>
+                                    <g:if test="${classified.price}">
+                                        <span class="large label label-warning pull-right">
+                                            ${classified.price} €
+                                        </span>
+                                    </g:if>
                                 </div>
 
                                 <div class="small">
@@ -88,7 +89,7 @@
                                 </div>
 
                                 <div class="text-muted xsmall">
-                                    <g:getExtra extras="${classified.classifiedExtras}" name="description"/>
+                                    ${raw(classified.description)}
                                 </div>
                             </div>
                         </li>
