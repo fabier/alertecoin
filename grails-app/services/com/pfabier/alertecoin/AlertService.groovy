@@ -22,15 +22,15 @@ class AlertService {
                 alert.url = url
             }
         } else {
-            alert = new Alert(name: name, url: url, user: user)
-            alert.save(failOnError: true)
+            alert = new Alert(name: name, url: url, user: user, creator: user, state: State.ACTIVE)
+            alert.save()
         }
         return alert
     }
 
     def fillWithCurrentClassifiedsOnPage(Alert alert) {
         List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url)
-        if (!classifieds?.isEmpty()) {
+        if (classifieds && !classifieds?.isEmpty()) {
             // On supprime les anciennes annonces
             alert.classifieds?.toList()?.each {
                 alert.removeFromClassifieds(it)
@@ -40,13 +40,12 @@ class AlertService {
                 -a.date.compareTo(b.date)
             }
             classifieds.each {
-                it.save()
                 alert.addToClassifieds(it)
             }
-            alert.lastCheckedDate = new Date() // Vérifié pour la dernière fois maintenant
-            alert.mostRecentClassifiedDate = classifieds.first().date // Date de dernière annonce déposée
-            alert.save()
         }
+        alert.lastCheckedDate = new Date() // Vérifié pour la dernière fois maintenant
+        alert.mostRecentClassifiedDate = classifieds.first().date // Date de dernière annonce déposée
+        alert.save()
     }
 
     def fillWithNewClassifiedsAndSendEmailIfNewFound(Alert alert) {
@@ -61,7 +60,7 @@ class AlertService {
             log.info "nextCheckDate = ${alert.nextCheckDate.format("HH:mm")}"
             alert.save()
 
-            List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
+            List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url)
 
             if (classifieds && !classifieds.isEmpty()) {
                 log.info "Found ${classifieds.size() ?: 0} classifieds for alert : [${alert.id}] ${alert.name}"
@@ -72,9 +71,9 @@ class AlertService {
                     -a.date.compareTo(b.date)
                 }
                 classifieds.each {
-                    it.save()
                     alert.addToClassifieds(it)
                 }
+
                 // Date de dernière annonce déposée et scannée
                 alert.mostRecentClassifiedDate = classifieds.first().date
 
@@ -83,6 +82,8 @@ class AlertService {
 
                 // ... et on envoie un mail
                 sendEmailWithNewClassified(alert, classifieds)
+
+                alert.save()
             } else {
                 log.info "No new classifieds for alert : [${alert.id}] ${alert.name}"
             }
@@ -124,13 +125,12 @@ class AlertService {
         // On supprime les anciennes annonces
         alert.classifieds?.toList()?.each {
             alert.removeFromClassifieds(it)
-            it.delete()
         }
     }
 
     def calculateNextCheckDate(Alert alert) {
         Calendar calendar = new GregorianCalendar()
-        calendar.add(Calendar.MINUTE, alert?.checkIntervalInMinutes ?: 5)
+        calendar.add(Calendar.MINUTE, alert?.checkIntervalInMinutes ?: 15)
         return calendar.getTime()
     }
 }

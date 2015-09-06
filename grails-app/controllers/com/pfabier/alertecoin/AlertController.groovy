@@ -52,11 +52,11 @@ class AlertController {
                 } else {
                     // On essaie de créer l'alerte
                     Alert alert = alertService.createOrUpdate(null, command.name, command.url, user)
-                    alertService.fillWithCurrentClassifiedsOnPage(alert)
                     log.info "command.checkIntervalInMinutes = ${command.checkIntervalInMinutes}"
                     alert.checkIntervalInMinutes = command.checkIntervalInMinutes
                     alert.nextCheckDate = alertService.calculateNextCheckDate(alert)
-                    alert.save(failOnError: true)
+
+                    alertService.fillWithCurrentClassifiedsOnPage(alert)
 
                     redirect controller: "alert", action: "show", id: alert.id
                 }
@@ -89,7 +89,7 @@ class AlertController {
                     alert.checkIntervalInMinutes = command.checkIntervalInMinutes
                     alert.nextCheckDate = alertService.calculateNextCheckDate(alert)
                 }
-                alert.save(flush: true)
+                alert.save()
 
                 redirect controller: "alert", action: "show", id: alert.id
             }

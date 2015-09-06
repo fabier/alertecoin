@@ -6,9 +6,11 @@ class ClassifiedExtra extends BaseDomain {
 
     String value
 
+    static belongsTo = Classified
+
     static constraints = {
         key nullable: false
-        value nullable: false
+        value nullable: true
     }
 
     static mapping = {

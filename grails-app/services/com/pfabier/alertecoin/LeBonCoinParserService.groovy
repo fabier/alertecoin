@@ -1,5 +1,6 @@
 package com.pfabier.alertecoin
 
+import org.apache.commons.lang.StringUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -17,6 +18,7 @@ class LeBonCoinParserService {
     private static final String[] months = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
 
     ImageService imageService
+    ClassifiedService classifiedService
 
     def getClassifieds(String url) {
         getClassifieds(url, null)
@@ -33,93 +35,102 @@ class LeBonCoinParserService {
         List<Classified> classifieds = new ArrayList<>()
 
         def elements = document.select("div.list-lbc > a")
-        for (Element element : elements.iterator()) {
-            Classified classified = new Classified()
-
+        for (Element element : elements) {
             String href = element.attr("href")
+
+            Classified classified = classifiedService.getClassifiedByURL(href)
+
             Element dateDiv = element.select("div.date").first()
             Element imageImg = element.select("div.image img").first()
             Element detailDiv = element.select("div.detail").first()
 
             if (dateDiv != null && detailDiv != null) {
-                classified.url = href
-                classified.externalId = getExternalIdFromHref(href)
+                if (classified.name == null) {
+                    String title = element.attr("title")
+                    classified.name = title
 
-                String title = element.attr("title")
-                classified.name = title
-
-                String dateDayText = dateDiv.child(0).text()
-                String dateTimeText = dateDiv.child(1).text()
-                Calendar calendar = new GregorianCalendar()
-                calendar.set(Calendar.SECOND, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-                if ("aujourd'hui".equalsIgnoreCase(dateDayText)) {
-                    // Pas de changement de date, c'est aujourd'hui !
-                } else if ("hier".equalsIgnoreCase(dateDayText)) {
-                    // On positionne à la date d'hier
-                    calendar.add(Calendar.DAY_OF_YEAR, -1)
-                } else {
-                    String[] dateDayTextArray = dateDayText.split("\\s")
-
-                    // Jour du mois
-                    int dayOfMonth = Integer.parseInt(dateDayTextArray[0])
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-                    // Mois
-                    String monthText = dateDayTextArray[1].toLowerCase()
-                    int currentMonth = calendar.get(Calendar.MONTH)
-                    int classifiedMonth = 0
-                    for (int month = 0; month < months.length; month++) {
-                        String monthStart = months[month]
-                        if (monthText.startsWith(monthStart)) {
-                            classifiedMonth = month
-                            break
-                        }
-                    }
-                    int deltaMonth = (currentMonth - classifiedMonth + 12) % 12
-                    calendar.add(Calendar.MONTH, -deltaMonth)
-                }
-                try {
-                    Date date = new SimpleDateFormat("hh:mm", Locale.FRENCH).parse(dateTimeText)
-                    Calendar tempCalendar = Calendar.getInstance()
-                    tempCalendar.setTime(date)
-                    calendar.set(Calendar.HOUR_OF_DAY, tempCalendar.get(Calendar.HOUR_OF_DAY))
-                    calendar.set(Calendar.MINUTE, tempCalendar.get(Calendar.MINUTE))
+                    String dateDayText = dateDiv.child(0).text()
+                    String dateTimeText = dateDiv.child(1).text()
+                    Calendar calendar = new GregorianCalendar()
                     calendar.set(Calendar.SECOND, 0)
                     calendar.set(Calendar.MILLISECOND, 0)
-                    classified.date = calendar.getTime()
-                } catch (ParseException pe) {
-                    // On n'a pas réussi à parser, tant pis l'horaire a un format inconnu
-                    log.warn "Format horaire inconnu : ${dateTimeText}"
-                }
+                    if ("aujourd'hui".equalsIgnoreCase(dateDayText)) {
+                        // Pas de changement de date, c'est aujourd'hui !
+                    } else if ("hier".equalsIgnoreCase(dateDayText)) {
+                        // On positionne à la date d'hier
+                        calendar.add(Calendar.DAY_OF_YEAR, -1)
+                    } else {
+                        String[] dateDayTextArray = dateDayText.split("\\s")
 
-                if (imageImg) {
-                    String imageUrl = imageImg.attr("src")
-                    Image image = imageService.getImageByURL(imageUrl)
-                    if (image != null) {
-                        classified.addToImages(image)
-                    }
-                }
+                        // Jour du mois
+                        int dayOfMonth = Integer.parseInt(dateDayTextArray[0])
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                String priceText = detailDiv.select("div.price").first()?.text()?.trim()
-                if (priceText) {
-                    def priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "")
-                    def pricesTextCleaned = priceTextCleaned.split("-")
-                    try {
-                        if (pricesTextCleaned.length > 0) {
-                            classified.price = Integer.parseInt(pricesTextCleaned[0])
+                        // Mois
+                        String monthText = dateDayTextArray[1].toLowerCase()
+                        int currentMonth = calendar.get(Calendar.MONTH)
+                        int classifiedMonth = 0
+                        for (int month = 0; month < months.length; month++) {
+                            String monthStart = months[month]
+                            if (monthText.startsWith(monthStart)) {
+                                classifiedMonth = month
+                                break
+                            }
                         }
-                    } catch (NumberFormatException nfe) {
-                        // le parse est incorrect
-                        log.error "Erreur lors du parse du prix : ${priceText.encodeAsHTML()}"
+                        int deltaMonth = (currentMonth - classifiedMonth + 12) % 12
+                        calendar.add(Calendar.MONTH, -deltaMonth)
                     }
-                }
+                    try {
+                        Date date = new SimpleDateFormat("hh:mm", Locale.FRENCH).parse(dateTimeText)
+                        Calendar tempCalendar = Calendar.getInstance()
+                        tempCalendar.setTime(date)
+                        calendar.set(Calendar.HOUR_OF_DAY, tempCalendar.get(Calendar.HOUR_OF_DAY))
+                        calendar.set(Calendar.MINUTE, tempCalendar.get(Calendar.MINUTE))
+                        calendar.set(Calendar.SECOND, 0)
+                        calendar.set(Calendar.MILLISECOND, 0)
+                        classified.date = calendar.getTime()
+                    } catch (ParseException pe) {
+                        // On n'a pas réussi à parser, tant pis l'horaire a un format inconnu
+                        log.warn "Format horaire inconnu : ${dateTimeText}"
+                    }
 
+                    if (imageImg) {
+                        String imageUrl = imageImg.attr("src")
+                        Image image = imageService.getImageByURL(imageUrl)
+                        if (image != null) {
+                            classified.addToImages(image)
+                        }
+                    }
+
+                    String priceText = detailDiv.select("div.price").first()?.text()?.trim()
+                    if (priceText) {
+                        def priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "")
+                        def pricesTextCleaned = priceTextCleaned.split("-")
+                        try {
+                            if (pricesTextCleaned.length > 0) {
+                                classified.price = Integer.parseInt(pricesTextCleaned[0])
+                            }
+                        } catch (NumberFormatException nfe) {
+                            // le parse est incorrect
+                            log.error "Erreur lors du parse du prix : ${priceText.encodeAsHTML()}"
+                        }
+                    }
+
+                    // On a des modifications à enregistrer
+                    classified.save()
+                } else {
+                    // L'annonce a déjà été scannée, aucun intérêt de rescanner la même annonce...
+                }
                 classifieds.add(classified)
             } else {
                 // Il ne doit pas s'agir d'une annonce, mais d'un autre type de div...
                 log.warn "Impossible de récupérer des informations d'annonce pour le lien : ${href}"
             }
+        }
+
+        // On ne garde pas les pointeurs vers null
+        classifieds.retainAll {
+            it != null
         }
 
         if (!classifieds.isEmpty()) {
@@ -141,6 +152,7 @@ class LeBonCoinParserService {
             if (!classifieds.isEmpty()) {
                 classifieds.each {
                     getAndFillExtraInfoForClassified(it)
+                    it.save()
                 }
             }
         } else {
@@ -148,23 +160,6 @@ class LeBonCoinParserService {
         }
 
         return classifieds
-    }
-
-    def getExternalIdFromHref(String href) {
-        Long externalId = null
-
-        Pattern pattern = Pattern.compile(".*/((\\d*)).htm.*", Pattern.CASE_INSENSITIVE)
-        Matcher matcher = pattern.matcher(href)
-        if (matcher.matches()) {
-            String externalIdAsString = matcher.group(1)
-            try {
-                externalId = Long.parseLong(externalIdAsString)
-            } catch (NumberFormatException nfe) {
-                log.error "Erreur lors du parse de l'identifiant externe : ${externalIdAsString}"
-            }
-        }
-
-        return externalId
     }
 
     def getAndFillExtraInfoForClassified(Classified classified) {
@@ -178,6 +173,7 @@ class LeBonCoinParserService {
             Image image = imageService.getImageByURL(imageUrl)
             if (image != null && !classified.images.contains(image)) {
                 classified.addToImages(image)
+                classified.save()
             }
         }
 
@@ -185,8 +181,12 @@ class LeBonCoinParserService {
         for (Map.Entry<String, String> entrySet : itemProps.entrySet()) {
             String keyName = entrySet.getKey()
             String value = entrySet.getValue()
-            Key key = Key.findOrSaveByName(keyName)
-            classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
+            if (keyName != null && StringUtils.isNotBlank(value)) {
+                log.info("${keyName}=${value}")
+                Key key = Key.findOrSaveByName(keyName)
+                classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
+                classified.save()
+            }
         }
 
         Elements lbcParams = document.select(".lbcParams tr")
@@ -198,8 +198,12 @@ class LeBonCoinParserService {
                 if (firstChild.nodeName().equals("th") && secondChild.nodeName().equals("td")) {
                     String keyName = firstChild.text()
                     String value = secondChild.text()
-                    Key key = Key.findOrSaveByName(keyName)
-                    classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
+                    if (keyName != null && StringUtils.isNotBlank(value)) {
+                        log.info("${keyName}=${value}")
+                        Key key = Key.findOrSaveByName(keyName)
+                        classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
+                        classified.save()
+                    }
                 }
             }
         }

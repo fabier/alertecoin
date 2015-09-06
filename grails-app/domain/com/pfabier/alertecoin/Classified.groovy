@@ -34,6 +34,8 @@ class Classified extends BaseEntity {
 
     static hasMany = [images: Image, classifiedExtras: ClassifiedExtra]
 
+    static belongsTo = Alert
+
     static constraints = {
         name nullable: true
         description nullable: true
