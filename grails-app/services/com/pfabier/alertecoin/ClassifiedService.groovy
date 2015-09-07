@@ -1,6 +1,11 @@
 package com.pfabier.alertecoin
 
 import grails.transaction.Transactional
+import org.apache.http.HttpResponse
+import org.apache.http.HttpStatus
+import org.apache.http.client.HttpClient
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.DefaultHttpClient
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -33,5 +38,13 @@ class ClassifiedService {
         }
 
         return externalId
+    }
+
+    boolean isClassifiedStillOnline(Classified classified) {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet response = new HttpGet(classified.url);
+        HttpResponse httpResp = client.execute(response);
+        int code = httpResp.getStatusLine().getStatusCode();
+        return code == HttpStatus.SC_OK
     }
 }
