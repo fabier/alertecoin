@@ -118,13 +118,17 @@ class LeBonCoinParserService {
 
                     // On a des modifications à enregistrer
                     classified.save()
-
-                    // On va chercher les informations supplémentaires pour cette annonce
-                    getAndFillExtraInfoForClassified(classified)
-                    classified.save()
                 } else {
                     // L'annonce a déjà été scannée, aucun intérêt de rescanner la même annonce...
                 }
+
+                // On va chercher les informations supplémentaires pour cette annonce si nécessaire
+                if (classified.description == null) {
+                    getAndFillExtraInfoForClassified(classified)
+                    classified.save()
+                }
+
+                // On ajoute cette annonce à la liste des annonces pour cette alerte
                 classifieds.add(classified)
             } else {
                 // Il ne doit pas s'agir d'une annonce, mais d'un autre type de div...
