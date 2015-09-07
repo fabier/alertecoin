@@ -12,6 +12,7 @@ class AlertService {
     PageRenderer groovyPageRenderer
     def grailsApplication
     MailService mailService
+    ClassifiedService classifiedService
 
     def createOrUpdate(Long id, String name, String url, User user) {
         Alert alert = null
@@ -60,7 +61,7 @@ class AlertService {
             log.info "nextCheckDate = ${alert.nextCheckDate.format("HH:mm")}"
             alert.save()
 
-            List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url)
+            List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
 
             if (classifieds && !classifieds.isEmpty()) {
                 log.info "Found ${classifieds.size() ?: 0} classifieds for alert : [${alert.id}] ${alert.name}"
@@ -86,6 +87,13 @@ class AlertService {
                 alert.save()
             } else {
                 log.info "No new classifieds for alert : [${alert.id}] ${alert.name}"
+                // On vérifie tout de même que les annonces sont à jour...
+                def classifiedsCopied = alert.classifieds?.toList()
+                for (Classified classified : classifiedsCopied) {
+                    if (!classifiedService.isClassifiedStillOnline(classified)) {
+                        alert.removeFromClassifieds(classified)
+                    }
+                }
             }
         } catch (Exception e) {
             log.error("Error in AlertService : fillWithNewClassifiedsAndSendEmailIfNewFound", e)
