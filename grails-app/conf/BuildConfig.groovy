@@ -38,6 +38,9 @@ grails.project.dependency.resolution = {
 
         // Cache entities
         compile 'net.sf.ehcache:ehcache:2.8.5'
+
+        // HTTP Client Apache
+        compile 'org.apache.httpcomponents:httpclient:4.5'
     }
 
     plugins {
