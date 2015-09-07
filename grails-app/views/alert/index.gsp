@@ -71,19 +71,41 @@
                                         </g:link>
                                     </div>
 
-                                    <div class="xlarge">
-                                        ${alert.name}
-                                    </div>
+                                    <p>
+                                        <span class="xlarge bold">
+                                            ${alert.name}
+                                        </span>
+                                    </p>
 
-                                    <div class="url">
-                                        <div class="xsmall text-muted">
+                                    <p>
+                                        <g:set var="classifiedCount" value="${alert.classifieds?.size()}"/>
+
+                                        <span class="label label-default">
+                                            <g:if test="${classifiedCount > 1}">
+                                                ${alert.classifieds?.size()} annonces
+                                            </g:if>
+                                            <g:elseif test="${classifiedCount == 1}">
+                                                ${alert.classifieds?.size()} annonce
+                                            </g:elseif>
+                                            <g:else>
+                                                Aucune annonce
+                                            </g:else>
+                                        </span>
+
+                                        &nbsp;
+
+                                        <span class="xsmall text-muted">
                                             Dernière vérification :
                                             <g:formatDate date="${alert.lastCheckedDate}"
-                                                          format="dd MMMM yyyy - HH:mm"/>
-                                            <br/>
+                                                          format="d MMM à HH:mm"/>
+                                        </span>
+                                    </p>
+
+                                    <p class="url">
+                                        <span class="xsmall text-muted">
                                             ${alert.url}
-                                        </div>
-                                    </div>
+                                        </span>
+                                    </p>
                                 </td>
                             </tr>
                         </g:each>

@@ -55,47 +55,56 @@
             </div>
 
             <div class="panel-body">
-                <ul class="ul-no-decoration">
-                    <g:each in="${classifieds}" var="classified">
-                        <li class="row clickable-row paddingtopbottom10 bottombordergrey"
-                            data-href-blank="${raw(createLink(url: classified.url))}">
-                            <div class="col-md-3 text-center ">
-                                <g:if test="${classified.images}">
-                                    <img src="${createLink(controller: "image", action: "get", id: classified.images.first().id)}"
-                                         class="image-pola"/>
-                                </g:if>
-                                <g:else>
-                                    <img src="holder.js/160x120/text:Pas de visuel" class="image-pola"/>
-                                </g:else>
-                            </div>
-
-                            <div class="col-md-9">
-                                <div>
-                                    <span class="xlarge">
-                                        ${classified.name}
-                                    </span>
-                                    <g:if test="${classified.price}">
-                                        <span class="large label label-warning pull-right">
-                                            ${classified.price} €
-                                        </span>
+                <g:if test="${classifieds?.isEmpty()}">
+                    <p>
+                        Vous n'avez pas d'annonce pour cette alerte.
+                        <br/>
+                        Rafraichissez cette alerte, ou revenez plus tard pour voir les annonces liées à cette alerte.
+                    </btrp>
+                </g:if>
+                <g:else>
+                    <ul class="ul-no-decoration">
+                        <g:each in="${classifieds}" var="classified">
+                            <li class="row clickable-row paddingtopbottom10 bottombordergrey"
+                                data-href-blank="${raw(createLink(url: classified.url))}">
+                                <div class="col-md-3 text-center ">
+                                    <g:if test="${classified.images}">
+                                        <img src="${createLink(controller: "image", action: "get", id: classified.images.first().id)}"
+                                             class="image-pola"/>
                                     </g:if>
+                                    <g:else>
+                                        <img src="holder.js/160x120/text:Pas de visuel" class="image-pola"/>
+                                    </g:else>
                                 </div>
 
-                                <div class="small">
-                                    <g:getExtra extras="${classified.classifiedExtras}" name="postalCode"/>
-                                    <g:getExtra extras="${classified.classifiedExtras}" name="addressLocality"/>
-                                    -
-                                    <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
-                                </div>
+                                <div class="col-md-9">
+                                    <div>
+                                        <span class="xlarge">
+                                            ${classified.name}
+                                        </span>
+                                        <g:if test="${classified.price}">
+                                            <span class="large label label-warning pull-right">
+                                                ${classified.price} €
+                                            </span>
+                                        </g:if>
+                                    </div>
 
-                                <div class="text-muted xsmall"
-                                     style="display:inline-block; height:72px;overflow: hidden;">
-                                    ${raw(classified.description)}
+                                    <div class="small">
+                                        <g:getExtra extras="${classified.classifiedExtras}" name="postalCode"/>
+                                        <g:getExtra extras="${classified.classifiedExtras}" name="addressLocality"/>
+                                        -
+                                        <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
+                                    </div>
+
+                                    <div class="text-muted xsmall"
+                                         style="display:inline-block; height:72px;overflow: hidden;">
+                                        ${raw(classified.description)}
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </g:each>
-                </ul>
+                            </li>
+                        </g:each>
+                    </ul>
+                </g:else>
             </div>
         </div>
     </div>
