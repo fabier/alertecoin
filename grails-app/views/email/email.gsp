@@ -1503,7 +1503,7 @@ table.two-col tr:hover td.second span {
                                                                 <br/>
                                                                 <br/>
 
-                                                                <span style="color: #c0c0c0;font-size: 80%; display:inline-block;width: 380px; height:49px;overflow: hidden;">
+                                                                <span style="color: #c0c0c0;font-size: 80%; display:inline-block;width: 380px; min-height:49px;max-height:49px;overflow: hidden;">
                                                                     ${raw(classified.description)}
                                                                 </span>
                                                             </p>
