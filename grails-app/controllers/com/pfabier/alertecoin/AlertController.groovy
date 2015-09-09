@@ -2,6 +2,7 @@ package com.pfabier.alertecoin
 
 import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
+import org.apache.commons.lang.StringUtils
 import org.springframework.security.access.annotation.Secured
 
 import java.util.concurrent.TimeUnit
@@ -74,19 +75,18 @@ class AlertController {
                 render view: "show", id: command.id
             } else {
                 Alert alert = Alert.get(command.id)
-                if (command.url?.equals(alert.url)) {
-                    // Pas de modification de l'url, on met juste à jour le titre
-                    alert.name = command.name
-                    alert.checkIntervalInMinutes = command.checkIntervalInMinutes
-                } else {
+                alert.name = command.name
+                log.info "command.checkIntervalInMinutes = ${command.checkIntervalInMinutes}"
+                alert.checkIntervalInMinutes = command.checkIntervalInMinutes
+                if (!StringUtils.equalsIgnoreCase(command.url, alert.url)) {
                     // Modification d'url, on reset cette recherche
+                    alert.url = command.url
                     alert.lastCheckedDate = null
                     alert.mostRecentClassifiedDate = null
                     alertService.clearClassifieds(alert)
-                    alert = alertService.createOrUpdate(command.id, command.name, command.url, user)
+                    
+                    // On recherche les annonces pour cette alerte
                     alertService.fillWithCurrentClassifiedsOnPage(alert)
-                    log.info "command.checkIntervalInMinutes = ${command.checkIntervalInMinutes}"
-                    alert.checkIntervalInMinutes = command.checkIntervalInMinutes
                     alert.nextCheckDate = alertService.calculateNextCheckDate(alert)
                 }
                 alert.save()
