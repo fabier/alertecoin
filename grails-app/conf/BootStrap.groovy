@@ -75,8 +75,13 @@ class BootStrap {
                 // On supprime l'alerte et toutes les annonces associées
                 List<Classified> classifieds = alert.classifieds.toList()
                 classifieds.each {
+                    Classified classified = it
                     alert.removeFromClassifieds(it)
-                    it.delete()
+                    classified.classifiedExtras?.toList()?.each {
+                        classified.removeFromClassifiedExtras(it)
+                        it.delete()
+                    }
+                    classified.delete()
                 }
                 alert.delete()
             }
