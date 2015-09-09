@@ -49,13 +49,7 @@ class AlertController {
                     render view: "create", model: [command: command]
                 } else {
                     // On essaie de créer l'alerte
-                    Alert alert = alertService.createOrUpdate(null, command.name, command.url, user)
-                    log.info "command.checkIntervalInMinutes = ${command.checkIntervalInMinutes}"
-                    alert.checkIntervalInMinutes = command.checkIntervalInMinutes
-                    alert.nextCheckDate = alertService.calculateNextCheckDate(alert)
-
-                    alertService.fillWithCurrentClassifiedsOnPage(alert)
-
+                    Alert alert = alertService.create(command.name, command.url, command.checkIntervalInMinutes, user)
                     redirect controller: "alert", action: "show", id: alert.id
                 }
             } else {
@@ -66,28 +60,12 @@ class AlertController {
     }
 
     def update(ClassifiedSearchUpdateCommand command) {
-        User user = springSecurityService.currentUser
         if (command) {
             if (command.hasErrors()) {
                 render view: "show", id: command.id
             } else {
                 Alert alert = Alert.get(command.id)
-                alert.name = command.name
-                log.info "command.checkIntervalInMinutes = ${command.checkIntervalInMinutes}"
-                alert.checkIntervalInMinutes = command.checkIntervalInMinutes
-                if (!StringUtils.equalsIgnoreCase(command.url, alert.url)) {
-                    // Modification d'url, on reset cette recherche
-                    alert.url = command.url
-                    alert.lastCheckedDate = null
-                    alert.mostRecentClassifiedDate = null
-                    alertService.clearClassifieds(alert)
-                    
-                    // On recherche les annonces pour cette alerte
-                    alertService.fillWithCurrentClassifiedsOnPage(alert)
-                    alert.nextCheckDate = alertService.calculateNextCheckDate(alert)
-                }
-                alert.save()
-
+                alertService.update(alert, command.name, command.url, command.checkIntervalInMinutes)
                 redirect controller: "alert", action: "show", id: alert.id
             }
         } else {

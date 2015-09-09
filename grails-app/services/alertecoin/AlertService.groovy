@@ -3,6 +3,7 @@ package alertecoin
 import grails.gsp.PageRenderer
 import grails.plugin.mail.MailService
 import grails.util.Environment
+import org.apache.commons.lang.StringUtils
 
 class AlertService {
 
@@ -12,16 +13,30 @@ class AlertService {
     MailService mailService
     ClassifiedService classifiedService
 
-    def createOrUpdate(Long id, String name, String url, User user) {
-        Alert alert = null
-        if (id != null) {
-            alert = Alert.get(id)
-            if (alert != null) {
-                alert.name = name
+    def create(String name, String url, Integer checkIntervalInMinutes, User user) {
+        Alert alert = new Alert(name: name, url: url, checkIntervalInMinutes: checkIntervalInMinutes, user: user, creator: user, state: State.ACTIVE)
+        alert.nextCheckDate = calculateNextCheckDate(alert)
+        fillWithCurrentClassifiedsOnPage(alert)
+        return alert.save()
+    }
+
+    def update(Alert alert, String name, String url, Integer checkIntervalInMinutes) {
+        if (alert != null) {
+            alert.name = name
+            alert.checkIntervalInMinutes = checkIntervalInMinutes
+            alert.save()
+
+            if (!StringUtils.equalsIgnoreCase(url, alert.url)) {
+                // Modification d'url, on reset cette recherche
                 alert.url = url
+                alert.lastCheckedDate = null
+                alert.mostRecentClassifiedDate = null
+                clearClassifieds(alert)
+
+                // On recherche les annonces pour cette alerte
+                fillWithCurrentClassifiedsOnPage(alert)
+                alert.nextCheckDate = calculateNextCheckDate(alert)
             }
-        } else {
-            alert = new Alert(name: name, url: url, user: user, creator: user, state: State.ACTIVE)
             alert.save()
         }
         return alert
