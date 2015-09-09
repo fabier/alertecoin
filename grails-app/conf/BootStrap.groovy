@@ -1,3 +1,9 @@
+import alertecoin.Alert
+import alertecoin.AlertService
+import alertecoin.Classified
+import alertecoin.Role
+import alertecoin.User
+import alertecoin.UserRole
 import com.pfabier.alertecoin.*
 import grails.util.Environment
 

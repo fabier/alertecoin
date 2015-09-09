@@ -52,9 +52,9 @@ environments {
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.pfabier.alertecoin.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.pfabier.alertecoin.UserRole'
-grails.plugin.springsecurity.authority.className = 'com.pfabier.alertecoin.Role'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'alertecoin.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'alertecoin.UserRole'
+grails.plugin.springsecurity.authority.className = 'alertecoin.Role'
 grails.plugin.springsecurity.securityConfigType = "Annotation"
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/'              : ['permitAll'],
@@ -184,7 +184,7 @@ grails.cache.config = {
     }
 
     domain {
-        name 'com.pfabier.alertecoin.Role'
+        name 'alertecoin.Role'
         eternal false
         overflowToDisk false
         path "${System.getProperty("user.home")}/.ehcache"

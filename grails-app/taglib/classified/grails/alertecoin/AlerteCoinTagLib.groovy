@@ -1,6 +1,6 @@
 package classified.grails.alertecoin
 
-import com.pfabier.alertecoin.ClassifiedExtra
+import alertecoin.ClassifiedExtra
 
 class AlerteCoinTagLib {
     static defaultEncodeAs = [taglib: 'html']
