@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat
 class LeBonCoinParserService {
 
     private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F"
-    private static final String[] months = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
+    private static final String[] MONTHS = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
 
     ImageService imageService
     ClassifiedService classifiedService
@@ -60,23 +60,26 @@ class LeBonCoinParserService {
                     } else {
                         String[] dateDayTextArray = dateDayText.split("\\s")
 
-                        // Jour du mois
-                        int dayOfMonth = Integer.parseInt(dateDayTextArray[0])
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
                         // Mois
                         String monthText = dateDayTextArray[1].toLowerCase()
                         int currentMonth = calendar.get(Calendar.MONTH)
                         int classifiedMonth = 0
-                        for (int month = 0; month < months.length; month++) {
-                            String monthStart = months[month]
+                        for (int month = 0; month < MONTHS.length; month++) {
+                            String monthStart = MONTHS[month]
                             if (monthText.startsWith(monthStart)) {
                                 classifiedMonth = month
                                 break
                             }
                         }
-                        int deltaMonth = (currentMonth - classifiedMonth + 12) % 12
-                        calendar.add(Calendar.MONTH, -deltaMonth)
+                        if (classifiedMonth > currentMonth) {
+                            // Changement d'année, (ex : l'annonce est datée de décembre, et on est en janvier)
+                            calendar.add(Calendar.YEAR, -1)
+                        }
+                        calendar.set(Calendar.MONTH, classifiedMonth)
+
+                        // Jour du mois
+                        int dayOfMonth = Integer.parseInt(dateDayTextArray[0])
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                     }
                     try {
                         Date date = new SimpleDateFormat("hh:mm", Locale.FRENCH).parse(dateTimeText)
