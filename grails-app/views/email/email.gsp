@@ -39,7 +39,7 @@
 
     .image {
         font-size: 0;
-        Margin-bottom: 24px;
+        margin-bottom: 24px;
     }
 
     .image img {
@@ -61,7 +61,7 @@
     ol,
     ul,
     li {
-        Margin-top: 0;
+        margin-top: 0;
     }
 
     ol,
@@ -75,9 +75,9 @@
     }
 
     blockquote {
-        Margin-top: 0;
-        Margin-right: 0;
-        Margin-bottom: 0;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
         padding-right: 0;
     }
 
@@ -125,13 +125,13 @@
     .one-col,
     .two-col,
     .three-col {
-        Margin-left: auto;
-        Margin-right: auto;
+        margin-left: auto;
+        margin-right: auto;
         width: 600px;
     }
 
     .two-col .image {
-        Margin-bottom: 23px;
+        margin-bottom: 23px;
     }
 
     .two-col .column-bottom {
@@ -144,7 +144,7 @@
     }
 
     .three-col .image {
-        Margin-bottom: 21px;
+        margin-bottom: 21px;
     }
 
     .three-col .column-bottom {
@@ -275,8 +275,8 @@
     .preheader,
     .header,
     .footer {
-        Margin-left: auto;
-        Margin-right: auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .preheader table {
@@ -318,7 +318,7 @@
     }
 
     .header .logo img {
-        Margin: 0 auto;
+        margin: 0 auto;
     }
 
     .wrapper a {
@@ -328,19 +328,19 @@
 
     .wrapper h1 {
         font-size: 36px;
-        Margin-bottom: 18px;
+        margin-bottom: 18px;
     }
 
     .wrapper h2 {
         font-size: 26px;
         line-height: 32px;
-        Margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 
     .wrapper h3 {
         font-size: 18px;
         line-height: 22px;
-        Margin-bottom: 16px;
+        margin-bottom: 16px;
     }
 
     .wrapper h1 a,
@@ -364,7 +364,7 @@
     blockquote {
         font-size: 14px;
         border-left: 2px solid #e9e9e9;
-        Margin-left: 0;
+        margin-left: 0;
         padding-left: 16px;
     }
 
@@ -392,7 +392,7 @@
     }
 
     .btn {
-        Margin-bottom: 24px;
+        margin-bottom: 24px;
         padding: 2px;
     }
 
@@ -415,7 +415,7 @@
     .one-col .column table:nth-last-child(2) td p:last-child,
     .one-col .column table:nth-last-child(2) td ol:last-child,
     .one-col .column table:nth-last-child(2) td ul:last-child {
-        Margin-bottom: 24px;
+        margin-bottom: 24px;
     }
 
     .one-col p,
@@ -427,7 +427,7 @@
 
     .one-col ol,
     .one-col ul {
-        Margin-left: 18px;
+        margin-left: 18px;
     }
 
     .two-col .column table:nth-last-child(2) td h1:last-child,
@@ -436,7 +436,7 @@
     .two-col .column table:nth-last-child(2) td p:last-child,
     .two-col .column table:nth-last-child(2) td ol:last-child,
     .two-col .column table:nth-last-child(2) td ul:last-child {
-        Margin-bottom: 23px;
+        margin-bottom: 23px;
     }
 
     .two-col .image-frame {
@@ -446,19 +446,19 @@
     .two-col h1 {
         font-size: 26px;
         line-height: 32px;
-        Margin-bottom: 16px;
+        margin-bottom: 16px;
     }
 
     .two-col h2 {
         font-size: 20px;
         line-height: 26px;
-        Margin-bottom: 18px;
+        margin-bottom: 18px;
     }
 
     .two-col h3 {
         font-size: 16px;
         line-height: 20px;
-        Margin-bottom: 14px;
+        margin-bottom: 14px;
     }
 
     .two-col p,
@@ -470,7 +470,7 @@
 
     .two-col ol,
     .two-col ul {
-        Margin-left: 16px;
+        margin-left: 16px;
     }
 
     .two-col li {
@@ -482,7 +482,7 @@
     }
 
     .two-col .btn {
-        Margin-bottom: 23px;
+        margin-bottom: 23px;
     }
 
     .two-col blockquote {
@@ -495,7 +495,7 @@
     .three-col .column table:nth-last-child(2) td p:last-child,
     .three-col .column table:nth-last-child(2) td ol:last-child,
     .three-col .column table:nth-last-child(2) td ul:last-child {
-        Margin-bottom: 21px;
+        margin-bottom: 21px;
     }
 
     .three-col .image-frame {
@@ -505,19 +505,19 @@
     .three-col h1 {
         font-size: 20px;
         line-height: 26px;
-        Margin-bottom: 12px;
+        margin-bottom: 12px;
     }
 
     .three-col h2 {
         font-size: 16px;
         line-height: 22px;
-        Margin-bottom: 14px;
+        margin-bottom: 14px;
     }
 
     .three-col h3 {
         font-size: 14px;
         line-height: 18px;
-        Margin-bottom: 10px;
+        margin-bottom: 10px;
     }
 
     .three-col p,
@@ -529,7 +529,7 @@
 
     .three-col ol,
     .three-col ul {
-        Margin-left: 14px;
+        margin-left: 14px;
     }
 
     .three-col li {
@@ -541,7 +541,7 @@
     }
 
     .three-col .btn {
-        Margin-bottom: 21px;
+        margin-bottom: 21px;
     }
 
     .three-col .btn a {
@@ -569,7 +569,7 @@
     }
 
     .feature .image {
-        Margin-bottom: 32px;
+        margin-bottom: 32px;
     }
 
     .feature.one-col .column table:nth-last-child(2) td h1:last-child,
@@ -578,7 +578,7 @@
     .feature.one-col .column table:nth-last-child(2) td p:last-child,
     .feature.one-col .column table:nth-last-child(2) td ol:last-child,
     .feature.one-col .column table:nth-last-child(2) td ul:last-child {
-        Margin-bottom: 32px;
+        margin-bottom: 32px;
     }
 
     .feature.one-col h1,
@@ -590,18 +590,18 @@
     .feature.one-col h1 {
         font-size: 52px;
         line-height: 58px;
-        Margin-bottom: 22px;
+        margin-bottom: 22px;
     }
 
     .feature.one-col h2 {
         font-size: 42px;
-        Margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 
     .feature.one-col h3 {
         font-size: 32px;
         line-height: 42px;
-        Margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 
     .feature.one-col p,
@@ -609,7 +609,7 @@
     .feature.one-col ul {
         font-size: 21px;
         line-height: 32px;
-        Margin-bottom: 32px;
+        margin-bottom: 32px;
     }
 
     .feature.one-col p a,
@@ -624,7 +624,7 @@
 
     .feature.one-col ol,
     .feature.one-col ul {
-        Margin-left: 40px;
+        margin-left: 40px;
         text-align: left;
     }
 
@@ -633,7 +633,7 @@
     }
 
     .feature.one-col .btn {
-        Margin-bottom: 32px;
+        margin-bottom: 32px;
         text-align: center;
     }
 
@@ -645,7 +645,7 @@
         border-bottom: 2px solid #e9e9e9;
         border-top: 2px solid #e9e9e9;
         border-left: none;
-        Margin-bottom: 32px;
+        margin-bottom: 32px;
         padding-bottom: 42px;
         padding-left: 0;
         padding-top: 42px;
@@ -682,13 +682,13 @@
     .feature.one-col blockquote ul {
         font-size: 42px;
         line-height: 48px;
-        Margin-bottom: 48px;
+        margin-bottom: 48px;
     }
 
     .feature.one-col blockquote p:last-child,
     .feature.one-col blockquote ol:last-child,
     .feature.one-col blockquote ul:last-child {
-        Margin-bottom: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     .footer {
@@ -787,7 +787,7 @@
         [class*=wrapper] .one-col .column:last-child table:nth-last-child(2) td ul:last-child,
         [class*=wrapper] .two-col .column:last-child table:nth-last-child(2) td ul:last-child,
         [class*=wrapper] .three-col .column:last-child table:nth-last-child(2) td ul:last-child {
-            Margin-bottom: 24px !important;
+            margin-bottom: 24px !important;
         }
 
         [class*=wrapper] .address,
@@ -809,19 +809,19 @@
         [class*=wrapper] h1 {
             font-size: 36px !important;
             line-height: 42px !important;
-            Margin-bottom: 18px !important;
+            margin-bottom: 18px !important;
         }
 
         [class*=wrapper] h2 {
             font-size: 26px !important;
             line-height: 32px !important;
-            Margin-bottom: 20px !important;
+            margin-bottom: 20px !important;
         }
 
         [class*=wrapper] h3 {
             font-size: 18px !important;
             line-height: 22px !important;
-            Margin-bottom: 16px !important;
+            margin-bottom: 16px !important;
         }
 
         [class*=wrapper] p,
@@ -829,12 +829,12 @@
         [class*=wrapper] ul {
             font-size: 16px !important;
             line-height: 24px !important;
-            Margin-bottom: 24px !important;
+            margin-bottom: 24px !important;
         }
 
         [class*=wrapper] ol,
         [class*=wrapper] ul {
-            Margin-left: 18px !important;
+            margin-left: 18px !important;
         }
 
         [class*=wrapper] li {
@@ -1165,7 +1165,7 @@ p, ol, ul {
 
 .one-col p, .one-col ol, .one-col ul {
     line-height: 25px;
-    Margin-bottom: 25px
+    margin-bottom: 25px
 }
 
 .feature p, .feature ol, .feature ul {
@@ -1179,7 +1179,7 @@ p, ol, ul {
 @media only screen and (max-width: 620px) {
     p, ol, ul {
         line-height: 25px !important;
-        Margin-bottom: 25px !important
+        margin-bottom: 25px !important
     }
 }
 
@@ -1324,7 +1324,7 @@ table.two-col tr:hover td.second span {
         <td style="padding: 0;vertical-align: top">
             <center>
                 <table class="preheader"
-                       style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto">
+                       style="border-collapse: collapse;border-spacing: 0;margin-left: auto;margin-right: auto">
                     <tbody>
                     <tr>
                         <td style="padding: 0;vertical-align: top">
@@ -1350,7 +1350,7 @@ table.two-col tr:hover td.second span {
                 </table>
 
                 <table class="border"
-                       style="border-collapse: collapse;border-spacing: 0;font-size: 1px;line-height: 1px;background-color: #e9e9e9;Margin-left: auto;Margin-right: auto"
+                       style="border-collapse: collapse;border-spacing: 0;font-size: 1px;line-height: 1px;background-color: #e9e9e9;margin-left: auto;margin-right: auto"
                        width="602">
                     <tbody>
                     <tr>
@@ -1359,14 +1359,14 @@ table.two-col tr:hover td.second span {
                     </tbody>
                 </table>
 
-                <table style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto">
+                <table style="border-collapse: collapse;border-spacing: 0;margin-left: auto;margin-right: auto">
                     <tbody>
                     <tr>
                         <td class="border"
                             style="padding: 0;vertical-align: top;font-size: 1px;line-height: 1px;background-color: #e9e9e9;width: 1px">&#8203;</td>
                         <td style="padding: 0;vertical-align: top">
                             <table class="one-col"
-                                   style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto;width: 600px;background-color: #ffffff;font-size: 14px">
+                                   style="border-collapse: collapse;border-spacing: 0;margin-left: auto;margin-right: auto;width: 600px;background-color: #ffffff;font-size: 14px">
                                 <tbody>
                                 <tr>
                                     <td class="column" style="padding: 0;vertical-align: top;text-align: left">
@@ -1381,14 +1381,14 @@ table.two-col tr:hover td.second span {
                                                 <td class="padded"
                                                     style="padding: 0;vertical-align: top;padding-left: 32px;padding-right: 32px">
 
-                                                    <h1 style="Margin-top: 0;color: #565656;font-weight: 700;font-size: 36px;Margin-bottom: 0px;font-family: Avenir,sans-serif;line-height: 42px">
+                                                    <h1 style="margin-top: 0;color: #565656;font-weight: 700;font-size: 36px;margin-bottom: 0px;font-family: Avenir,sans-serif;line-height: 42px">
                                                         <g:link controller="alert" action="show" id="${alert.id}"
                                                                 absolute="true"
                                                                 target="_blank"
                                                                 style="text-decoration: none;">AlerteCoin</g:link>
                                                     </h1>
 
-                                                    <p style="Margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;Margin-bottom: 0px">
+                                                    <p style="margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 0px">
                                                         <g:message code="alertecoin.hasFound"/>
                                                         :
                                                         ${classifieds.size()}
@@ -1401,7 +1401,7 @@ table.two-col tr:hover td.second span {
                                                         pour l'alerte «${alert.name}»
                                                     </p>
 
-                                                    <p style="Margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;Margin-bottom: 24px">
+                                                    <p style="margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 24px">
 
                                                     </p>
                                                 </td>
@@ -1422,7 +1422,7 @@ table.two-col tr:hover td.second span {
                 </table>
 
                 <table class="border"
-                       style="border-collapse: collapse;border-spacing: 0;font-size: 1px;line-height: 1px;background-color: #e9e9e9;Margin-left: auto;Margin-right: auto"
+                       style="border-collapse: collapse;border-spacing: 0;font-size: 1px;line-height: 1px;background-color: #e9e9e9;margin-left: auto;margin-right: auto"
                        width="602">
                     <tbody>
                     <tr class="border" style="font-size: 1px;line-height: 1px;background-color: #e9e9e9;height: 1px">
@@ -1435,16 +1435,21 @@ table.two-col tr:hover td.second span {
                     </tbody>
                 </table>
 
-                <table style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto">
+                <table style="border-collapse: collapse;border-spacing: 0;margin-left: auto;margin-right: auto">
                     <tbody>
                     <tr>
                         <td class="border"
                             style="padding: 0;vertical-align: top;font-size: 1px;line-height: 1px;background-color: #e9e9e9;width: 1px">&#8203;</td>
                         <td style="padding: 0;vertical-align: top">
                             <table class="two-col"
-                                   style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto;width: 600px;background-color: #ffffff;font-size: 14px">
+                                   style="border-collapse: collapse;border-spacing: 0;margin-left: auto;margin-right: auto;width: 600px;background-color: #ffffff;font-size: 14px">
                                 <tbody>
-                                <g:each in="${classifieds}" var="classified">
+                                <g:each in="${classifieds}" var="classified" status="classifiedIndex">
+                                    <g:if test="${classifiedIndex > 0}">
+                                        <tr style="margin:5px;height:1px;width:100%;background-color: #e9e9e9;">
+                                            <td colspan="2"></td>
+                                        </tr>
+                                    </g:if>
                                     <tr>
                                         <td class="column first"
                                             style="vertical-align: middle;text-align: left;width: 150px">
@@ -1478,33 +1483,37 @@ table.two-col tr:hover td.second span {
                                                         <g:link url="${classified.url}" target="_blank" absolute="true"
                                                                 style="text-decoration: none;">
 
-                                                            <p style="margin-bottom:0;color: #303060;font-family: Arial, Helvetica, sans-serif;font-size: 18px;line-height: 30px; text-decoration: none;font-weight:bold;">
-                                                                <span style="display:inline-block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;width:300px;max-width: 300px;">
+                                                            <p style="margin-bottom:5px;color: #303060;font-family: Arial, Helvetica, sans-serif;font-size: 18px;line-height: 24px; text-decoration: none;font-weight:bold;">
+                                                                <span style="display:inline-block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;width:370px;max-width: 370px;">
                                                                     ${classified.name}
                                                                 </span>
-
-                                                                <g:if test="${classified.price}">
-                                                                    <span style="color: #FFFFFF;padding:0px 10px; float:right;border-radius:3px; background-color:#f0ad4e;font-family: Arial, Helvetica, sans-serif;font-size: 16px;text-decoration: none;">
-                                                                        <strong>${classified.price} €</strong>
-                                                                    </span>
-                                                                </g:if>
                                                             </p>
 
-                                                            <p style="color: #404040;font-family: Georgia,serif;font-size: 14px;line-height: 12px;text-decoration: none;">
-                                                                <span style="color: #a0a0a0;font-size: 90%">
-                                                                    <g:getExtra extras="${classified.classifiedExtras}"
-                                                                                name="postalCode"/>
-                                                                    <g:getExtra extras="${classified.classifiedExtras}"
-                                                                                name="addressLocality"/>
+                                                            <p style="margin-bottom:8px;color: #303060;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 20px; text-decoration: none;">
+                                                                <g:if test="${classified.price}">
+                                                                    <span style="color: #FFFFFF;padding:5px 10px; border-radius:3px; background-color:#f0ad4e;text-decoration: none;font-weight:bold;">
+                                                                        <strong>${classified.price} €</strong>
+                                                                    </span>
+                                                                    &nbsp;
+                                                                </g:if>
+
+                                                                <span style="color: #a0a0a0;font-family: Georgia,serif;font-size: 14px;line-height: 14px;">
+                                                                    <g:getExtra
+                                                                            extras="${classified.classifiedExtras}"
+                                                                            name="postalCode"/>
+                                                                    <g:getExtra
+                                                                            extras="${classified.classifiedExtras}"
+                                                                            name="addressLocality"/>
                                                                     -
                                                                     <g:formatDate date="${classified.date}"
                                                                                   format="d MMM à HH:mm"/>
                                                                 </span>
-                                                                <br/>
-                                                                <br/>
+                                                            </p>
 
-                                                                <span style="color: #c0c0c0;font-size: 80%; display:inline-block;width: 380px; min-height:49px;max-height:49px;overflow: hidden;">
-                                                                    ${raw(classified.description)}
+                                                            <p style="color: #a0a0a0;font-family: Georgia,serif;font-size: 14px;line-height: 14px;text-decoration: none;">
+                                                                <span style="color: #a0a0a0;font-size: 80%; display:inline-block;width: 380px; min-height:56px;max-height:56px;overflow: hidden;text-overflow: ellipsis">
+                                                                    <g:removeDoubleBr
+                                                                            value="${classified.description}"/>
                                                                 </span>
                                                             </p>
                                                         </g:link>
@@ -1528,7 +1537,7 @@ table.two-col tr:hover td.second span {
                 </table>
 
                 <table class="border"
-                       style="border-collapse: collapse;border-spacing: 0;font-size: 1px;line-height: 1px;background-color: #e9e9e9;Margin-left: auto;Margin-right: auto"
+                       style="border-collapse: collapse;border-spacing: 0;font-size: 1px;line-height: 1px;background-color: #e9e9e9;margin-left: auto;margin-right: auto"
                        width="602">
                     <tbody>
                     <tr>
@@ -1539,7 +1548,7 @@ table.two-col tr:hover td.second span {
 
                 <div class="spacer" style="font-size: 1px;line-height: 32px;width: 100%">&nbsp;</div>
                 <table class="footer"
-                       style="border-collapse: collapse;border-spacing: 0;Margin-left: auto;Margin-right: auto;width: 602px">
+                       style="border-collapse: collapse;border-spacing: 0;margin-left: auto;margin-right: auto;width: 602px">
                     <tbody>
                     <tr>
                         <td class="border"

@@ -64,8 +64,8 @@
                 </g:if>
                 <g:else>
                     <ul class="ul-no-decoration">
-                        <g:each in="${classifieds}" var="classified">
-                            <li class="row clickable-row paddingtopbottom10 bottombordergrey"
+                        <g:each in="${classifieds}" var="classified" status="classifiedIndex">
+                            <li class="row clickable-row paddingtopbottom10 ${classifiedIndex > 0 ? "topbordergrey" : ""}"
                                 data-href-blank="${raw(createLink(url: classified.url))}">
                                 <div class="col-md-3 text-center ">
                                     <g:if test="${classified.images}">
@@ -79,26 +79,30 @@
 
                                 <div class="col-md-9">
                                     <div>
-                                        <span class="xlarge">
+                                        <p class="xlarge classified-title">
                                             ${classified.name}
-                                        </span>
-                                        <g:if test="${classified.price}">
-                                            <span class="large label label-warning pull-right">
-                                                ${classified.price} €
-                                            </span>
-                                        </g:if>
+                                        </p>
                                     </div>
 
-                                    <div class="small">
-                                        <g:getExtra extras="${classified.classifiedExtras}" name="postalCode"/>
-                                        <g:getExtra extras="${classified.classifiedExtras}" name="addressLocality"/>
-                                        -
-                                        <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
-                                    </div>
+                                    <p>
+                                        <g:if test="${classified.price}">
+                                            <span class="large label label-warning">
+                                                ${classified.price} €
+                                            </span>
+                                            &nbsp;
+                                        </g:if>
+                                        <span class="small text-muted">
+                                            <g:getExtra extras="${classified.classifiedExtras}" name="postalCode"/>
+                                            <g:getExtra extras="${classified.classifiedExtras}"
+                                                        name="addressLocality"/>
+                                            -
+                                            <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
+                                        </span>
+                                    </p>
 
                                     <div class="text-muted xsmall"
                                          style="display:inline-block; height:72px;overflow: hidden;">
-                                        ${raw(classified.description)}
+                                        <g:removeDoubleBr value="${classified.description}"/>
                                     </div>
                                 </div>
                             </li>

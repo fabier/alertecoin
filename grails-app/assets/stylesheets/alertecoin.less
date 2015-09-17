@@ -21,6 +21,10 @@ footer {
   box-shadow: 0 -1px 4px #ccc;
 }
 
+.classified-title {
+  color: #303060;
+}
+
 li.clickable-row, tr.clickable-row {
   cursor: pointer;
 }
@@ -31,9 +35,10 @@ li.clickable-row, tr.clickable-row {
   margin: 0;
 }
 
-li.clickable-row:not(.btn):hover, tr.clickable-row:not(.btn):hover {
-  background-color: #428bca;
-  color: #ffffff;
+li.clickable-row:hover, tr.clickable-row:not(.btn):hover,
+li.clickable-row:hover *:not(.btn):not(.label) {
+  background-color: #428bca !important;
+  color: #ffffff !important;
 }
 
 li.clickable-row:hover .text-muted, tr.clickable-row:hover .text-muted {
@@ -235,6 +240,10 @@ table .url {
 
 .paddingtopbottom10 {
   padding: 10px 0px;
+}
+
+.topbordergrey {
+  border-top: #eee 1px solid;
 }
 
 .bottombordergrey {
