@@ -11,4 +11,11 @@ class CommonTagLib {
     def getYear = { attrs, body ->
         out << formatDate(date: new Date(), format: "yyyy")
     }
+
+    def removeDoubleBr = { attrs, body ->
+        String value = attrs.value
+        if (value != null) {
+            out << raw(value.replaceAll("(\\s*<br.?/?>\\s*){2,}", "<br/>"))
+        }
+    }
 }
