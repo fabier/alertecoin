@@ -58,7 +58,12 @@ class AlertService {
             }
         }
         alert.lastCheckedDate = new Date() // Vérifié pour la dernière fois maintenant
-        alert.mostRecentClassifiedDate = classifieds.first().date // Date de dernière annonce déposée
+        if (!classifieds.isEmpty()) {
+            // La liste des classifieds contient un élément, on prend sa date comme référence
+            alert.mostRecentClassifiedDate = classifieds.first()?.date
+        } else {
+            // La liste des classifieds est vide, tant pis la mostRecentClassifiedDate ne change pas de valeur
+        }
         alert.save()
     }
 
@@ -89,7 +94,12 @@ class AlertService {
                 }
 
                 // Date de dernière annonce déposée et scannée
-                alert.mostRecentClassifiedDate = classifieds.first().date
+                if (!classifieds.isEmpty()) {
+                    // La liste des classifieds contient un élément, on prend sa date comme référence
+                    alert.mostRecentClassifiedDate = classifieds.first()?.date
+                } else {
+                    // La liste des classifieds est vide, tant pis la mostRecentClassifiedDate ne change pas de valeur
+                }
 
                 User user = alert.user
                 log.info "Trying to send ${classifieds.size()} new classifieds to ${user.displayName ?: user.email} for alert : [${alert.id}] ${alert.name}"
