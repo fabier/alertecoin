@@ -27,7 +27,7 @@ class ImageService {
         return image
     }
 
-    private static def getBytes(String url) {
+    private def getBytes(String url) {
         try {
             return new URL(url).getBytes()
         } catch (IOException e) {
