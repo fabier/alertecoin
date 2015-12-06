@@ -4,6 +4,8 @@ import grails.gsp.PageRenderer
 import grails.plugin.mail.MailService
 import grails.util.Environment
 import org.apache.commons.lang.StringUtils
+import org.apache.http.NameValuePair
+import org.apache.http.client.utils.URIBuilder
 
 class AlertService {
 
@@ -26,6 +28,8 @@ class AlertService {
             alert.checkIntervalInMinutes = checkIntervalInMinutes
             alert.save()
 
+            url = normalizeURL(url);
+
             if (!StringUtils.equalsIgnoreCase(url, alert.url)) {
                 // Modification d'url, on reset cette recherche
                 alert.url = url
@@ -40,6 +44,27 @@ class AlertService {
             alert.save()
         }
         return alert
+    }
+
+    /**
+     * Cette méthode prend en entrée une URL et la retravaille pour qu'elle fonctionne parfaitement avec le système.
+     * Par exemple, elle change la valeur de query param "sp" à 0 si elle est positionnée, pour éviter de ne pas avoir les toutes deernières offres à jour.
+     * @param url
+     * @return
+     */
+    private static String normalizeURL(String url) {
+        URIBuilder builder = new URIBuilder(url)
+        List<NameValuePair> nameValuePairs = builder.getQueryParams()
+        builder.removeQuery()
+        for (NameValuePair nameValuePair : nameValuePairs) {
+            String paramName = nameValuePair.getName()
+            if ("sp".equals(paramName)) {
+                builder.addParameter(paramName, "0")
+            } else {
+                builder.addParameter(paramName, nameValuePair.getValue())
+            }
+        }
+        return builder.toString()
     }
 
     def fillWithCurrentClassifiedsOnPage(Alert alert) {
