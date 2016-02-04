@@ -180,6 +180,7 @@ class LeBonCoinParserService {
         Elements lbcImages = document.select("div.lbcImages > meta[itemprop=image]")
         for (Element lbcImage : lbcImages) {
             String imageUrl = lbcImage.attr("content")
+            imageUrl = normalizeHref(imageUrl)
             Image image = imageService.getImageByURL(imageUrl)
             if (image != null && !classified.images.contains(image)) {
                 classified.addToImages(image)
