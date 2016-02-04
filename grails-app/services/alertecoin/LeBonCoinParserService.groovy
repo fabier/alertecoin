@@ -35,6 +35,7 @@ class LeBonCoinParserService {
         def elements = document.select("div.list-lbc > a")
         for (Element element : elements) {
             String href = element.attr("href")
+            href = normalizeHref(href)
 
             Classified classified = classifiedService.getClassifiedByURL(href)
 
@@ -161,6 +162,14 @@ class LeBonCoinParserService {
         }
 
         return classifieds
+    }
+
+    String normalizeHref(String href) {
+        if (href.startsWith("//")) {
+            return "http:${href}"
+        } else {
+            return href
+        }
     }
 
     def getAndFillExtraInfoForClassified(Classified classified) {
