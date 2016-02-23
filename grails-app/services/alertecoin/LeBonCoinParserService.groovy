@@ -98,6 +98,7 @@ class LeBonCoinParserService {
 
                     if (imageImg) {
                         String imageUrl = imageImg.attr("src")
+                        imageUrl = normalizeHref(imageUrl)
                         Image image = imageService.getImageByURL(imageUrl)
                         if (image != null) {
                             classified.addToImages(image)
