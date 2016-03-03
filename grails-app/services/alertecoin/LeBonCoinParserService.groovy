@@ -1,6 +1,5 @@
 package alertecoin
 
-import org.apache.commons.lang.StringUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -32,24 +31,29 @@ class LeBonCoinParserService {
 
         List<Classified> classifieds = new ArrayList<>()
 
-        def elements = document.select("div.list-lbc > a")
+        def elements = document.select("section.list > ul.tabsContent > li > a")
         for (Element element : elements) {
             String href = element.attr("href")
             href = normalizeHref(href)
 
             Classified classified = classifiedService.getClassifiedByURL(href)
 
-            Element dateDiv = element.select("div.date").first()
-            Element imageImg = element.select("div.image img").first()
-            Element detailDiv = element.select("div.detail").first()
+            Element dateDiv = element.select("section > aside > p.item_supp").first()
+            Element imageImg = element.select("div.item_image img").first()
+            Element detailDiv = element.select("section.item_infos").first()
 
             if (dateDiv != null && detailDiv != null) {
                 if (classified.name == null) {
-                    String title = element.attr("title")
+                    String title = detailDiv.select("h2.item_title").text().trim()
                     classified.name = title
 
-                    String dateDayText = dateDiv.child(0).text()
-                    String dateTimeText = dateDiv.child(1).text()
+                    // ---------------------------
+                    // Gestion du parse de la date
+                    // ---------------------------
+                    String dateText = dateDiv.text().trim()
+                    String dateTextArray = dateText.split(", ")
+                    String dateDayText = dateTextArray[0].trim()
+                    String dateTimeText = dateTextArray[1].trim()
                     Calendar calendar = new GregorianCalendar()
                     calendar.set(Calendar.SECOND, 0)
                     calendar.set(Calendar.MILLISECOND, 0)
@@ -96,6 +100,9 @@ class LeBonCoinParserService {
                         log.warn "Format horaire inconnu : ${dateTimeText}"
                     }
 
+                    // ---------------------------
+                    // Gestion du parse de l'image
+                    // ---------------------------
                     if (imageImg) {
                         String imageUrl = imageImg.attr("src")
                         imageUrl = normalizeHref(imageUrl)
@@ -105,14 +112,14 @@ class LeBonCoinParserService {
                         }
                     }
 
-                    String priceText = detailDiv.select("div.price").first()?.text()?.trim()
+                    // ---------------------------
+                    // Gestion du parse du prix
+                    // ---------------------------
+                    String priceText = detailDiv.select("h3.item_price").first()?.text()?.trim()
                     if (priceText) {
-                        def priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "")
-                        def pricesTextCleaned = priceTextCleaned.split("-")
+                        String priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "").trim()
                         try {
-                            if (pricesTextCleaned.length > 0) {
-                                classified.price = Integer.parseInt(pricesTextCleaned[0])
-                            }
+                            classified.price = Integer.parseInt(priceTextCleaned)
                         } catch (NumberFormatException nfe) {
                             // le parse est incorrect
                             log.error "Erreur lors du parse du prix : ${priceText.encodeAsHTML()}"
@@ -178,9 +185,11 @@ class LeBonCoinParserService {
 
         def document = Jsoup.parse(new URL(classified.url), 10000)
 
-        Elements lbcImages = document.select("div.lbcImages > meta[itemprop=image]")
+        // Récupérer les différentes images
+        Elements lbcImages = document.select("section.adview_main > section.carousel img")
         for (Element lbcImage : lbcImages) {
-            String imageUrl = lbcImage.attr("content")
+            // Pour avoir l'image en grand, il suffit de remplacer "thumbs" par "images" dans l'URL
+            String imageUrl = lbcImage.attr("src").replace("thumbs", "images")
             imageUrl = normalizeHref(imageUrl)
             Image image = imageService.getImageByURL(imageUrl)
             if (image != null && (classified.images == null || !classified.images.contains(image))) {
@@ -189,27 +198,30 @@ class LeBonCoinParserService {
             }
         }
 
-        Map<String, String> itemProps = getAllItemProps(document)
-        for (Map.Entry<String, String> entrySet : itemProps.entrySet()) {
-            String keyName = entrySet.getKey()
-            String value = entrySet.getValue()
-            if (keyName != null && StringUtils.isNotBlank(value)) {
-                Key key = Key.findOrSaveByName(keyName)
-                classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
-                classified.save()
-            }
-        }
+        // Récupérer les différents attributs
 
-        Elements lbcParams = document.select(".lbcParams tr")
-        for (Element lbcParam : lbcParams) {
-            Elements children = lbcParam.children()
-            if (children.size() == 2) {
-                Element firstChild = children.get(0)
-                Element secondChild = children.get(1)
-                if (firstChild.nodeName().equals("th") && secondChild.nodeName().equals("td")) {
-                    String keyName = firstChild.text()
-                    String value = secondChild.text()
-                    if (keyName != null && StringUtils.isNotBlank(value)) {
+        Elements properties = document.select("section.properties > div")
+        for (Element property : properties) {
+            Set<String> classes = property.classNames()
+            // On ne veut pas les informations "ceci est un professionnel"
+            if (!classes.contains("line_pro")) {
+                if (classes.contains("properties_description")) {
+                    // C'est la description du bien
+                    classified.description = property.select("p.value").html().trim()
+                } else {
+                    // C'est un autre type de propriété
+                    String keyName = property.select("span.property").text().replace(":", "").trim()
+                    Element valueElement = property.select("span.value")
+                    String value
+                    if (valueElement.children().isEmpty()) {
+                        value = valueElement.text().trim()
+                    } else {
+                        Elements aElements = valueElement.select("a")
+                        if (aElements.size() == 1) {
+                            value = aElements.first().text().trim()
+                        }
+                    }
+                    if (value != null) {
                         Key key = Key.findOrSaveByName(keyName)
                         classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
                         classified.save()
@@ -217,28 +229,5 @@ class LeBonCoinParserService {
                 }
             }
         }
-
-
-        classified.description = document.select(".content")?.first()?.html()
-    }
-
-    def static String getItemProp(Document document, String itemProp) {
-        String itemPropValue = null
-        Elements elements = document.select("[itemprop=" + itemProp + "]")
-        if (elements.size() >= 1) {
-            itemPropValue = elements.get(0).text()
-        }
-        return itemPropValue
-    }
-
-    def static Map<String, String> getAllItemProps(Document document) {
-        Map<String, String> itempProps = new HashMap<>()
-        Elements elements = document.select("[itemprop]")
-        for (Element element : elements) {
-            String itemPropKey = element.attr("itemprop")
-            String itemPropValue = element.text()
-            itempProps.put(itemPropKey, itemPropValue)
-        }
-        return itempProps
     }
 }
