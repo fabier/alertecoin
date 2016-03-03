@@ -11,9 +11,7 @@
 <p/>
 
 <div class="row">
-    <div class="col-md-2"></div>
-
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <g:render template="/templates/flashMessage"/>
 
@@ -41,19 +39,6 @@
                             </div>
                         </div>
 
-                    %{--<br/>--}%
-                    %{--<h4><g:message code='spring.security.ui.forgotPassword.description'/></h4>--}%
-
-                    %{--<table>--}%
-                    %{--<tr>--}%
-                    %{--<td><label for="username"><g:message--}%
-                    %{--code='spring.security.ui.forgotPassword.username'/></label>--}%
-                    %{--</td>--}%
-                    %{--<td><g:textField name="username" size="25"/></td>--}%
-                    %{--</tr>--}%
-                    %{--</table>--}%
-
-
                         <div class="form-group">
                             <div class="col-md-4">
                             </div>
@@ -64,25 +49,9 @@
                                 </button>
                             </div>
                         </div>
-                    %{--<s2ui:submitButton elementId='reset' form='forgotPasswordForm'--}%
-                    %{--messageCode='spring.security.ui.forgotPassword.submit'/>--}%
 
                     </g:else>
                 </g:form>
-            %{--<s2ui:form width='400' height='220' elementId='forgotPasswordFormContainer'--}%
-            %{--titleCode='spring.security.ui.forgotPassword.header' center='true'>--}%
-            %{----}%
-            %{--<g:form action='forgotPassword' name="forgotPasswordForm" autocomplete='off'>--}%
-            %{----}%
-            %{--<g:if test='${emailSent}'>--}%
-            %{--<br/>--}%
-            %{--<g:message code='spring.security.ui.forgotPassword.sent'/>--}%
-            %{--</g:if>--}%
-            %{----}%
-            %{----}%
-            %{----}%
-            %{--</g:form>--}%
-            %{--</s2ui:form>--}%
             </div>
         </div>
     </div>
