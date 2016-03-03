@@ -50,8 +50,10 @@ class LeBonCoinParserService {
                     // ---------------------------
                     // Gestion du parse de la date
                     // ---------------------------
-                    String dateText = dateDiv.text().trim()
-                    String dateTextArray = dateText.split(", ")
+
+                    // ownText permet de ne pas récupérer "Urgent" contenu dans un span
+                    String dateText = dateDiv.ownText().trim()
+                    String[] dateTextArray = dateText.split(", ")
                     String dateDayText = dateTextArray[0].trim()
                     String dateTimeText = dateTextArray[1].trim()
                     Calendar calendar = new GregorianCalendar()
@@ -118,8 +120,11 @@ class LeBonCoinParserService {
                     String priceText = detailDiv.select("h3.item_price").first()?.text()?.trim()
                     if (priceText) {
                         String priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "").trim()
+                        def pricesTextCleaned = priceTextCleaned.split("-")
                         try {
-                            classified.price = Integer.parseInt(priceTextCleaned)
+                            if (pricesTextCleaned.length > 0) {
+                                classified.price = Integer.parseInt(pricesTextCleaned[0])
+                            }
                         } catch (NumberFormatException nfe) {
                             // le parse est incorrect
                             log.error "Erreur lors du parse du prix : ${priceText.encodeAsHTML()}"
@@ -181,15 +186,19 @@ class LeBonCoinParserService {
     }
 
     def getAndFillExtraInfoForClassified(Classified classified) {
-        log.info "getExtraInfo : ${classified.url}"
+        log.info "getAndFillExtraInfoForClassified : ${classified.url}"
 
         def document = Jsoup.parse(new URL(classified.url), 10000)
 
         // Récupérer les différentes images
-        Elements lbcImages = document.select("section.adview_main > section.carousel img")
-        for (Element lbcImage : lbcImages) {
+        Elements imageElements = document.select("section.adview_main div.thumbnails img")
+        if (imageElements.isEmpty()) {
+            // Potentiellement, une seule image (pas de carousel)
+            imageElements = document.select("section.adview_main > div.item_image img")
+        }
+        for (Element imageElement : imageElements) {
             // Pour avoir l'image en grand, il suffit de remplacer "thumbs" par "images" dans l'URL
-            String imageUrl = lbcImage.attr("src").replace("thumbs", "images")
+            String imageUrl = imageElement.attr("src").replace("thumbs", "images")
             imageUrl = normalizeHref(imageUrl)
             Image image = imageService.getImageByURL(imageUrl)
             if (image != null && (classified.images == null || !classified.images.contains(image))) {
@@ -207,27 +216,30 @@ class LeBonCoinParserService {
             if (!classes.contains("line_pro")) {
                 if (classes.contains("properties_description")) {
                     // C'est la description du bien
-                    classified.description = property.select("p.value").html().trim()
+                    classified.description = property.select("p.value")?.first()?.html()?.trim()
                 } else {
                     // C'est un autre type de propriété
-                    String keyName = property.select("span.property").text().replace(":", "").trim()
-                    Element valueElement = property.select("span.value")
+                    String keyName = property.select("span.property")?.first()?.text()?.replace(":", "")?.trim()
+                    Element valueElement = property.select("span.value")?.first()
                     String value
-                    if (valueElement.children().isEmpty()) {
-                        value = valueElement.text().trim()
-                    } else {
-                        Elements aElements = valueElement.select("a")
-                        if (aElements.size() == 1) {
-                            value = aElements.first().text().trim()
+                    if (valueElement != null) {
+                        if (valueElement.children().isEmpty()) {
+                            value = valueElement.text().trim()
+                        } else {
+                            Elements aElements = valueElement.select("a")
+                            if (aElements.size() == 1) {
+                                value = aElements.first().text().trim()
+                            }
                         }
                     }
                     if (value != null) {
                         Key key = Key.findOrSaveByName(keyName)
                         classified.addToClassifiedExtras(ClassifiedExtra.findOrSaveByKeyAndValue(key, value))
-                        classified.save()
                     }
                 }
             }
         }
+
+        classified.save()
     }
 }
