@@ -61,7 +61,7 @@ grails.project.dependency.resolution = {
         compile ":jquery-ui:1.10.4"
 
         // Others
-        runtime ':hibernate4:4.3.5.2'
+        runtime ":hibernate:3.6.10.19"
 
         // Gestion utilisateurs
         compile ":spring-security-core:2.0-RC4"
