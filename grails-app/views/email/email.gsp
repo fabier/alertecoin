@@ -1500,10 +1500,7 @@ table.two-col tr:hover td.second span {
                                                                 <span style="color: #a0a0a0;font-family: Georgia,serif;font-size: 14px;line-height: 14px;">
                                                                     <g:getExtra
                                                                             extras="${classified.classifiedExtras}"
-                                                                            name="postalCode"/>
-                                                                    <g:getExtra
-                                                                            extras="${classified.classifiedExtras}"
-                                                                            name="addressLocality"/>
+                                                                            name="Ville"/>
                                                                     -
                                                                     <g:formatDate date="${classified.date}"
                                                                                   format="d MMM à HH:mm"/>

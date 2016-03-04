@@ -90,16 +90,14 @@
                                             &nbsp;
                                         </g:if>
                                         <span class="small text-muted">
-                                            <g:getExtra extras="${classified.classifiedExtras}" name="postalCode"/>
-                                            <g:getExtra extras="${classified.classifiedExtras}"
-                                                        name="addressLocality"/>
+                                            <g:getExtra extras="${classified.classifiedExtras}" name="Ville"/>
                                             -
                                             <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
                                         </span>
                                     </p>
 
                                     <div class="text-muted xsmall"
-                                         style="display:inline-block; height:72px;overflow: hidden;">
+                                         style="display:inline-block; height:68px;overflow: hidden;">
                                         <g:removeDoubleBr value="${classified.description}"/>
                                     </div>
                                 </div>
