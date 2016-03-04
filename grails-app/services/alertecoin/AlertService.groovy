@@ -173,6 +173,8 @@ class AlertService {
             }
             log.info "Email sent to ${user.displayName ?: user.email}, containing ${classifieds.size()} new classifieds."
         } else {
+            // Uncomment to see email content in logs
+            // log.info body
             log.info "Email NOT sent to ${user.displayName ?: user.email}, BECAUSE IN DEVELOPMENT MODE (${classifieds.size()} new classifieds)."
         }
     }
