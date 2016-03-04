@@ -17,8 +17,20 @@ class ScanController {
     def index() {
         def remoteAddr = request.getRemoteAddr()
         log.debug "remoteAddr : $remoteAddr"
+
+        Enumeration e = NetworkInterface.getNetworkInterfaces();
+        Set<String> localIPAddresses = new HashSet<>()
+        while (e.hasMoreElements()) {
+            NetworkInterface n = (NetworkInterface) e.nextElement();
+            Enumeration ee = n.getInetAddresses();
+            while (ee.hasMoreElements()) {
+                InetAddress i = (InetAddress) ee.nextElement();
+                localIPAddresses.add(i.getHostAddress());
+            }
+        }
+
         // On verrouille l'usage : doit être appelé par la machine hébergeant le service.
-        if ("127.0.0.1".equals(remoteAddr) || "0:0:0:0:0:0:0:1".equals(remoteAddr)) {
+        if ("127.0.0.1".equals(remoteAddr) || "0:0:0:0:0:0:0:1".equals(remoteAddr) || localIPAddresses.contains(remoteAddr)) {
             // Méthode synchronisée pour éviter que plusieurs thread entrent en concurrence
             if (reentrantLock.tryLock(1, TimeUnit.SECONDS)) {
                 try {
@@ -74,6 +86,7 @@ class ScanController {
                 render text: "scan : Locked, retry later..."
             }
         } else {
+            log.warn("Trying to access /rankingHistory/populateNext from IP : ${remoteAddr}")
             response.sendError(404)
         }
     }
