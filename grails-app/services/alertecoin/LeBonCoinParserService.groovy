@@ -22,7 +22,7 @@ class LeBonCoinParserService {
     }
 
     def getClassifieds(String url, Date afterDate) {
-        log.info "getClassifieds : ${url}"
+        log.info "GET ${url}"
         def document = Jsoup.parse(new URL(url), 10000)
         return getClassifieds(document, afterDate)
     }
@@ -186,8 +186,7 @@ class LeBonCoinParserService {
     }
 
     def getAndFillExtraInfoForClassified(Classified classified) {
-        log.info "getAndFillExtraInfoForClassified : ${classified.url}"
-
+        log.info "GET ${classified.url}"
         def document = Jsoup.parse(new URL(classified.url), 10000)
 
         // Récupérer les différentes images

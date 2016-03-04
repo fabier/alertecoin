@@ -29,6 +29,7 @@ class ImageService {
 
     private def getBytes(String url) {
         try {
+            log.info "GET ${url}"
             return new URL(url).getBytes()
         } catch (IOException e) {
             log.warn("Impossible to fetch image from URL : ${url}", e)
