@@ -8,6 +8,8 @@ class ClassifiedExtra extends BaseDomain {
 
     static belongsTo = Classified
 
+    static hasMany = [classifieds: Classified]
+
     static constraints = {
         key nullable: false
         value nullable: true
@@ -15,5 +17,6 @@ class ClassifiedExtra extends BaseDomain {
 
     static mapping = {
         value type: "text"
+        classifieds joinTable: "classified_classified_extra"
     }
 }

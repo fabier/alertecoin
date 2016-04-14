@@ -41,8 +41,6 @@ class Alert extends BaseEntity {
 
     static belongsTo = [user: User]
 
-    static transients = ['proxyUrl']
-
     static constraints = {
         name nullable: true
         description nullable: true
@@ -56,9 +54,6 @@ class Alert extends BaseEntity {
 
     static mapping = {
         url sqlType: "text"
-    }
-
-    String getProxyUrl() {
-        return url == null ? null : "https://proxy-de.hide.me/go.php?u=${URLEncoder.encode(url, "UTF-8")}&b=4"
+        state enumType: "string"
     }
 }

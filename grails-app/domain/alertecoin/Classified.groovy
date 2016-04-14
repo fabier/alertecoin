@@ -50,5 +50,6 @@ class Classified extends BaseEntity {
         name sqlType: "text"
         url sqlType: "text"
         description sqlType: "text"
+        classifiedExtras joinTable: "classified_classified_extra"
     }
 }

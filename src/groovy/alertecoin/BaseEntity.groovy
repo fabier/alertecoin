@@ -21,7 +21,6 @@ abstract class BaseEntity extends BaseDomain {
     }
 
     static mapping = {
-        name type: 'text'
         description type: 'text'
     }
 }

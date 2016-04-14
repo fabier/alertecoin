@@ -2,6 +2,7 @@ import alertecoin.TableNameSequencePostgreSQLDialect
 
 dataSource {
     pooled = true
+//    dbCreate = "validate"
     dbCreate = "update"
     driverClassName = "org.postgresql.Driver"
     url = "jdbc:postgresql://localhost:5432/alertecoin"

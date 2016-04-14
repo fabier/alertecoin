@@ -1,9 +1,4 @@
-import alertecoin.Alert
-import alertecoin.AlertService
-import alertecoin.Classified
-import alertecoin.Role
-import alertecoin.User
-import alertecoin.UserRole
+import alertecoin.*
 import com.pfabier.alertecoin.*
 import grails.util.Environment
 
@@ -79,15 +74,17 @@ class BootStrap {
                 // On ne fait rien, on garde l'alerte
             } else {
                 // On supprime l'alerte et toutes les annonces associées
+                // Les ".toList()" servent à faire des copies,
+                // pour éviter les checkForComodification errors
                 List<Classified> classifieds = alert.classifieds.toList()
                 classifieds.each {
                     Classified classified = it
                     alert.removeFromClassifieds(it)
                     classified.classifiedExtras?.toList()?.each {
                         classified.removeFromClassifiedExtras(it)
-                        classified.save(flush: true)
-                        it.delete()
+                        classified.save()
                     }
+                    alert.save()
                     classified.delete()
                 }
                 alert.delete()

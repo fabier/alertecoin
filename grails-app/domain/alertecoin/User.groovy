@@ -35,6 +35,10 @@ class User {
         table '`user`'
     }
 
+    static mappedBy = [
+            alerts: "user"
+    ]
+
     Set<Role> getAuthorities() {
         UserRole.findAllByUser(this).collect { it.role }
     }
