@@ -1,9 +1,11 @@
+import alertecoin.TableNameSequencePostgreSQLDialect
+
 dataSource {
     pooled = true
     dbCreate = "update"
     driverClassName = "org.postgresql.Driver"
     url = "jdbc:postgresql://localhost:5432/alertecoin"
-    dialect = org.hibernate.dialect.PostgreSQL9Dialect
+    dialect = TableNameSequencePostgreSQLDialect.class.getName()
     username = "dev"
     password = "dev"
 }
