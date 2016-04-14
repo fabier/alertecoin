@@ -2,7 +2,6 @@ package alertecoin
 
 import org.hibernate.dialect.Dialect
 import org.hibernate.dialect.PostgreSQL9Dialect
-import org.hibernate.dialect.PostgreSQLDialect
 import org.hibernate.id.PersistentIdentifierGenerator
 import org.hibernate.id.SequenceGenerator
 import org.hibernate.type.Type
