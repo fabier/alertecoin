@@ -34,7 +34,7 @@ class LeBonCoinParserService {
         def elements = document.select("section.list > ul.tabsContent > li > a")
         for (Element element : elements) {
             String href = element.attr("href")
-            href = normalizeHref(href)
+            href = normalizeHrefHTTPS(href)
 
             Classified classified = classifiedService.getClassifiedByURL(href)
 
@@ -107,7 +107,7 @@ class LeBonCoinParserService {
                     // ---------------------------
                     if (imageImg) {
                         String imageUrl = imageImg.attr("src")
-                        imageUrl = normalizeHref(imageUrl)
+                        imageUrl = normalizeHrefHTTPS(imageUrl)
                         Image image = imageService.getImageByURL(imageUrl)
                         if (image != null) {
                             classified.addToImages(image)
@@ -177,9 +177,13 @@ class LeBonCoinParserService {
         return classifieds
     }
 
-    String normalizeHref(String href) {
+    String normalizeHrefHTTPS(String href) {
+        return normalizeHref(href, "https")
+    }
+
+    String normalizeHref(String href, String prefix = "http") {
         if (href.startsWith("//")) {
-            return "http:${href}"
+            return "${prefix}:${href}"
         } else {
             return href
         }
@@ -198,7 +202,7 @@ class LeBonCoinParserService {
         for (Element imageElement : imageElements) {
             // Pour avoir l'image en grand, il suffit de remplacer "thumbs" par "images" dans l'URL
             String imageUrl = imageElement.attr("src").replace("thumbs", "images")
-            imageUrl = normalizeHref(imageUrl)
+            imageUrl = normalizeHrefHTTPS(imageUrl)
             Image image = imageService.getImageByURL(imageUrl)
             if (image != null && (classified.images == null || !classified.images.contains(image))) {
                 classified.addToImages(image)
