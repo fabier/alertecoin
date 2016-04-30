@@ -5,7 +5,8 @@ class LoggingFilters {
     def filters = {
         all(controller: '*', action: '*') {
             before = {
-                log.info "controller:$controllerName action:$actionName -> $params"
+                def remoteAddr = request.getRemoteAddr()
+                log.info "controller:$controllerName action:$actionName -> $params (from ${remoteAddr})"
             }
             after = { Map model ->
 
