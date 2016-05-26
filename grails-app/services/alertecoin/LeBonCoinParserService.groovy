@@ -31,7 +31,7 @@ class LeBonCoinParserService {
 
         List<Classified> classifieds = new ArrayList<>()
 
-        def elements = document.select("section.list > ul.tabsContent > li > a")
+        def elements = document.select("section.tabsContent > ul > li > a")
         for (Element element : elements) {
             String href = element.attr("href")
             href = normalizeHrefHTTPS(href)
