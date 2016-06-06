@@ -90,7 +90,7 @@
                                             &nbsp;
                                         </g:if>
                                         <span class="small text-muted">
-                                            <g:getExtra extras="${classified.classifiedExtras}" name="Ville"/>
+                                            ${classified.location}
                                             -
                                             <g:formatDate date="${classified.date}" format="d MMM à HH:mm"/>
                                         </span>

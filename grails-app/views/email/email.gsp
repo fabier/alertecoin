@@ -1498,8 +1498,7 @@ table.two-col tr:hover td.second span {
                                                                 </g:if>
 
                                                                 <span style="color: #a0a0a0;font-family: Georgia,serif;font-size: 14px;line-height: 14px;">
-                                                                    <g:getExtra extras="${classified.classifiedExtras}"
-                                                                                name="Ville"/>
+                                                                    ${classified.location}
                                                                     -
                                                                     <g:formatDate date="${classified.date}"
                                                                                   format="d MMM à HH:mm"/>

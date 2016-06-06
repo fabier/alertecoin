@@ -239,7 +239,11 @@ class LeBonCoinParserService {
                         Key key = Key.findOrSaveByName(keyName)
                         ClassifiedExtra classifiedExtra = ClassifiedExtra.findOrSaveByClassifiedAndKey(classified, key)
                         classifiedExtra.value = value
-                        classifiedExtra.save()
+                        classifiedExtra.save(flush: true)
+
+                        if ("Ville".equals(keyName)) {
+                            classified.location = value
+                        }
                     }
                 }
             }

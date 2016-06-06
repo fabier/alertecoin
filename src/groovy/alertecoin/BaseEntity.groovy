@@ -11,6 +11,11 @@ abstract class BaseEntity extends BaseDomain {
     // Description de l'entité
     String description
 
+    /**
+     * Location information
+     */
+    String location
+
     // Créateur de cette entrée en base
     User creator
 
@@ -18,6 +23,7 @@ abstract class BaseEntity extends BaseDomain {
         name nullable: true
         description nullable: true
         creator nullable: true
+        location nullable: true
     }
 
     static mapping = {
