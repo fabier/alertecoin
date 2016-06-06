@@ -24,10 +24,10 @@ CREATE TEMP TABLE classified_extra_to_delete
 INSERT INTO classified_extra_to_delete(id)
 SELECT CCE.classified_extra_id FROM classified_classified_extra CCE
 INNER JOIN tempClassified TC
-ON CCE.classified_classified_extras_id = TC.id;
+ON CCE.classified_id = TC.id;
 
 DELETE FROM classified_classified_extra USING tempClassified
-WHERE classified_classified_extra.classified_classified_extras_id = tempClassified.id;
+WHERE classified_classified_extra.classified_id = tempClassified.id;
 
 DELETE FROM classified_extra USING classified_extra_to_delete
 WHERE classified_extra.id = classified_extra_to_delete.id;
