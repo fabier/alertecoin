@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="col-md-4 alignRight">
-                        <g:link controller="alert" action="create" class="btn btn-success"
+                        <g:link controller="alert" action="new" class="btn btn-success"
                                 title="Créer une alerte">
                             <span class="glyphicon glyphicon-plus-sign"></span>
                             &nbsp;Créer une alerte

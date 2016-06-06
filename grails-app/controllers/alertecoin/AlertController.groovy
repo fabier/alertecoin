@@ -35,25 +35,32 @@ class AlertController {
         }
     }
 
+    def 'new'() {
+        User user = springSecurityService.currentUser
+        if (user.alerts?.size() >= 10) {
+            // On met quand même une limite sinon on n'a pas fini !
+            flash.error = "Impossible de créer une nouvelle alerte, vous avez déjà créé 10 alertes.<br/>Veuillez supprimer une alerte pour créer une nouvelle alerte"
+            redirect action: "index"
+        } else {
+            def command = new ClassifiedSearchCreateCommand(name: "", url: "")
+            render view: 'create', model: [command: command]
+        }
+    }
+
     def create(ClassifiedSearchCreateCommand command) {
         User user = springSecurityService.currentUser
         if (user.alerts?.size() >= 10) {
             // On met quand même une limite sinon on n'a pas fini !
-            flash.error = "Impossible de créer une nouvelle alerte, vous avez déjà créé 10 alertes.<br/>Veuillez supprimer une alerte pour créer cette nouvelle alerte"
-            redirect controller: "alert", action: "index"
+            flash.error = "Impossible de créer une nouvelle alerte, vous avez déjà créé 10 alertes.<br/>Veuillez supprimer une alerte pour créer une nouvelle alerte"
+            render view: "create", model: [command: command]
         } else {
-            if (command) {
-                if (command.hasErrors()) {
-                    flash.error = "Merci de vérifier votre saisie"
-                    render view: "create", model: [command: command]
-                } else {
-                    // On essaie de créer l'alerte
-                    Alert alert = alertService.create(command.name, command.url, command.checkIntervalInMinutes, user)
-                    redirect controller: "alert", action: "show", id: alert.id
-                }
+            if (command.hasErrors()) {
+                flash.error = "Merci de vérifier votre saisie"
+                render view: "create", model: [command: command]
             } else {
-                command = new ClassifiedSearchCreateCommand(name: "", url: "")
-                render view: 'create', model: [command: command]
+                // On essaie de créer l'alerte
+                Alert alert = alertService.create(command.name, command.url, command.checkIntervalInMinutes, user)
+                redirect controller: "alert", action: "show", id: alert.id
             }
         }
     }
