@@ -44,6 +44,7 @@ class AlertController {
         } else {
             if (command) {
                 if (command.hasErrors()) {
+                    flash.error = "Merci de vérifier votre saisie"
                     render view: "create", model: [command: command]
                 } else {
                     // On essaie de créer l'alerte
