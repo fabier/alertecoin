@@ -2,7 +2,6 @@ package alertecoin
 
 import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
-import org.apache.commons.lang.StringUtils
 import org.springframework.security.access.annotation.Secured
 
 @Secured("hasRole('ROLE_USER')")
@@ -40,8 +39,7 @@ class AlertController {
         User user = springSecurityService.currentUser
         if (user.alerts?.size() >= 10) {
             // On met quand même une limite sinon on n'a pas fini !
-            flash.message = "Impossible de créer une nouvelle alerte, vous avez déjà créé 10 alertes.<br/>Veuillez supprimer une alerte pour créer cette nouvelle alerte"
-            flash.level = "error"
+            flash.error = "Impossible de créer une nouvelle alerte, vous avez déjà créé 10 alertes.<br/>Veuillez supprimer une alerte pour créer cette nouvelle alerte"
             redirect controller: "alert", action: "index"
         } else {
             if (command) {
@@ -62,7 +60,8 @@ class AlertController {
     def update(ClassifiedSearchUpdateCommand command) {
         if (command) {
             if (command.hasErrors()) {
-                render view: "show", id: command.id
+                flash.error = "Merci de vérifier votre saisie"
+                redirect action: "edit", id: command.id
             } else {
                 Alert alert = Alert.get(command.id)
                 alertService.update(alert, command.name, command.url, command.checkIntervalInMinutes)

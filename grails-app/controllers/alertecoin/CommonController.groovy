@@ -33,8 +33,7 @@ class CommonController {
 
     def sendMail(SendMailCommand sendMailCommand) {
         if (sendMailCommand.hasErrors()) {
-            flash.message = "Merci de renseigner votre adresse email et votre message"
-            flash.level = "warning"
+            flash.warning = "Merci de renseigner votre adresse email et votre message"
             redirect action: "contact"
         } else {
             String messageWithBr = sendMailCommand.message.replaceAll("\\n", "<br/>")
@@ -55,7 +54,6 @@ class CommonController {
                 from "AlerteCoin <${grailsApplication.config.grails.mail.username}>"
             }
             flash.message = "Votre message a été envoyé, il sera traité dans les plus brefs délais."
-            flash.level = "info"
             redirect action: "contact"
         }
     }
