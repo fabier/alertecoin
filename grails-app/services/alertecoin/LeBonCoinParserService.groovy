@@ -132,7 +132,7 @@ class LeBonCoinParserService {
                     }
 
                     // On a des modifications à enregistrer
-                    classified.save(failOnError: true)
+                    classified.save()
                 } else {
                     // L'annonce a déjà été scannée, aucun intérêt de rescanner la même annonce...
                 }
@@ -140,7 +140,7 @@ class LeBonCoinParserService {
                 // On va chercher les informations supplémentaires pour cette annonce si nécessaire
                 if (classified.description == null) {
                     getAndFillExtraInfoForClassified(classified)
-                    classified.save(failOnError: true)
+                    classified.save()
                 }
 
                 // On ajoute cette annonce à la liste des annonces pour cette alerte
@@ -206,7 +206,7 @@ class LeBonCoinParserService {
             Image image = imageService.getImageByURL(imageUrl)
             if (image != null && (classified.images == null || !classified.images.contains(image))) {
                 classified.addToImages(image)
-                classified.save(failOnError: true)
+                classified.save()
             }
         }
 
@@ -239,12 +239,12 @@ class LeBonCoinParserService {
                         Key key = Key.findOrSaveByName(keyName)
                         ClassifiedExtra classifiedExtra = ClassifiedExtra.findOrSaveByClassifiedAndKey(classified, key)
                         classifiedExtra.value = value
-                        classifiedExtra.save(failOnError: true)
+                        classifiedExtra.save()
                     }
                 }
             }
         }
 
-        classified.save(failOnError: true)
+        classified.save()
     }
 }
