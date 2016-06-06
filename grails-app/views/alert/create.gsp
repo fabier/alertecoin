@@ -26,8 +26,8 @@
                         </label>
 
                         <div class="col-md-6">
-                            <input type="text" name="name" id="name" class="form-control"
-                                   placeholder="Titre de votre alerte"/>
+                            <g:textField type="text" name="name" class="form-control"
+                                         value="${command?.name}" placeholder="Titre de votre alerte"/>
                         </div>
                     </div>
 
@@ -37,8 +37,8 @@
                         </label>
 
                         <div class="col-md-10">
-                            <input type="text" name="url" id="url" class="form-control"
-                                   placeholder="Copier-coller ici l'adresse de la page"/>
+                            <g:textField name="url" type="text" class="form-control"
+                                         value="${command?.url}" placeholder="Copier-coller ici l'adresse de la page"/>
                         </div>
                     </div>
 
@@ -49,7 +49,7 @@
 
                         <div class="col-md-10">
                             <g:radioGroup name="checkIntervalInMinutes"
-                                          value="5"
+                                          value="${command?.checkIntervalInMinutes ?: 5}"
                                           id="checkIntervalInMinutes"
                                           labels="['Dès que possible', 'Toutes les heures', 'Une fois par jour']"
                                           values="['5', '60', '1440']">
