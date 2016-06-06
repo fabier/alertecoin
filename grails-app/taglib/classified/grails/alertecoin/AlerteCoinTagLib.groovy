@@ -8,7 +8,7 @@ class AlerteCoinTagLib {
 
     def getExtra = { attrs, body ->
         if (attrs.extras && attrs.name) {
-            List<ClassifiedExtra> classifiedExtras = attrs.extras
+            def classifiedExtras = attrs.extras
             String keyname = attrs.name
             ClassifiedExtra classifiedExtra = classifiedExtras?.find {
                 keyname.equals(it.key.name)

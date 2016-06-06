@@ -27,11 +27,6 @@ class Classified extends BaseEntity {
      */
     List<Image> images
 
-    /**
-     * Liste de données additionnelles pour cette annonce
-     */
-    List<ClassifiedExtra> classifiedExtras
-
     static hasMany = [images: Image, classifiedExtras: ClassifiedExtra]
 
     static belongsTo = Alert
@@ -50,6 +45,5 @@ class Classified extends BaseEntity {
         name sqlType: "text"
         url sqlType: "text"
         description sqlType: "text"
-        classifiedExtras joinTable: "classified_classified_extra"
     }
 }

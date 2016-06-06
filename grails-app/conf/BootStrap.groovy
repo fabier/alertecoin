@@ -81,8 +81,7 @@ class BootStrap {
                     Classified classified = it
                     alert.removeFromClassifieds(it)
                     classified.classifiedExtras?.toList()?.each {
-                        classified.removeFromClassifiedExtras(it)
-                        classified.save()
+                        it.delete()
                     }
                     alert.save()
                     classified.delete()
