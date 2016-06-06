@@ -19,7 +19,7 @@ class AlertService {
         Alert alert = new Alert(name: name, url: url, checkIntervalInMinutes: checkIntervalInMinutes, user: user, creator: user, state: State.ACTIVE)
         alert.nextCheckDate = calculateNextCheckDate(alert)
         fillWithCurrentClassifiedsOnPage(alert)
-        return alert.save()
+        return alert.save(flush: true, failOnError: true)
     }
 
     def update(Alert alert, String name, String url, Integer checkIntervalInMinutes) {
@@ -41,7 +41,7 @@ class AlertService {
                 fillWithCurrentClassifiedsOnPage(alert)
                 alert.nextCheckDate = calculateNextCheckDate(alert)
             }
-            alert.save()
+            alert.save(flush: true, failOnError: true)
         }
         return alert
     }
