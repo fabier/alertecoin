@@ -19,14 +19,13 @@ class AlertService {
         Alert alert = new Alert(name: name, url: url, checkIntervalInMinutes: checkIntervalInMinutes, user: user, creator: user, state: State.ACTIVE)
         alert.nextCheckDate = calculateNextCheckDate(alert)
         fillWithCurrentClassifiedsOnPage(alert)
-        return alert.save(flush: true, failOnError: true)
+        return alert.save(flush: true)
     }
 
     def update(Alert alert, String name, String url, Integer checkIntervalInMinutes) {
         if (alert != null) {
             alert.name = name
             alert.checkIntervalInMinutes = checkIntervalInMinutes
-            alert.save()
 
             url = normalizeURL(url);
 
@@ -89,7 +88,7 @@ class AlertService {
         } else {
             // La liste des classifieds est vide, tant pis la mostRecentClassifiedDate ne change pas de valeur
         }
-        alert.save()
+        alert.save(flush: true)
     }
 
     def fillWithNewClassifiedsAndSendEmailIfNewFound(Alert alert) {
@@ -101,8 +100,6 @@ class AlertService {
                 alert.checkIntervalInMinutes = 5
             }
             alert.nextCheckDate = calculateNextCheckDate(alert)
-            log.info "nextCheckDate = ${alert.nextCheckDate.format("HH:mm")}"
-            alert.save()
 
             List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
 
@@ -127,12 +124,10 @@ class AlertService {
                 }
 
                 User user = alert.user
-                log.info "Trying to send ${classifieds.size()} new classifieds to ${user.displayName ?: user.email} for alert : [${alert.id}] ${alert.name}"
+                log.info "Sending ${classifieds.size()} new classifieds to ${user.displayName ?: user.email} for alert : [${alert.id}] ${alert.name}"
 
                 // ... et on envoie un mail
                 sendEmailWithNewClassified(alert, classifieds)
-
-                alert.save()
             } else {
                 log.info "No new classifieds for alert : [${alert.id}] ${alert.name}"
                 // On vérifie tout de même que les annonces sont à jour...
@@ -149,8 +144,9 @@ class AlertService {
             Calendar calendar = new GregorianCalendar()
             calendar.add(Calendar.MINUTE, 5)
             alert.nextCheckDate = calendar.getTime()
-            alert.save()
         } finally {
+            // Sauvegarde de l'état en base
+            alert.save(flush: true)
         }
     }
 

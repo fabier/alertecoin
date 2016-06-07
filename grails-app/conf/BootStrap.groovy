@@ -81,12 +81,12 @@ class BootStrap {
                     Classified classified = it
                     alert.removeFromClassifieds(it)
                     classified.classifiedExtras?.toList()?.each {
-                        it.delete()
+                        it.delete(flush: true)
                     }
-                    alert.save()
+                    alert.save(flush: true)
                     classified.delete()
                 }
-                alert.delete()
+                alert.delete(flush: true)
             }
         }
     }
