@@ -65,30 +65,6 @@ class BootStrap {
     }
 
     def bootstrapDevelopment() {
-        // On supprime toutes les alertes en Dev, pour ne pas envoyer des mails à tout le monde
-        // On ne garde que les alertes pour pierre.fabier@gmail.com
-        Alert.all.each {
-
-            Alert alert = it
-            if (alert.user.email.equals("pierre.fabier@gmail.com")) {
-                // On ne fait rien, on garde l'alerte
-            } else {
-                // On supprime l'alerte et toutes les annonces associées
-                // Les ".toList()" servent à faire des copies,
-                // pour éviter les checkForComodification errors
-                List<Classified> classifieds = alert.classifieds.toList()
-                classifieds.each {
-                    Classified classified = it
-                    alert.removeFromClassifieds(it)
-                    classified.classifiedExtras?.toList()?.each {
-                        it.delete(flush: true)
-                    }
-                    alert.save(flush: true)
-                    classified.delete()
-                }
-                alert.delete(flush: true)
-            }
-        }
     }
 
     def bootstrapTest() {
