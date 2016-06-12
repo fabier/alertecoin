@@ -6,21 +6,28 @@
 </head>
 
 <body>
-
 <div class="row">
     <div class="col-md-12">
-
-        <g:render template="/templates/flashMessage"/>
-
         <div class="row">
-            <div class="col-md-6">
-                <g:link controller="user" action="index" class="btn btn-lg btn-primary block">
+
+            <div class="col-md-2">
+            </div>
+
+            <div class="col-md-4">
+                <g:link controller="admin" action="users" class="btn btn-lg btn-primary block">
+                    <i class="glyphicon glyphicon-user"></i>
                     Voir la liste des utilisateurs
                 </g:link>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <g:link controller="admin" action="allAlerts" class="btn btn-lg btn-primary block">
+                    <i class="glyphicon glyphicon-bell"></i>
+                    Voir toutes les alertes
+                </g:link>
+            </div>
 
+            <div class="col-md-2">
             </div>
         </div>
     </div>
