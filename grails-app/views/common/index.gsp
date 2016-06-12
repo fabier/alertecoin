@@ -21,8 +21,6 @@
     </div>
 </div>
 
-<g:render template="/templates/flashMessage"/>
-
 <!-- Example row of columns -->
 <div class="row">
     <div class="col-md-4">

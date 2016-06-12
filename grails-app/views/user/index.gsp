@@ -9,9 +9,6 @@
 
 <div class="row">
     <div class="col-md-12">
-
-        <g:render template="/templates/flashMessage"/>
-
         <table class="table table-condensed table-users">
             <thead>
             <tr>

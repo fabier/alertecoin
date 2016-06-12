@@ -8,13 +8,8 @@
 
 <body>
 
-<p/>
-
 <div class="row">
     <div class="col-md-12">
-
-        <g:render template="/templates/flashMessage"/>
-
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">

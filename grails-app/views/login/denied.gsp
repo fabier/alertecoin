@@ -6,9 +6,6 @@
 <body>
 <div class='body'>
     <div class="col-md-12">
-
-        <g:render template="/templates/flashMessage"/>
-
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <h3 class="panel-title">

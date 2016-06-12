@@ -6,11 +6,6 @@
 </head>
 
 <body>
-
-<p/>
-
-<g:render template="/templates/flashMessage"/>
-
 <s2ui:form width='475' height='250' elementId='resetPasswordFormContainer'
            titleCode='spring.security.ui.resetPassword.header' center='true'>
 
