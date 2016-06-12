@@ -2,6 +2,7 @@ package alertecoin
 
 import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.annotation.Secured
 
 @Secured("hasRole('ROLE_USER')")
@@ -22,7 +23,7 @@ class AlertController {
     def show(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        if (alert == null || !alert.user.equals(user)) {
+        if (alert == null || (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN") && !alert.user.equals(user))) {
             response.sendError(404)
         } else {
             def classifieds = alert.classifieds.sort { a, b ->
