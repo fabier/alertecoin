@@ -9,6 +9,13 @@ dataSource {
     dialect = TableNameSequencePostgreSQLDialect.class.getName()
     username = "dev"
     password = "dev"
+    properties {
+        initialSize = 1
+        maxActive = 16
+        minIdle = 1
+        maxIdle = 4
+        maxWait = 10000
+    }
 }
 
 hibernate {
