@@ -157,7 +157,7 @@ class LeBonCoinParserService {
         }
 
         if (!classifieds.isEmpty()) {
-            log.info "Found ${classifieds.size()} classifieds..."
+            log.debug "Found ${classifieds.size()} classifieds..."
             classifieds.sort { a, b ->
                 a.date.compareTo(b.date)
             }
@@ -166,9 +166,9 @@ class LeBonCoinParserService {
                 classifieds.retainAll {
                     it.date.after(afterDate)
                 }
-                log.info "...Retaining ${classifieds.size()} classifieds after date : ${DateFormat.getDateTimeInstance().format(afterDate)}."
+                log.debug "...Retaining ${classifieds.size()} classifieds after date : ${DateFormat.getDateTimeInstance().format(afterDate)}."
             } else {
-                log.info "...Retaining all classifieds (no afterDate specified)."
+                log.debug "...Retaining all classifieds (no afterDate specified)."
             }
         } else {
             log.warn "Impossible to get classifieds from leboncoin !"

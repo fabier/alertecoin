@@ -103,6 +103,8 @@ class AlertService {
 
             List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
 
+            User user = alert.user
+
             if (classifieds && !classifieds.isEmpty()) {
                 log.info "Found ${classifieds.size() ?: 0} classifieds for alert : [${alert.id}] ${alert.name}"
 
@@ -123,13 +125,12 @@ class AlertService {
                     // La liste des classifieds est vide, tant pis la mostRecentClassifiedDate ne change pas de valeur
                 }
 
-                User user = alert.user
-                log.info "Sending ${classifieds.size()} new classifieds to ${user.displayName ?: user.email} for alert : [${alert.id}] ${alert.name}"
+                log.info "Sending email with ${classifieds.size()} new classifieds to ${user.email} : [${alert.id}] ${alert.name} (${user.displayName ?: user.email})..."
 
                 // ... et on envoie un mail
                 sendEmailWithNewClassified(alert, classifieds)
             } else {
-                log.info "No new classifieds for alert : [${alert.id}] ${alert.name}"
+                log.info "No new classifieds : [${alert.id}] ${alert.name} (${user.displayName ?: user.email})"
                 // On vérifie tout de même que les annonces sont à jour...
                 def classifiedsCopied = alert.classifieds?.toList()
                 for (Classified classified : classifiedsCopied) {
