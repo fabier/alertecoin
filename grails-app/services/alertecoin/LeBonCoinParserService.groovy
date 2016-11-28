@@ -39,7 +39,7 @@ class LeBonCoinParserService {
             Classified classified = classifiedService.getClassifiedByURL(href)
 
             Element dateDiv = element.select("section > aside > p.item_supp").first()
-            Element imageImg = element.select("div.item_image img").first()
+            Element imageImg = element.select("div.item_image span.lazyload").first()
             Element detailDiv = element.select("section.item_infos").first()
 
             if (dateDiv != null && detailDiv != null) {
@@ -106,7 +106,7 @@ class LeBonCoinParserService {
                     // Gestion du parse de l'image
                     // ---------------------------
                     if (imageImg) {
-                        String imageUrl = imageImg.attr("src")
+                        String imageUrl = imageImg.attr("data-imgsrc")
                         imageUrl = normalizeHrefHTTPS(imageUrl)
                         Image image = imageService.getImageByURL(imageUrl)
                         if (image != null) {
