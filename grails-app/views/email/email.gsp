@@ -1335,7 +1335,6 @@ table.two-col tr:hover td.second span {
                                         style="padding: 0;vertical-align: top;padding-top: 10px;padding-bottom: 12px;font-size: 12px;line-height: 21px;text-align: left;color: #999;font-family: Georgia,serif">
                                         ${classifieds.size()}
                                         <g:message code="alertecoin.newClassified${classifieds.size() > 1 ? "s" : ""}"/>
-                                        pour l'alerte «${alert.name}»
                                     </td>
                                     %{--<td class="webversion"--}%
                                     %{--style="padding: 0;vertical-align: top;padding-top: 10px;padding-bottom: 12px;font-size: 12px;line-height: 21px;text-align: right;width: 300px;color: #999;font-family: Georgia,serif">--}%
@@ -1383,22 +1382,20 @@ table.two-col tr:hover td.second span {
 
                                                     <h1 style="margin-top: 0;color: #565656;font-weight: 700;font-size: 36px;margin-bottom: 0px;font-family: Avenir,sans-serif;line-height: 42px">
                                                         <g:link controller="alert" action="show" id="${alert.id}"
-                                                                absolute="true"
-                                                                target="_blank"
+                                                                absolute="true" target="_blank"
                                                                 style="text-decoration: none;">AlerteCoin</g:link>
                                                     </h1>
 
                                                     <p style="margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 0px">
                                                         <g:message code="alertecoin.hasFound"/>
                                                         :
-                                                        ${classifieds.size()}
-                                                        <g:if test="${classifieds.size() > 1}">
-                                                            <g:message code="alertecoin.newClassifieds"/>
-                                                        </g:if>
-                                                        <g:else>
-                                                            <g:message code="alertecoin.newClassified"/>
-                                                        </g:else>
-                                                        pour l'alerte «${alert.name}»
+                                                        <g:link controller="alert" action="show" id="${alert.id}"
+                                                                absolute="true" target="_blank">
+                                                            ${classifieds.size()}
+                                                            <g:message
+                                                                    code="alertecoin.newClassified${classifieds.size() > 1 ? "s" : ""}"/>
+                                                            pour l'alerte «${alert.name}»
+                                                        </g:link>
                                                     </p>
 
                                                     <p style="margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 24px">
