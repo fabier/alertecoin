@@ -13,6 +13,7 @@ class LeBonCoinParserService {
 
     private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F"
     private static final String[] MONTHS = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
+    private static final int TIMEOUT = 60000
 
     ImageService imageService
     ClassifiedService classifiedService
@@ -23,7 +24,7 @@ class LeBonCoinParserService {
 
     def getClassifieds(String url, Date afterDate) {
         log.info "GET ${url}"
-        def document = Jsoup.parse(new URL(url), 10000)
+        def document = Jsoup.parse(new URL(url), TIMEOUT)
         return getClassifieds(document, afterDate)
     }
 
