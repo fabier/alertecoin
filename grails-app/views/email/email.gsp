@@ -1495,6 +1495,14 @@ table.two-col tr:hover td.second span {
                                                                                   format="d MMM à HH:mm"/>
                                                                 </span>
                                                             </p>
+                                                        </g:link>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="padded-small"
+                                                        style="padding: 0;vertical-align: top;padding-left: 20px;padding-right: 20px;">
+                                                        <g:link url="${classified.url}" target="_blank" absolute="true"
+                                                                style="text-decoration: none;">
 
                                                             <p style="color: #a0a0a0;font-family: Georgia,serif;font-size: 14px;line-height: 14px;text-decoration: none;">
                                                                 <span style="color: #a0a0a0;font-size: 80%; display:inline-block;width: 380px; min-height:56px;max-height:56px;overflow: hidden;text-overflow: ellipsis">
