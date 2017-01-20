@@ -1384,7 +1384,7 @@ table.two-col tr:hover td.second span {
 
                                                     <p style="text-align:center;margin-top: 0px;color: #A6A6A6;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 16px">
                                                         <g:link controller="alert" action="show" id="${alert.id}"
-                                                                absolute="true" target="_blank">
+                                                                absolute="true" target="_blank" style="text-decoration: none;">
                                                             ${classifieds.size()}
                                                             <g:message
                                                                     code="alertecoin.newClassified${classifieds.size() > 1 ? "s" : ""}"/>
@@ -1465,36 +1465,28 @@ table.two-col tr:hover td.second span {
                                                    style="border-collapse: collapse;border-spacing: 0;width: 100%">
                                                 <tbody>
                                                 <tr>
-                                                    <td class="padded-small" colspan="2"
-                                                        style="vertical-align: top;padding: 0 20px;">
+                                                    <td class="padded-small"
+                                                        style="vertical-align: middle;padding: 4px 20px;">
                                                         <g:link url="${classified.url}" target="_blank" absolute="true"
                                                                 style="text-decoration: none;">
-                                                            <p style="display:inline-block;width:380px;max-width:380px;overflow:hidden;text-overflow: ellipsis;text-wrap:none;word-wrap:normal;white-space:nowrap;color: #154162;font-family: Arial, Helvetica, sans-serif;font-size: 16px;line-height: 16px; text-decoration: none;margin:0;">
+                                                            <p style="display:inline-block;width:290px;max-width:290px;overflow:hidden;text-overflow: ellipsis;text-wrap:none;word-wrap:normal;white-space:nowrap;
+                                                            color: #154162;font-family: Arial, Helvetica, sans-serif;font-size: 18px;line-height: 20px; text-decoration: none;margin:0;padding: 1px 0;">
                                                                 <strong>${classified.name}</strong>
                                                             </p>
-                                                        </g:link>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="padded-small"
-                                                        style="padding: 0;padding-left: 20px;vertical-align: middle;" valign="middle">
-                                                        <g:link url="${classified.url}" target="_blank" absolute="true"
-                                                                style="text-decoration: none;">
-                                                            <p style="color: #154162;font-family: Arial, Helvetica, sans-serif;font-size: 12px;line-height: 12px; text-decoration: none;margin: 0">
+                                                            <p style="color: #154162;font-family: Arial, Helvetica, sans-serif;font-size: 12px;line-height: 14px; text-decoration: none;margin:0;padding: 1px 0;">
                                                                 <span>${classified.location}</span>
-                                                                <br/>
-                                                                <span style="color: #a0a0a0;font-family: Arial, Helvetica, sans-serif;font-size: 10px;line-height: 10px; text-decoration: none;">
-                                                                    <g:formatDate date="${classified.date}"
-                                                                                  format="d MMM HH:mm"/>
-                                                                </span>
+                                                            </p>
+                                                            <p style="color: #c0c0d0;font-family: Arial, Helvetica, sans-serif;font-size: 10px;line-height: 12px; text-decoration: none;margin:0;padding: 1px 0;">
+                                                                <g:formatDate date="${classified.date}"
+                                                                              format="d MMM HH:mm"/>
                                                             </p>
                                                         </g:link>
                                                     </td>
-                                                    <td class="padded-small" style="padding: 0;" align="right">
+                                                    <td class="padded-small" style="padding: 0;vertical-align: middle;" align="right">
                                                         <g:link url="${classified.url}" target="_blank" absolute="true"
                                                                 style="text-decoration: none;text-align: center;">
                                                             <span style="display:inline-block;font-family: Arial, Helvetica, sans-serif;font-size:14px;color: #FFFFFF;
-                                                            padding:5px 10px; margin: 5px 20px 10px 0; border-radius:3px; background-color:#f0ad4e;">
+                                                            padding:3px 8px; margin: 0 20px 0 0; border-radius:3px; background-color:#f0ad4e;white-space: nowrap">
                                                                 <strong style="">${classified.price ?: "-"} €</strong>
                                                             </span>
                                                         </g:link>
@@ -1505,7 +1497,6 @@ table.two-col tr:hover td.second span {
                                                         style="padding: 0;vertical-align: top;padding-left: 20px;padding-right: 20px;">
                                                         <g:link url="${classified.url}" target="_blank" absolute="true"
                                                                 style="text-decoration: none;">
-
                                                             <p style="color: #a0a0a0;font-family: Georgia,serif;font-size: 12px;line-height: 12px;text-decoration: none;">
                                                                 <span style="display:inline-block;width: 380px; min-height:48px;max-height:48px;overflow: hidden;text-overflow: ellipsis">
                                                                     <g:removeDoubleBr
