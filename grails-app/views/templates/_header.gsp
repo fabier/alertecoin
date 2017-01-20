@@ -9,7 +9,8 @@
                 <span class="icon-bar"></span>
             </button>
             <g:link class="navbar-brand" uri="/">
-                AlerteCoin
+                <g:img file="logo-text-header.png" class="header-image"/>
+                %{--AlerteCoin--}%
             </g:link>
         </div>
 
