@@ -9,30 +9,27 @@
     <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon"/>
 
     <s2ui:resources module='register'/>
-    <%--
 
-    The 'resources' tag in SecurityUiTagLib renders these tags if you're not using the resources plugin:
-
-        <g:javascript library='jquery' plugin='jquery' />
-        <link rel="stylesheet" media="screen" href="${resource(dir:'css',file:'reset.css',plugin:'spring-security-ui')}"/>
-        <link rel="stylesheet" media="screen" href="${resource(dir:'css',file:'spring-security-ui.css',plugin:'spring-security-ui')}"/>
-        <jqui:resources />
-        <link rel="stylesheet" media="screen" href="${resource(dir:'css/smoothness',file:'jquery-ui-1.10.3.custom.css',plugin:'spring-security-ui')}"/>
-        <link rel="stylesheet" media="screen" href="${resource(dir:'css',file:'jquery.jgrowl.css',plugin:'spring-security-ui')}"/>
-        <link rel="stylesheet" media="screen" href="${resource(dir:'css',file:'jquery.safari-checkbox.css',plugin:'spring-security-ui')}"/>
-        <link rel="stylesheet" media="screen" href="${resource(dir:'css',file:'auth.css',plugin:'spring-security-ui')}"/>
-
-    or these if you are:
-
-       <r:require module="register"/>
-       <r:layoutResources/>
-
-    If you need to customize the resources, replace the <s2ui:resources> tag with
-    the explicit tags above and edit those, not the taglib code.
-    --%>
+    <link rel="apple-touch-icon" sizes="57x57" href="${assetPath(src: 'favicons/apple-icon-57x57.png')}">
+    <link rel="apple-touch-icon" sizes="60x60" href="${assetPath(src: 'favicons/apple-icon-60x60.png')}">
+    <link rel="apple-touch-icon" sizes="72x72" href="${assetPath(src: 'favicons/apple-icon-72x72.png')}">
+    <link rel="apple-touch-icon" sizes="76x76" href="${assetPath(src: 'favicons/apple-icon-76x76.png')}">
+    <link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'favicons/apple-icon-114x114.png')}">
+    <link rel="apple-touch-icon" sizes="120x120" href="${assetPath(src: 'favicons/apple-icon-120x120.png')}">
+    <link rel="apple-touch-icon" sizes="144x144" href="${assetPath(src: 'favicons/apple-icon-144x144.png')}">
+    <link rel="apple-touch-icon" sizes="152x152" href="${assetPath(src: 'favicons/apple-icon-152x152.png')}">
+    <link rel="apple-touch-icon" sizes="180x180" href="${assetPath(src: 'favicons/apple-icon-180x180.png')}">
+    <link rel="icon" type="image/png" sizes="192x192" href="${assetPath(src: 'favicons/android-icon-192x192.png')}">
+    <link rel="icon" type="image/png" sizes="32x32" href="${assetPath(src: 'favicons/favicon-32x32.png')}">
+    <link rel="icon" type="image/png" sizes="96x96" href="${assetPath(src: 'favicons/favicon-96x96.png')}">
+    <link rel="icon" type="image/png" sizes="16x16" href="${assetPath(src: 'favicons/favicon-16x16.png')}">
+    <link rel="manifest" href="${assetPath(src: 'favicons/manifest.json')}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
     <g:layoutHead/>
-    <ga:trackPageview />
+    <ga:trackPageview/>
 </head>
 
 <body>
