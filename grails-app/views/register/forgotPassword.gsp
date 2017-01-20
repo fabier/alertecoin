@@ -9,7 +9,7 @@
 <body>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6 col-md-push-3">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -29,7 +29,7 @@
                                 <g:message code="alertecoin.email" default="Email"/>
                             </label>
 
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <input name="username" id="username" size="20" class="form-control"/>
                             </div>
                         </div>
