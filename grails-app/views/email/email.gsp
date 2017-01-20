@@ -1379,16 +1379,14 @@ table.two-col tr:hover td.second span {
                                             <tr>
                                                 <td class="padded"
                                                     style="padding: 0;vertical-align: top;padding-left: 32px;padding-right: 32px">
+                                                    <g:link controller="alert" action="show" id="${alert.id}"
+                                                            absolute="true" target="_blank"
+                                                            style="text-decoration: none;">
+                                                        <img src="${assetPath(src: 'logo-text-header.png')}"
+                                                             style="display: block;margin-left: auto;margin-right: auto;margin-bottom: 16px;"/>
+                                                    </g:link>
 
-                                                    <h1 style="margin-top: 0;color: #565656;font-weight: 700;font-size: 36px;margin-bottom: 0px;font-family: Avenir,sans-serif;line-height: 42px">
-                                                        <g:link controller="alert" action="show" id="${alert.id}"
-                                                                absolute="true" target="_blank"
-                                                                style="text-decoration: none;">AlerteCoin</g:link>
-                                                    </h1>
-
-                                                    <p style="margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 0px">
-                                                        <g:message code="alertecoin.hasFound"/>
-                                                        :
+                                                    <p style="text-align:center;margin-top: 0px;color: #A6A6A6;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 16px">
                                                         <g:link controller="alert" action="show" id="${alert.id}"
                                                                 absolute="true" target="_blank">
                                                             ${classifieds.size()}
@@ -1396,10 +1394,6 @@ table.two-col tr:hover td.second span {
                                                                     code="alertecoin.newClassified${classifieds.size() > 1 ? "s" : ""}"/>
                                                             pour l'alerte «${alert.name}»
                                                         </g:link>
-                                                    </p>
-
-                                                    <p style="margin-top: 0px;color: #565656;font-family: Georgia,serif;font-size: 16px;line-height: 25px;margin-bottom: 24px">
-
                                                     </p>
                                                 </td>
                                             </tr>
