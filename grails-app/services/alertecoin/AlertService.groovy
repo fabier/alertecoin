@@ -4,6 +4,7 @@ import grails.gsp.PageRenderer
 import grails.plugin.mail.MailService
 import grails.util.Environment
 import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang.time.DateUtils
 import org.apache.http.NameValuePair
 import org.apache.http.client.utils.URIBuilder
 
@@ -16,7 +17,14 @@ class AlertService {
     ClassifiedService classifiedService
 
     def create(String name, String url, Integer checkIntervalInMinutes, User user) {
-        Alert alert = new Alert(name: name, url: url, checkIntervalInMinutes: checkIntervalInMinutes, user: user, creator: user, state: State.ACTIVE)
+        Alert alert = new Alert(
+                name: name,
+                url: url,
+                checkIntervalInMinutes: checkIntervalInMinutes,
+                user: user,
+                creator: user,
+                state: State.ACTIVE
+        )
         alert.nextCheckDate = calculateNextCheckDate(alert)
         fillWithCurrentClassifiedsOnPage(alert)
         return alert.save(flush: true)
@@ -185,7 +193,19 @@ class AlertService {
 
     def calculateNextCheckDate(Alert alert) {
         Calendar calendar = new GregorianCalendar()
-        calendar.add(Calendar.MINUTE, alert?.checkIntervalInMinutes ?: 15)
+        int checkIntervalInMinutes = alert?.checkIntervalInMinutes ?: 60
+        calendar.add(Calendar.MINUTE, checkIntervalInMinutes)
+        if (checkIntervalInMinutes >= 1440) {
+            // Tous les jours à 8h du matin
+            DateUtils.truncate(calendar, Calendar.HOUR)
+            calendar.add(Calendar.HOUR, 8) // 8h du matin
+        } else if (checkIntervalInMinutes >= 60) {
+            // Toutes les heures (à l'heure pile)
+            DateUtils.truncate(calendar, Calendar.MINUTE)
+        } else {
+            // Dès que possible, mais à la minute près
+            DateUtils.truncate(calendar, Calendar.SECOND)
+        }
         return calendar.getTime()
     }
 }

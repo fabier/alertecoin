@@ -46,7 +46,7 @@
 
                         <div class="col-md-10">
                             <g:radioGroup name="checkIntervalInMinutes"
-                                          value="${command?.checkIntervalInMinutes ?: 5}"
+                                          value="${command?.checkIntervalInMinutes ?: 60}"
                                           id="checkIntervalInMinutes"
                                           labels="['Dès que possible', 'Toutes les heures', 'Une fois par jour']"
                                           values="['5', '60', '1440']">
