@@ -1378,7 +1378,7 @@ table.two-col tr:hover td.second span {
                                                     <g:link controller="alert" action="show" id="${alert.id}"
                                                             absolute="true" target="_blank"
                                                             style="text-decoration: none;">
-                                                        <img src="${assetPath(src: 'logo-text-header.png')}"
+                                                        <img src="${assetPath(src: 'logo-text-header.png', absolute: true)}"
                                                              style="display: block;margin-left: auto;margin-right: auto;margin-bottom: 16px;"/>
                                                     </g:link>
 
