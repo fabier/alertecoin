@@ -53,7 +53,7 @@
                             <g:radioGroup name="checkIntervalInMinutes"
                                           value="${alert?.checkIntervalInMinutes ?: 5}"
                                           id="checkIntervalInMinutes"
-                                          labels="['Dès que possible', 'Toutes les heures', 'Une fois par jour']"
+                                          labels="['Dès que possible', 'Toutes les heures', 'Une fois par jour (8h du matin)']"
                                           values="['5', '60', '1440']">
                                 <p>
                                     <label>
