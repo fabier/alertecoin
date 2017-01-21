@@ -9,17 +9,20 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        %{--<h1>Bienvenue !</h1>--}%
-
-        <div class="center-img">
-            <g:img file="logo-text.png"/>
-        </div>
+        <h1 class="font-museoslab alertecoin-color text-huge text-center">
+            <span style="font-size: 60px;">AlerteCoin</span>
+        </h1>
 
         <p class="text-center padding-top-20">Bienvenue sur le site qui vous permet de suivre les annonces de votre site préféré.</p>
 
         <p class="text-center">
-            <g:link controller="register" class="btn btn-primary" action="index">
-                Créer un compte &raquo;
+            <g:link controller="register" action="index" class="btn btn-primary">
+                <i class="glyphicon glyphicon-plus-sign"></i>
+                Créer un compte
+            </g:link>
+            <g:link controller="login" action="index" class="btn btn-warning">
+                <i class="glyphicon glyphicon-log-in"></i>
+                <g:message code="alertecoin.login"/>
             </g:link>
         </p>
     </div>
@@ -55,9 +58,7 @@
         </h2>
 
         <p>
-            Vous pourrez recevoir des alertes toutes les 5 minutes !
-            <br/>
-            On est particulièrement réactifs, vous ne trouverez pas mieux sur internet c'est assuré !
+            Vous pourrez recevoir des alertes toutes les 10 minutes !
         </p>
     </div>
 </div>
