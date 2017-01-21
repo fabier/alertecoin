@@ -39,70 +39,7 @@
                         <tbody>
 
                         <g:each in="${alerts}" var="alert">
-                            <tr class="clickable-row"
-                                data-href="${raw(createLink(controller: "alert", action: "show", id: alert.id))}">
-                                <td>
-                                    <div class="pull-right">
-                                        <g:link action="refresh" id="${alert.id}" class="btn btn-default"
-                                                title="Refresh">
-                                            <span class="glyphicon glyphicon-repeat"></span>
-                                        </g:link>
-
-                                        <sec:ifAllGranted roles="ROLE_ADMIN">
-                                            <g:link action="email" id="${alert.id}" class="btn btn-info"
-                                                    title="Email" target="_blank">
-                                                <span class="glyphicon glyphicon-envelope"></span>
-                                            </g:link>
-                                        </sec:ifAllGranted>
-
-                                        <g:link action="edit" id="${alert.id}" class="btn btn-success"
-                                                title="Editer">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </g:link>
-
-                                        <g:link action="confirmDelete" id="${alert.id}" class="btn btn-danger"
-                                                title="Supprimer">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </g:link>
-                                    </div>
-
-                                    <p>
-                                        <span class="xlarge bold">
-                                            ${alert.name}
-                                        </span>
-                                    </p>
-
-                                    <p>
-                                        <g:set var="classifiedCount" value="${alert.classifieds?.size()}"/>
-
-                                        <span class="label label-default">
-                                            <g:if test="${classifiedCount > 1}">
-                                                ${alert.classifieds?.size()} annonces
-                                            </g:if>
-                                            <g:elseif test="${classifiedCount == 1}">
-                                                ${alert.classifieds?.size()} annonce
-                                            </g:elseif>
-                                            <g:else>
-                                                Aucune annonce
-                                            </g:else>
-                                        </span>
-
-                                        &nbsp;
-
-                                        <span class="xsmall text-muted">
-                                            Dernière vérification :
-                                            <g:formatDate date="${alert.lastCheckedDate}"
-                                                          format="d MMM à HH:mm"/>
-                                        </span>
-                                    </p>
-
-                                    <p class="url">
-                                        <span class="xsmall text-muted">
-                                            ${alert.url}
-                                        </span>
-                                    </p>
-                                </td>
-                            </tr>
+                            <g:render template="/templates/alertRow" model="[alert: alert]"/>
                         </g:each>
                         </tbody>
                     </table>
