@@ -46,18 +46,6 @@
                     </button>
                 </g:form>
             </sec:ifLoggedIn>
-            <sec:ifNotLoggedIn>
-                <g:if test="${hideLoginBlock}">
-                </g:if>
-                <g:else>
-                    <g:form controller="login" action="index" method="GET" class="navbar-form navbar-right" role="form">
-                        <button type="submit" class="btn btn-warning">
-                            <span class="glyphicon glyphicon-log-in paddingright10"></span>
-                            <g:message code="alertecoin.login"/>
-                        </button>
-                    </g:form>
-                </g:else>
-            </sec:ifNotLoggedIn>
         </div>
     </div>
 </div>
