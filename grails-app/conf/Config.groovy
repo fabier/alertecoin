@@ -33,8 +33,8 @@ log4j = {
 grails.resources.resourceLocatorEnabled = true
 
 // What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
-grails.resources.adhoc.includes = ['/images/**', '/css/**', '/js/**', '/plugins/**']
+grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*', '/fonts/*']
+grails.resources.adhoc.includes = ['/images/**', '/css/**', '/js/**', '/plugins/**', '/fonts/*']
 
 
 environments {
@@ -63,6 +63,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/assets/**'     : ['permitAll'],
         '/**/js/**'      : ['permitAll'],
         '/**/css/**'     : ['permitAll'],
+        '/**/fonts/**'   : ['permitAll'],
         '/**/images/**'  : ['permitAll'],
         '/**/favicon.ico': ['permitAll'],
         '/monitoring'    : ['permitAll'],
@@ -200,7 +201,6 @@ beans {
         shared = true
     }
 }
-
 
 // Google Analytics
 // AlerteCoin UA-64610210-1
