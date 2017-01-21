@@ -197,15 +197,16 @@ class AlertService {
         calendar.add(Calendar.MINUTE, checkIntervalInMinutes)
         if (checkIntervalInMinutes >= 1440) {
             // Tous les jours à 8h du matin
-            DateUtils.truncate(calendar, Calendar.HOUR)
+            calendar = DateUtils.truncate(calendar, Calendar.DAY_OF_MONTH)
             calendar.add(Calendar.HOUR, 8) // 8h du matin
         } else if (checkIntervalInMinutes >= 60) {
             // Toutes les heures (à l'heure pile)
-            DateUtils.truncate(calendar, Calendar.MINUTE)
+            calendar = DateUtils.truncate(calendar, Calendar.HOUR)
         } else {
             // Dès que possible, mais à la minute près
-            DateUtils.truncate(calendar, Calendar.SECOND)
+            calendar = DateUtils.truncate(calendar, Calendar.MINUTE)
         }
-        return calendar.getTime()
+        Date nextCheckDate = calendar.getTime()
+        return nextCheckDate
     }
 }
