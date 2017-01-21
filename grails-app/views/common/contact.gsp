@@ -7,7 +7,7 @@
 
 <body>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-md-2"></div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <p>
                             Envoyez moi un message avec le formulaire ci dessous !
                         </p>
@@ -49,7 +49,7 @@
                         <label for="message" class="col-md-2 control-label">Message</label>
 
                         <div class="col-md-10">
-                            <textarea class="form-control" id="message" name="message" rows="5"
+                            <textarea class="form-control" id="message" name="message" rows="10"
                                       placeholder="Merci de dire quelquechose de gentil !"></textarea>
                         </div>
                     </div>
