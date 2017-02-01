@@ -2,17 +2,13 @@ package alertecoin
 
 import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.plugin.springsecurity.SpringSecurityUtils
 import org.springframework.security.access.annotation.Secured
 
 @Secured("hasRole('ROLE_USER')")
 class AlertController {
 
     SpringSecurityService springSecurityService
-    MailService mailService
     AlertService alertService
-    UserService userService
-    AccessControlService accessControlService
 
     def index() {
         User user = springSecurityService.currentUser
@@ -24,8 +20,7 @@ class AlertController {
 
     def show(long id) {
         Alert alert = Alert.get(id)
-        User user = springSecurityService.currentUser
-        boolean hasRights = accessControlService.hasRights(user, alert)
+        boolean hasRights = alertService.hasRights(alert)
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
@@ -87,13 +82,13 @@ class AlertController {
     def delete(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        boolean hasRights = accessControlService.hasRights(user, alert)
+        boolean hasRights = alertService.hasRights(alert)
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             Alert.withTransaction {
                 user.removeFromAlerts(alert)
-                alert.classifieds?.toList().each {
+                alert.classifieds?.toList()?.each {
                     alert.removeFromClassifieds(it)
                 }
                 alert.delete()
@@ -104,7 +99,7 @@ class AlertController {
 
     def refresh(long id) {
         Alert alert = Alert.get(id)
-        boolean hasRights = accessControlService.hasRights(user, alert)
+        boolean hasRights = alertService.hasRights(alert)
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
@@ -116,7 +111,7 @@ class AlertController {
     def email(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        boolean hasRights = accessControlService.hasRights(user, alert)
+        boolean hasRights = alertService.hasRights(alert)
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
@@ -129,8 +124,7 @@ class AlertController {
 
     def edit(long id) {
         Alert alert = Alert.get(id)
-        User user = springSecurityService.currentUser
-        boolean hasRights = accessControlService.hasRights(user, alert)
+        boolean hasRights = alertService.hasRights(alert)
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
@@ -140,8 +134,7 @@ class AlertController {
 
     def confirmDelete(long id) {
         Alert alert = Alert.get(id)
-        User user = springSecurityService.currentUser
-        boolean hasRights = accessControlService.hasRights(user, alert)
+        boolean hasRights = alertService.hasRights(alert)
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {

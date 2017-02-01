@@ -15,6 +15,9 @@ class AlertService {
     def grailsApplication
     MailService mailService
     ClassifiedService classifiedService
+    UserService userService
+
+    def springSecurityService
 
     def create(String name, String url, Integer checkIntervalInMinutes, User user) {
         Alert alert = new Alert(
@@ -210,7 +213,11 @@ class AlertService {
         return nextCheckDate
     }
 
-    boolean isOwner(Alert alert, User user) {
-        alert?.user?.equals(user)
+    boolean isOwner(Alert alert) {
+        alert?.user?.equals(springSecurityService.currentUser)
+    }
+
+    boolean hasRights(Alert alert) {
+        isOwner(alert) || userService.isAdmin()
     }
 }
