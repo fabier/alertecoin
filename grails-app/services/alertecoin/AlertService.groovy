@@ -209,4 +209,8 @@ class AlertService {
         Date nextCheckDate = calendar.getTime()
         return nextCheckDate
     }
+
+    boolean isOwner(Alert alert, User user) {
+        alert?.user?.equals(user)
+    }
 }

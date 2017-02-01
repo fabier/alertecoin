@@ -11,6 +11,8 @@ class AlertController {
     SpringSecurityService springSecurityService
     MailService mailService
     AlertService alertService
+    UserService userService
+    AccessControlService accessControlService
 
     def index() {
         User user = springSecurityService.currentUser
@@ -23,7 +25,8 @@ class AlertController {
     def show(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        if (alert == null || (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN") && !alert.user.equals(user))) {
+        boolean hasRights = accessControlService.hasRights(user, alert)
+        if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             def classifieds = alert.classifieds.sort { a, b ->
@@ -84,7 +87,8 @@ class AlertController {
     def delete(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        if (alert == null || !alert.user.equals(user)) {
+        boolean hasRights = accessControlService.hasRights(user, alert)
+        if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             Alert.withTransaction {
@@ -100,8 +104,8 @@ class AlertController {
 
     def refresh(long id) {
         Alert alert = Alert.get(id)
-        User user = springSecurityService.currentUser
-        if (alert == null || !alert.user.equals(user)) {
+        boolean hasRights = accessControlService.hasRights(user, alert)
+        if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             alertService.fillWithNewClassifiedsAndSendEmailIfNewFound(alert)
@@ -112,7 +116,8 @@ class AlertController {
     def email(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        if (alert == null || !alert.user.equals(user)) {
+        boolean hasRights = accessControlService.hasRights(user, alert)
+        if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             def classifieds = alert.classifieds.sort { a, b ->
@@ -125,7 +130,8 @@ class AlertController {
     def edit(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        if (alert == null || !alert.user.equals(user)) {
+        boolean hasRights = accessControlService.hasRights(user, alert)
+        if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             render view: "edit", model: [alert: alert]
@@ -135,7 +141,8 @@ class AlertController {
     def confirmDelete(long id) {
         Alert alert = Alert.get(id)
         User user = springSecurityService.currentUser
-        if (alert == null || !alert.user.equals(user)) {
+        boolean hasRights = accessControlService.hasRights(user, alert)
+        if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
             render view: "confirmDelete", model: [alert: alert]
