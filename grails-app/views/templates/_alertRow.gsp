@@ -41,25 +41,22 @@
     </td>
     <td class="text-vertical-align-center">
         <div class="pull-right">
-            <g:link action="refresh" id="${alert.id}" class="btn btn-default"
-                    title="Refresh">
+            <g:link controller="alert" action="refresh" id="${alert.id}" class="btn btn-default" title="Refresh">
                 <span class="glyphicon glyphicon-repeat"></span>
             </g:link>
 
             <sec:ifAllGranted roles="ROLE_ADMIN">
-                <g:link action="email" id="${alert.id}" class="btn btn-info"
-                        title="Email" target="_blank">
+                <g:link controller="alert" action="email" id="${alert.id}" class="btn btn-info" title="Email"
+                        target="_blank">
                     <span class="glyphicon glyphicon-envelope"></span>
                 </g:link>
             </sec:ifAllGranted>
 
-            <g:link action="edit" id="${alert.id}" class="btn btn-success"
-                    title="Editer">
+            <g:link controller="alert" action="edit" id="${alert.id}" class="btn btn-success" title="Editer">
                 <span class="glyphicon glyphicon-edit"></span>
             </g:link>
 
-            <g:link action="confirmDelete" id="${alert.id}" class="btn btn-danger"
-                    title="Supprimer">
+            <g:link controller="alert" action="confirmDelete" id="${alert.id}" class="btn btn-danger" title="Supprimer">
                 <span class="glyphicon glyphicon-trash"></span>
             </g:link>
         </div>
