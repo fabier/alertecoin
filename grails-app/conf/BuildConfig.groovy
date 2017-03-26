@@ -41,7 +41,7 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.27'
 
         runtime 'org.jsoup:jsoup:1.7.2'
-        runtime 'org.postgresql:postgresql:9.4-1201-jdbc41'
+        runtime 'org.postgresql:postgresql:42.0.0.jre7'
 
         // Cache entities
         compile 'net.sf.ehcache:ehcache:2.8.5'
