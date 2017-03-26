@@ -36,7 +36,7 @@
                             <sec:ifLoggedIn>
                                 <input type="email" class="form-control" id="email" name="email"
                                        placeholder="Votre adresse email"
-                                       value="${sec.loggedInUserInfo(field: "username")}"/>
+                                       value="${sec.username()}"/>
                             </sec:ifLoggedIn>
                             <sec:ifNotLoggedIn>
                                 <input type="email" class="form-control" id="email" name="email"
@@ -55,15 +55,15 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                         </div>
 
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <button type="submit" class="btn btn-primary">
                                 Envoyer le message
                             </button>
                             &nbsp;
-                            <button type="button" class="btn btn-link" onclick="history.go(-1)">
+                            <button type="button" class="btn btn-link" onclick="history.back()">
                                 Annuler
                             </button>
                         </div>
