@@ -11,8 +11,23 @@ class ScanController {
 
     MailService mailService
     AlertService alertService
+    NetworkService networkService
+    UserService userService
 
     ReentrantLock reentrantLock = new ReentrantLock()
+
+    def beforeInterceptor = {
+        boolean isRequestFromLocalhost = networkService.isRequestFromLocalhost(request)
+
+        // On verrouille l'usage : doit être appelé par la machine hébergeant le service, ou par un administrateur
+        if (isRequestFromLocalhost || userService.isAdmin()) {
+            return true
+        } else {
+            log.warn("Trying to access restricted scan method from IP : ${request.remoteAddr}")
+            response.sendError(404)
+            return false
+        }
+    }
 
     def index() {
         def remoteAddr = request.getRemoteAddr()

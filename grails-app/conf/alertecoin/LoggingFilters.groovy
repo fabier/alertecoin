@@ -10,10 +10,11 @@ class LoggingFilters {
                 def remoteAddr = request.getRemoteAddr()
                 boolean shouldLogToDatabase = true
                 boolean shouldLogToFile = true
-                if ("127.0.0.1".equals(remoteAddr) || "0:0:0:0:0:0:0:1".equals(remoteAddr)) {
+
+                if (networkService.isRequestFromLocalhost(request)) {
                     // On n'enregistre pas en base
                     shouldLogToDatabase = false
-                    if (controllerName.equals("common")) {
+                    if (controllerName in ["common", "scan"]) {
                         // Acces depuis nagios certainement pour vérifer le bon fonctionnement du service
                         // On ne loggue pas sur fichier
                         shouldLogToFile = false
