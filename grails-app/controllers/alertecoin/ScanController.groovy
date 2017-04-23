@@ -1,6 +1,5 @@
 package alertecoin
 
-import grails.plugin.mail.MailService
 import org.springframework.security.access.annotation.Secured
 
 import java.util.concurrent.TimeUnit
@@ -51,7 +50,10 @@ class ScanController {
                         User user = User.get(alert.userId)
                         log.info "Scanning : [${alert.id}] ${alert.name} (${user.displayName ?: user.email})"
                         alertService.fillWithNewClassifiedsAndSendEmailIfNewFound(alert)
-                        Thread.sleep(2000 + (Math.random() * 8000)) // Attendre entre 2s et 10s
+                        
+                        // Attendre entre 2s et 10s avant d'aller chercher la prochaine annonce
+                        long waitInMs = (2000 + (Math.random() * 8000)) as long
+                        Thread.sleep(waitInMs)
                     }
                 }
             } finally {
