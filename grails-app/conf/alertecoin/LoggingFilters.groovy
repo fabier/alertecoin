@@ -4,6 +4,8 @@ import log.AccessLog
 
 class LoggingFilters {
 
+    NetworkService networkService
+
     def filters = {
         allButImage(controller: 'image', invert: true) {
             before = {
