@@ -50,8 +50,8 @@ class ScanController {
                         User user = User.get(alert.userId)
                         log.info "Scanning : [${alert.id}] ${alert.name} (${user.displayName ?: user.email})"
                         alertService.fillWithNewClassifiedsAndSendEmailIfNewFound(alert)
-                        
-                        // Attendre entre 2s et 10s avant d'aller chercher la prochaine annonce
+
+                        // Attendre 5s entre 2 scans d'annonces
                         long waitInMs = (2000 + (Math.random() * 8000)) as long
                         Thread.sleep(waitInMs)
                     }

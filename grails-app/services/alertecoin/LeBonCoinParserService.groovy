@@ -13,10 +13,13 @@ class LeBonCoinParserService {
 
     private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F"
     private static final String[] MONTHS = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
-    private static final int TIMEOUT = 60000
+    private static final int TIMEOUT = 5000
 
     ImageService imageService
     ClassifiedService classifiedService
+    WaitService waitService
+
+    long lastGetTimestamp = 0l
 
     def getClassifieds(String url) {
         getClassifieds(url, null)
@@ -24,6 +27,9 @@ class LeBonCoinParserService {
 
     def getClassifieds(String url, Date afterDate) {
         log.info "GET ${url}"
+
+        lastGetTimestamp = waitService.waitAtLeast(100, lastGetTimestamp)
+
         def document = Jsoup.parse(new URL(url), TIMEOUT)
         return getClassifieds(document, afterDate)
     }
@@ -192,7 +198,10 @@ class LeBonCoinParserService {
 
     def getAndFillExtraInfoForClassified(Classified classified) {
         log.info "GET ${classified.url}"
-        def document = Jsoup.parse(new URL(classified.url), 10000)
+
+        lastGetTimestamp = waitService.waitAtLeast(100, lastGetTimestamp)
+
+        def document = Jsoup.parse(new URL(classified.url), TIMEOUT)
 
         // Récupérer les différentes images
         Elements imageElements = document.select("section.adview_main div.thumbnails img")
