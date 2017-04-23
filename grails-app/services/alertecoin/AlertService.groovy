@@ -79,6 +79,7 @@ class AlertService {
 
     def fillWithCurrentClassifiedsOnPage(Alert alert) {
         List<Classified> classifieds = leBonCoinParserService.getClassifieds(alert.url)
+        alert.lastCheckedDate = new Date() // Vérifié pour la dernière fois maintenant
         if (classifieds && !classifieds?.isEmpty()) {
             // On supprime les anciennes annonces
             alert.classifieds?.toList()?.each {
@@ -91,9 +92,7 @@ class AlertService {
             classifieds.each {
                 alert.addToClassifieds(it)
             }
-        }
-        alert.lastCheckedDate = new Date() // Vérifié pour la dernière fois maintenant
-        if (!classifieds.isEmpty()) {
+
             // La liste des classifieds contient un élément, on prend sa date comme référence
             alert.mostRecentClassifiedDate = classifieds.first()?.date
         } else {
