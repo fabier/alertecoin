@@ -28,7 +28,7 @@ class LeBonCoinParserService {
     def getClassifieds(String url, Date afterDate) {
         log.info "GET ${url}"
 
-        lastGetTimestamp = waitService.waitAtLeast(100, lastGetTimestamp)
+        lastGetTimestamp = waitService.waitAtLeast(500, lastGetTimestamp)
 
         def document = Jsoup.parse(new URL(url), TIMEOUT)
         return getClassifieds(document, afterDate)
@@ -199,7 +199,7 @@ class LeBonCoinParserService {
     def getAndFillExtraInfoForClassified(Classified classified) {
         log.info "GET ${classified.url}"
 
-        lastGetTimestamp = waitService.waitAtLeast(100, lastGetTimestamp)
+        lastGetTimestamp = waitService.waitAtLeast(500, lastGetTimestamp)
 
         def document = Jsoup.parse(new URL(classified.url), TIMEOUT)
 

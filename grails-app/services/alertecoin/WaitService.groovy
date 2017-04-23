@@ -6,8 +6,10 @@ import grails.transaction.Transactional
 class WaitService {
 
     long waitAtLeast(long waitinms, long lasttime) {
-        if (lasttime > 0 && lasttime <= System.currentTimeMillis() && System.currentTimeMillis() <= lasttime + waitinms) {
-            Thread.sleep(waitinms - (System.currentTimeMillis() - lasttime))
+        long now = System.currentTimeMillis()
+        if (lasttime > 0 && lasttime <= now && now <= lasttime + waitinms) {
+            long waitFor = waitinms - (now - lasttime)
+            Thread.sleep(waitFor)
         }
         return System.currentTimeMillis()
     }
