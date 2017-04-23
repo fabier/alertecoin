@@ -13,25 +13,55 @@ class LeBonCoinParserService {
 
     private static final String PROXY_HTTP_INDICATOR = "http%3A%2F%2F"
     private static final String[] MONTHS = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
-    private static final int TIMEOUT = 5000
+    private static final int TIMEOUT = 10000 // 10 sec
+    private static final long TIMEOUT_ERROR_DELAY = 60 * 60 * 1000 // 1h
+    private static final long TIMEOUT_ERROR_DELAY_TWICE = 6 * 60 * 60 * 1000 // 6h
 
     ImageService imageService
     ClassifiedService classifiedService
     WaitService waitService
 
     long lastGetTimestamp = 0l
+    long nextCallDate = 0l
 
-    def getClassifieds(String url) {
+    List<Classified> getClassifieds(String url) {
         getClassifieds(url, null)
     }
 
-    def getClassifieds(String url, Date afterDate) {
+    List<Classified> getClassifieds(String url, Date afterDate) {
         log.info "GET ${url}"
 
         lastGetTimestamp = waitService.waitAtLeast(500, lastGetTimestamp)
 
-        def document = Jsoup.parse(new URL(url), TIMEOUT)
-        return getClassifieds(document, afterDate)
+        Document document = tryGetDocument(url)
+        if (document != null) {
+            return getClassifieds(document, afterDate)
+        } else {
+            return null
+        }
+    }
+
+    Document tryGetDocument(String url) {
+        if (System.currentTimeMillis() < nextCallDate) {
+            try {
+                def document = Jsoup.parse(new URL(url), TIMEOUT)
+                // Pas d'erreur, on met nextCallDate à 0
+                nextCallDate = 0l
+                return document
+            } catch (IOException e) {
+                log.warn e.getMessage(), e
+                if (nextCallDate == 0l) {
+                    nextCallDate = System.currentTimeMillis() + TIMEOUT_ERROR_DELAY
+                } else {
+                    nextCallDate = System.currentTimeMillis() + TIMEOUT_ERROR_DELAY_TWICE
+                }
+                log.info "Setting nextCallDate to : ${new Date(nextCallDate)}"
+                return null
+            }
+        } else {
+            log.info "Due to previous TIMEOUT error, no HTTP GET to : ${url}"
+            return null
+        }
     }
 
     def getClassifieds(Document document, Date afterDate) {
@@ -201,64 +231,63 @@ class LeBonCoinParserService {
 
         lastGetTimestamp = waitService.waitAtLeast(500, lastGetTimestamp)
 
-        def document = Jsoup.parse(new URL(classified.url), TIMEOUT)
+        Document document = tryGetDocument(classified.url)
 
-        // Récupérer les différentes images
-        Elements imageElements = document.select("section.adview_main div.thumbnails img")
-        if (imageElements.isEmpty()) {
-            // Potentiellement, une seule image (pas de carousel)
-            imageElements = document.select("section.adview_main > div.item_image img")
-        }
-        for (Element imageElement : imageElements) {
-            // Pour avoir l'image en grand, il suffit de remplacer "thumbs" par "images" dans l'URL
-            String imageUrl = imageElement.attr("src").replace("thumbs", "images")
-            imageUrl = normalizeHrefHTTPS(imageUrl)
-            Image image = imageService.getImageByURL(imageUrl)
-            if (image != null && (classified.images == null || !classified.images.contains(image))) {
-                classified.addToImages(image)
-                classified.save()
+        if (document != null) {
+            // Récupérer les différentes images
+            Elements imageElements = document.select("section.adview_main div.thumbnails img")
+            if (imageElements.isEmpty()) {
+                // Potentiellement, une seule image (pas de carousel)
+                imageElements = document.select("section.adview_main > div.item_image img")
             }
-        }
+            for (Element imageElement : imageElements) {
+                // Pour avoir l'image en grand, il suffit de remplacer "thumbs" par "images" dans l'URL
+                String imageUrl = imageElement.attr("src").replace("thumbs", "images")
+                imageUrl = normalizeHrefHTTPS(imageUrl)
+                Image image = imageService.getImageByURL(imageUrl)
+                if (image != null && (classified.images == null || !classified.images.contains(image))) {
+                    classified.addToImages(image)
+                    classified.save()
+                }
+            }
+            // Récupérer les différents attributs
 
-        // Récupérer les différents attributs
-
-        Elements properties = document.select("section.properties > div")
-        for (Element property : properties) {
-            Set<String> classes = property.classNames()
-            // On ne veut pas les informations "ceci est un professionnel"
-            if (!classes.contains("line_pro")) {
-                if (classes.contains("properties_description")) {
-                    // C'est la description du bien
-                    classified.description = property.select("p.value")?.first()?.html()?.trim()
-                } else {
-                    // C'est un autre type de propriété
-                    String keyName = property.select("span.property")?.first()?.text()?.replace(":", "")?.trim()
-                    Element valueElement = property.select("span.value")?.first()
-                    String value
-                    if (valueElement != null) {
-                        if (valueElement.children().isEmpty()) {
-                            value = valueElement.text().trim()
-                        } else {
-                            Elements aElements = valueElement.select("a")
-                            if (aElements.size() == 1) {
-                                value = aElements.first().text().trim()
+            Elements properties = document.select("section.properties > div")
+            for (Element property : properties) {
+                Set<String> classes = property.classNames()
+                // On ne veut pas les informations "ceci est un professionnel"
+                if (!classes.contains("line_pro")) {
+                    if (classes.contains("properties_description")) {
+                        // C'est la description du bien
+                        classified.description = property.select("p.value")?.first()?.html()?.trim()
+                    } else {
+                        // C'est un autre type de propriété
+                        String keyName = property.select("span.property")?.first()?.text()?.replace(":", "")?.trim()
+                        Element valueElement = property.select("span.value")?.first()
+                        String value
+                        if (valueElement != null) {
+                            if (valueElement.children().isEmpty()) {
+                                value = valueElement.text().trim()
+                            } else {
+                                Elements aElements = valueElement.select("a")
+                                if (aElements.size() == 1) {
+                                    value = aElements.first().text().trim()
+                                }
                             }
                         }
-                    }
-                    if (value != null) {
-                        Key key = Key.findOrSaveByName(keyName)
-                        ClassifiedExtra classifiedExtra = ClassifiedExtra.findOrSaveByClassifiedAndKey(classified, key)
-                        classifiedExtra.value = value
-                        classifiedExtra.save(flush: true)
+                        if (value != null) {
+                            Key key = Key.findOrSaveByName(keyName)
+                            ClassifiedExtra classifiedExtra = ClassifiedExtra.findOrSaveByClassifiedAndKey(classified, key)
+                            classifiedExtra.value = value
+                            classifiedExtra.save(flush: true)
 
-                        if ("Ville".equals(keyName)) {
-                            classified.location = value
+                            if ("Ville".equals(keyName)) {
+                                classified.location = value
+                            }
                         }
                     }
                 }
             }
         }
-
-        classified.save()
     }
 }
