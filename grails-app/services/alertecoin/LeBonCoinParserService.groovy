@@ -15,7 +15,6 @@ class LeBonCoinParserService {
     private static final String[] MONTHS = ["ja", "f", "mar", "av", "mai", "juin", "juil", "ao", "s", "o", "n", "d"]
     private static final int TIMEOUT = 10000 // 10 sec
     private static final long TIMEOUT_ERROR_DELAY = 60 * 60 * 1000 // 1h
-    private static final long TIMEOUT_ERROR_DELAY_TWICE = 6 * 60 * 60 * 1000 // 6h
 
     ImageService imageService
     ClassifiedService classifiedService
@@ -29,10 +28,6 @@ class LeBonCoinParserService {
     }
 
     List<Classified> getClassifieds(String url, Date afterDate) {
-        log.info "GET ${url}"
-
-        lastGetTimestamp = waitService.waitAtLeast(500, lastGetTimestamp)
-
         Document document = tryGetDocument(url)
         if (document != null) {
             return getClassifieds(document, afterDate)
@@ -41,20 +36,18 @@ class LeBonCoinParserService {
         }
     }
 
-    Document tryGetDocument(String url) {
-        if (System.currentTimeMillis() < nextCallDate) {
+    Document tryGetDocument(String url, int minDelay = 500) {
+        if (System.currentTimeMillis() > nextCallDate) {
             try {
+                lastGetTimestamp = waitService.waitAtLeast(minDelay, lastGetTimestamp)
+                log.info "GET ${url}"
                 def document = Jsoup.parse(new URL(url), TIMEOUT)
                 // Pas d'erreur, on met nextCallDate à 0
                 nextCallDate = 0l
                 return document
             } catch (IOException e) {
                 log.warn e.getMessage(), e
-                if (nextCallDate == 0l) {
-                    nextCallDate = System.currentTimeMillis() + TIMEOUT_ERROR_DELAY
-                } else {
-                    nextCallDate = System.currentTimeMillis() + TIMEOUT_ERROR_DELAY_TWICE
-                }
+                nextCallDate = System.currentTimeMillis() + TIMEOUT_ERROR_DELAY
                 log.info "Setting nextCallDate to : ${new Date(nextCallDate)}"
                 return null
             }
@@ -227,12 +220,7 @@ class LeBonCoinParserService {
     }
 
     def getAndFillExtraInfoForClassified(Classified classified) {
-        log.info "GET ${classified.url}"
-
-        lastGetTimestamp = waitService.waitAtLeast(500, lastGetTimestamp)
-
         Document document = tryGetDocument(classified.url)
-
         if (document != null) {
             // Récupérer les différentes images
             Elements imageElements = document.select("section.adview_main div.thumbnails img")
@@ -279,7 +267,7 @@ class LeBonCoinParserService {
                             Key key = Key.findOrSaveByName(keyName)
                             ClassifiedExtra classifiedExtra = ClassifiedExtra.findOrSaveByClassifiedAndKey(classified, key)
                             classifiedExtra.value = value
-                            classifiedExtra.save(flush: true)
+                            classifiedExtra.save()
 
                             if ("Ville".equals(keyName)) {
                                 classified.location = value

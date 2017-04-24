@@ -30,7 +30,7 @@ class AlertService {
         )
         alert.nextCheckDate = calculateNextCheckDate(alert)
         fillWithCurrentClassifiedsOnPage(alert)
-        return alert.save(flush: true)
+        return alert.save()
     }
 
     def update(Alert alert, String name, String url, Integer checkIntervalInMinutes) {
@@ -51,7 +51,7 @@ class AlertService {
                 fillWithCurrentClassifiedsOnPage(alert)
                 alert.nextCheckDate = calculateNextCheckDate(alert)
             }
-            alert.save(flush: true, failOnError: true)
+            alert.save(failOnError: true)
         }
         return alert
     }
@@ -159,10 +159,6 @@ class AlertService {
             // Sauvegarde de l'état en base
             alert.save(flush: true)
         }
-    }
-
-    def scanForNewClassifieds(Alert alert) {
-        return leBonCoinParserService.getClassifieds(alert.url, alert.mostRecentClassifiedDate)
     }
 
     def sendEmailWithNewClassified(Alert alert, List<Classified> classifieds) {

@@ -88,7 +88,7 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
                 return
             }
             user.accountLocked = false
-            user.save(flush: true)
+            user.save()
             def UserRole = lookupUserRoleClass()
             def Role = lookupRoleClass()
             for (roleName in conf.ui.register.defaultRoleNames) {
@@ -134,7 +134,7 @@ class RegisterController extends grails.plugin.springsecurity.ui.RegisterControl
         }
 
         def registrationCode = new RegistrationCode(username: user."$usernameFieldName")
-        registrationCode.save(flush: true)
+        registrationCode.save()
 
         String url = generateLink('resetPassword', [t: registrationCode.token])
 
