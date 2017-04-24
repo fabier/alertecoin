@@ -59,7 +59,7 @@ class LeBonCoinParserService {
                 return null
             }
         } else {
-            log.info "Due to previous TIMEOUT error, no HTTP GET to : ${url}"
+            log.info "Due to previous TIMEOUT error [nextCallDate:${new Date(nextCallDate)}], no HTTP GET to : ${url}"
             return null
         }
     }
