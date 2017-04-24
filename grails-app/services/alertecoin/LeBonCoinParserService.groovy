@@ -149,7 +149,11 @@ class LeBonCoinParserService {
                     // ---------------------------
                     String priceText = detailDiv.select("h3.item_price").first()?.text()?.trim()
                     if (priceText) {
-                        String priceTextCleaned = priceText.replaceAll("\u00A0", "").replaceAll("€", "").replaceAll(" ", "").trim()
+                        String priceTextCleaned = priceText
+                        ["\u00A0", "C.C.", "€", " "].each {
+                            priceTextCleaned = priceTextCleaned.replaceAll(it, "")
+                        }
+                        priceTextCleaned = priceTextCleaned.trim()
                         def pricesTextCleaned = priceTextCleaned.split("-")
                         try {
                             if (pricesTextCleaned.length > 0) {
