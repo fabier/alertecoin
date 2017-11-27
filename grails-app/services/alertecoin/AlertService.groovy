@@ -19,11 +19,12 @@ class AlertService {
 
     def springSecurityService
 
-    def create(String name, String url, Integer checkIntervalInMinutes, User user) {
+    def create(String name, String url, Integer checkIntervalInMinutes, Integer hourOfDay, User user) {
         Alert alert = new Alert(
                 name: name,
                 url: url,
                 checkIntervalInMinutes: checkIntervalInMinutes,
+                hourOfDay: hourOfDay,
                 user: user,
                 creator: user,
                 state: State.ACTIVE
@@ -33,10 +34,11 @@ class AlertService {
         return alert.save()
     }
 
-    def update(Alert alert, String name, String url, Integer checkIntervalInMinutes) {
+    def update(Alert alert, String name, String url, Integer checkIntervalInMinutes, Integer hourOfDay = 7) {
         if (alert != null) {
             alert.name = name
             alert.checkIntervalInMinutes = checkIntervalInMinutes
+            alert.hourOfDay = hourOfDay
 
             url = normalizeURL(url);
 
@@ -196,7 +198,7 @@ class AlertService {
         if (checkIntervalInMinutes >= 1440) {
             // Tous les jours à 8h du matin
             calendar = DateUtils.truncate(calendar, Calendar.DAY_OF_MONTH)
-            calendar.add(Calendar.HOUR, 8) // 8h du matin
+            calendar.add(Calendar.HOUR, alert.hourOfDay ?: 7) // Heure de l'alerte ou 7h du matin
         } else if (checkIntervalInMinutes >= 60) {
             // Toutes les heures (à l'heure pile)
             calendar = DateUtils.truncate(calendar, Calendar.HOUR)

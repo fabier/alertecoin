@@ -1,6 +1,5 @@
 package alertecoin
 
-import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
 import org.springframework.security.access.annotation.Secured
 
@@ -42,7 +41,11 @@ class AlertController {
             redirect action: "index"
         } else {
             def command = new ClassifiedSearchCreateCommand(name: "", url: "")
-            render view: 'create', model: [command: command]
+            render view: 'create', model: [
+                    command: command,
+                    values : ['5', '60', '1440'],
+                    labels : ['Dès que possible', 'Toutes les heures', 'Une fois par jour']
+            ]
         }
     }
 
@@ -51,14 +54,22 @@ class AlertController {
         if (user.alerts?.size() >= 10) {
             // On met quand même une limite sinon on n'a pas fini !
             flash.error = "Impossible de créer une nouvelle alerte, vous avez déjà créé 10 alertes.<br/>Veuillez supprimer une alerte pour créer une nouvelle alerte"
-            render view: "create", model: [command: command]
+            render view: "create", model: [
+                    command: command,
+                    values : ['5', '60', '1440'],
+                    labels : ['Dès que possible', 'Toutes les heures', 'Une fois par jour']
+            ]
         } else {
             if (command.hasErrors()) {
                 flash.error = "Merci de vérifier votre saisie"
-                render view: "create", model: [command: command]
+                render view: "create", model: [
+                        command: command,
+                        values : ['5', '60', '1440'],
+                        labels : ['Dès que possible', 'Toutes les heures', 'Une fois par jour']
+                ]
             } else {
                 // On essaie de créer l'alerte
-                Alert alert = alertService.create(command.name, command.url, command.checkIntervalInMinutes, user)
+                Alert alert = alertService.create(command.name, command.url, command.checkIntervalInMinutes, command.hourOfDay, user)
                 redirect controller: "alert", action: "show", id: alert.id
             }
         }
@@ -71,7 +82,7 @@ class AlertController {
                 redirect action: "edit", id: command.id
             } else {
                 Alert alert = Alert.get(command.id)
-                alertService.update(alert, command.name, command.url, command.checkIntervalInMinutes)
+                alertService.update(alert, command.name, command.url, command.checkIntervalInMinutes, command.hourOfDay)
                 redirect controller: "alert", action: "show", id: alert.id
             }
         } else {
@@ -128,7 +139,11 @@ class AlertController {
         if (alert == null || !hasRights) {
             response.sendError(404)
         } else {
-            render view: "edit", model: [alert: alert]
+            render view: "edit", model: [
+                    alert : alert,
+                    values: ['5', '60', '1440'],
+                    labels: ['Dès que possible', 'Toutes les heures', 'Une fois par jour']
+            ]
         }
     }
 

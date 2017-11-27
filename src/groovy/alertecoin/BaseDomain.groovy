@@ -20,8 +20,8 @@ abstract class BaseDomain {
         if (!o.getClass().isAssignableFrom(getClass()) &&
                 !getClass().isAssignableFrom(o.getClass())) return false
 
-        if (ident() != null) {
-            ident() == o.ident()
+        if (id != null) {
+            id == o.id
         } else {
             false
         }
@@ -29,6 +29,6 @@ abstract class BaseDomain {
 
     @Override
     int hashCode() {
-        ident()?.hashCode() ?: 0
+        id?.hashCode() ?: 0
     }
 }

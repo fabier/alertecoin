@@ -23,6 +23,11 @@ class Alert extends BaseEntity {
     Integer checkIntervalInMinutes
 
     /**
+     * Heure de la vérification
+     */
+    Integer hourOfDay
+
+    /**
      * Date de l'annonce la plus récente associée à cette recherche
      */
     Date mostRecentClassifiedDate
@@ -50,6 +55,7 @@ class Alert extends BaseEntity {
         mostRecentClassifiedDate nullable: true
         nextCheckDate nullable: true
         checkIntervalInMinutes nullable: true
+        hourOfDay nullable: true, min: 0, max: 23
     }
 
     static mapping = {

@@ -3,6 +3,20 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Nouvelle alerte</title>
+    <script>
+        $(function () {
+            $("input[type=radio]").change(function () {
+                if (this.value == '1440') {
+                    $("#hourOfDay").removeClass("display-none");
+                } else {
+                    $("#hourOfDay").addClass("display-none");
+                }
+            });
+            if ($("input[type=radio]:checked").val() == '1440') {
+                $("#hourOfDay").removeClass("display-none");
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -48,12 +62,20 @@
                             <g:radioGroup name="checkIntervalInMinutes"
                                           value="${command?.checkIntervalInMinutes ?: 60}"
                                           id="checkIntervalInMinutes"
-                                          labels="['Dès que possible', 'Toutes les heures', 'Une fois par jour (8h du matin)']"
-                                          values="['5', '60', '1440']">
+                                          labels="${labels}"
+                                          values="${values}">
                                 <p>
                                     <label>
                                         <span class="radioSpan">${it.radio}</span>
                                         ${it.label}
+                                        <g:if test="${it.label.equals('Une fois par jour')}">
+                                            <g:select id="hourOfDay" name="hourOfDay" from="${0..23}"
+                                                      value="${7}"
+                                                      class="display-none"
+                                                      optionValue="${{
+                                                          formatNumber(number: it, minIntegerDigits: 2) + ":00"
+                                                      }}"/>
+                                        </g:if>
                                     </label>
                                 </p>
                             </g:radioGroup>

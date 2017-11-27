@@ -7,6 +7,7 @@ class ClassifiedSearchUpdateCommand {
     Long id
     String name
     String url
+    Integer hourOfDay
     Integer checkIntervalInMinutes
 
     static constraints = {
@@ -16,6 +17,7 @@ class ClassifiedSearchUpdateCommand {
             it.startsWith("http://www.leboncoin.fr/") || it.startsWith("https://www.leboncoin.fr/") ||
                     it.startsWith("http://leboncoin.fr/") || it.startsWith("https://leboncoin.fr/")
         }
+        hourOfDay nullable: true, min: 0, max: 23
         checkIntervalInMinutes nullable: true, validator: { val, obj -> val in [5, 10, 15, 30, 60, 120, 240, 1440] }
     }
 }
