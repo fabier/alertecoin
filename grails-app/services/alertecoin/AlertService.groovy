@@ -31,7 +31,7 @@ class AlertService {
         )
         alert.nextCheckDate = calculateNextCheckDate(alert)
         fillWithCurrentClassifiedsOnPage(alert)
-        return alert.save()
+        return alert.save(failOnError: true)
     }
 
     def update(Alert alert, String name, String url, Integer checkIntervalInMinutes, Integer hourOfDay = 7) {
@@ -100,7 +100,7 @@ class AlertService {
         } else {
             // La liste des classifieds est vide, tant pis la mostRecentClassifiedDate ne change pas de valeur
         }
-        alert.save(flush: true)
+        alert.save(flush: true, failOnError: true)
     }
 
     def fillWithNewClassifiedsAndSendEmailIfNewFound(Alert alert) {
@@ -159,7 +159,7 @@ class AlertService {
             alert.nextCheckDate = calendar.getTime()
         } finally {
             // Sauvegarde de l'état en base
-            alert.save(flush: true)
+            alert.save(flush: true, failOnError: true)
         }
     }
 

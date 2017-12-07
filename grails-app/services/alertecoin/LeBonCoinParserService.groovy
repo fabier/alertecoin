@@ -166,7 +166,7 @@ class LeBonCoinParserService {
                     }
 
                     // On a des modifications à enregistrer
-                    classified.save()
+                    classified.save(failOnError: true)
                 } else {
                     // L'annonce a déjà été scannée, aucun intérêt de rescanner la même annonce...
                 }
@@ -174,7 +174,7 @@ class LeBonCoinParserService {
                 // On va chercher les informations supplémentaires pour cette annonce si nécessaire
                 if (classified.description == null) {
                     getAndFillExtraInfoForClassified(classified)
-                    classified.save()
+                    classified.save(failOnError: true)
                 }
 
                 // On ajoute cette annonce à la liste des annonces pour cette alerte
@@ -239,7 +239,7 @@ class LeBonCoinParserService {
                 Image image = imageService.getImageByURL(imageUrl)
                 if (image != null && (classified.images == null || !classified.images.contains(image))) {
                     classified.addToImages(image)
-                    classified.save()
+                    classified.save(failOnError: true)
                 }
             }
             // Récupérer les différents attributs
@@ -268,10 +268,14 @@ class LeBonCoinParserService {
                             }
                         }
                         if (value != null) {
-                            Key key = Key.findOrSaveByName(keyName)
+                            Key key = Key.findByName(keyName)
+                            if (key == null) {
+                                key = new Key(name: keyName);
+                                key.save(flush: true, failOnError: true)
+                            }
                             ClassifiedExtra classifiedExtra = ClassifiedExtra.findOrSaveByClassifiedAndKey(classified, key)
                             classifiedExtra.value = value
-                            classifiedExtra.save()
+                            classifiedExtra.save(failOnError: true)
 
                             if ("Ville".equals(keyName)) {
                                 classified.location = value

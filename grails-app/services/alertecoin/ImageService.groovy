@@ -20,7 +20,7 @@ class ImageService {
                 // et on peut lui affecter les données de l'image contenue dans l'url
                 image = image ?: new Image(url: url)
                 image.data = data
-                image.save()
+                image.save(failOnError: true)
             }
         }
         // L'image retournée peut être nulle

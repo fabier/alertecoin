@@ -18,7 +18,7 @@ class ClassifiedService {
         Classified classified = Classified.findOrSaveByExternalId(externalId)
         if (classified.url == null) {
             classified.url = url
-            classified.save()
+            classified.save(failOnError: true)
         }
         return classified
     }
