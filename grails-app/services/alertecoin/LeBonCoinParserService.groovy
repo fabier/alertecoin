@@ -88,9 +88,9 @@ class LeBonCoinParserService {
 
 	    if (dateDiv != null) {
 		if (classified.name == null) {
-		    String title = element.attr("title").trim()
-		    classified.name = title
-
+		    classified.name = element.select("section > p > span")?.first()?.text()?.trim()
+                    classified.location = element.select("section > div > p[itemprop=availableAtOrFrom]")?.first()?.text().trim()
+                    
 		    // ---------------------------
 		    // Gestion du parse de la date
 		    // ---------------------------
@@ -266,14 +266,14 @@ class LeBonCoinParserService {
 	    }
 
 	    // 2. Localisation
-	    Elements locationElements = document.select("div[data-qa-id=adview_location_informations]")
-	    if (locationElements.size() == 1) {
-		Element locationElement = locationElements.first()
-		// C'est la localisation du bien
-		classified.location = locationElement.select("span")?.first()?.text()?.trim()
-	    }
+	    // Elements locationElements = document.select("div[data-qa-id=adview_location_informations]")
+	    // if (locationElements.size() == 1) {
+            //	Element locationElement = locationElements.first()
+            //  C'est la localisation du bien
+            //	classified.location = locationElement.select("span")?.first()?.text()?.trim()
+	    // }
 
-	    // 3s. Autres properties
+	    // 3. Autres properties
 	    Elements propertyDivs = document.select("div[data-qa-id=criteria_container] > div[data-qa-id]")
 	    for (Element propertyDiv : propertyDivs) {
 		Elements keyAndValueDivs = propertyDiv.select("div > div[class]")
